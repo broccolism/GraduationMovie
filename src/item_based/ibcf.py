@@ -24,9 +24,11 @@ N_USER = -1
 N_MOVIE = -1
 N_RECOMMENDATIONS = 5
 
+TRAIN_MATRIX, TEST_MATRIX, SIM, PRED = None
+
 
 def init_data():
-    global N_USER, N_MOVIE
+    global N_USER, N_MOVIE, TRAIN_MATRIX, TEST_MATRIX
     train_data = pd.read_table(DATA_PATH + RATINGS_PATH,
                                sep=SEPERATOR, header=None, names=TRAIN_COLUMNS)
 
@@ -51,6 +53,7 @@ def init_data():
             test_matrix[u, rand[i]] = train_matrix[u, rand[i]]
             train_matrix[u, rand[i]] = 0
         u = u + 1
+
     return train_matrix, test_matrix
 
 
@@ -113,15 +116,16 @@ def get_recommendations(pred, user_id):
     return recommendations
 
 
-train, test = init_data()
-print(f'done init data')
-sim = similarities(train)
-print(f'done sim')
+if __name__ == "__main__":
+    train, test = init_data()
+    print(f'done init data')
+    sim = similarities(train)
+    print(f'done sim')
 
-pred = np.copy(predictions(train, sim))
-print(f'done pred')
-err = err_rmse(test, pred)
-print(f'done training. RMSE = ', err)
+    pred = np.copy(predictions(train, sim))
+    print(f'done pred')
+    err = err_rmse(test, pred)
+    print(f'done training. RMSE = ', err)
 
-target_user = int(input("user id for recommendation: ")) - 1
-print(get_recommendations(pred, target_user))
+    target_user = int(input("user id for recommendation: ")) - 1
+    print(get_recommendations(pred, target_user))
