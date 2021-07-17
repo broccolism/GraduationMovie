@@ -6,5 +6,3 @@
 
 // <Profile/>
 // <MovieListVertical/>
-
-// <MenuTab/>

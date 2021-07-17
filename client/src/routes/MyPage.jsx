@@ -1,2 +1,1 @@
 // <MovieListHorizontal/>
-// <MenuTab/>

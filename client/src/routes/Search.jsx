@@ -1,3 +1,2 @@
 // <Tag/>
 // <MovieListHorizontal/>
-// <MenuTab/>
