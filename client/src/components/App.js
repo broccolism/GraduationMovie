@@ -1,7 +1,12 @@
-import '../styles/App.css';
+import React from "react";
+import { Route } from "react-router-dom";
+
+import "../styles/App.scss";
+import "../styles/Util.scss";
+
+import Intro from "../routes/Intro";
 
 function App() {
-
   // route intro
   // route main
   // route movie detail
@@ -11,12 +16,7 @@ function App() {
 
   return (
     <div className="App">
-      <header className="App-header">
-      <link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/css?family=Play" />
-        <p>
-          Hello World!
-        </p>
-      </header>
+      <Route path="/" exact component={Intro} />
     </div>
   );
 }
