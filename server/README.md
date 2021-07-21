@@ -2,7 +2,7 @@
 
 ### 실행
 
-localhost 4000번 포트에서 실행됩니다.
+localhost 5000번 포트에서 실행됩니다.
 
 ```
 yarn start
