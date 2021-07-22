@@ -1,4 +1,4 @@
-import * as mysql from "mysql";
+import * as mysql from "mysql2";
 
 const config = {
   host: "localhost",
@@ -8,7 +8,6 @@ const config = {
   database: "movie_service",
 };
 
-const db = mysql.createConnection(config);
-db.connect();
+const connection = mysql.createPool(config);
 
-export default db;
+export default connection.promise();

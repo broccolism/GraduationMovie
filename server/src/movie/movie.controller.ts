@@ -1,9 +1,46 @@
 import * as express from "express";
-import { Movie } from "./movie.model";
+import { MoviePath } from "../constant/path";
+import * as MovieService from "./movie.service";
+import * as Models from "./movie.model";
+import { Request } from "express";
 
-export const getDissimilarMovies = (topN: number): number[] => {
-  // TODO: similarity 계산
-  return Array(topN)
-    .fill(0)
-    .map((_, i) => i + 1);
-};
+const router = express.Router();
+
+router.get(
+  MoviePath.GET_DISSIMILAR,
+  async (req: Request<{}, {}, {}, Models.GetDissimilarReq>, res) => {
+    const movieIds: number[] = await MovieService.getDissimilarMovies(
+      req.query
+    );
+    const result: Models.GetDissimilarRes = { movieIds: movieIds };
+    res.status(200).send(result);
+  }
+);
+
+router.get(
+  MoviePath.GET_TOP_N_BY_ID,
+  async (req: Request<{}, {}, {}, Models.GetTopNByIdReq>, res) => {
+    const movieIds: number[] = await MovieService.getTopNMoviesById(req.query);
+    const result: Models.GetTopNByIdRes = { movieIds: movieIds };
+    res.status(200).send(result);
+  }
+);
+
+router.get(
+  MoviePath.GET_TOP_N_FOR_EVERY,
+  async (req: Request<{}, {}, {}, Models.GetTopNForEveryReq>, res) => {
+    try {
+      const movieIds: number[] = await MovieService.getTopNMoviesForEvery(
+        req.query
+      );
+
+      const result: Models.GetTopNForEveryRes = { movieIds: movieIds };
+      res.status(200).send(result);
+    } catch (err) {
+      console.error(err);
+      res.status(500).send("SERVER ERROR: get top n for every");
+    }
+  }
+);
+
+export = router;
