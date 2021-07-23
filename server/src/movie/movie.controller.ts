@@ -43,4 +43,17 @@ router.get(
   }
 );
 
+router.get(
+  MoviePath.RATE_ONE,
+  async (req: Request<{}, {}, {}, Models.RateOneReq>, res) => {
+    try {
+      await MovieService.rateOneMovie(req.query);
+      res.status(200).send();
+    } catch (err) {
+      console.error(err);
+      res.status(500).send("SERVER ERROR: rate one movie");
+    }
+  }
+);
+
 export = router;

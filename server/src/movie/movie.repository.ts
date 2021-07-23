@@ -10,3 +10,15 @@ export const getTopNMoviesForEvery = async (topN: number) => {
   );
   return (rows as any).map((row) => row.movieId);
 };
+
+export const rateOneMovie = async (
+  userId: number,
+  movieId: number,
+  rate: number,
+  time: number
+) => {
+  await db.execute(
+    `INSERT INTO rates(user_id, movie_id, rating, timestamp)
+     VALUES(${userId}, ${movieId}, ${rate}, ${time});`
+  );
+};
