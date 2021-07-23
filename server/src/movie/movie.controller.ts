@@ -58,14 +58,43 @@ router.get(
 
 router.get(
   MoviePath.GET_POSTER,
-  async (req: Request<{}, {}, {}, Models.GetImageReq>, res) => {
+  async (req: Request<{}, {}, {}, Models.GetPosterReq>, res) => {
     try {
-      const result: Models.GetImageRes =
+      const result: Models.GetPosterRes =
         await MovieService.getPosterAndTitleById(req.query);
       res.status(200).send(result);
     } catch (err) {
       console.error(err);
       res.status(500).send("SERVER ERROR: get movie poster by id");
+    }
+  }
+);
+
+router.get(
+  MoviePath.GET_IMAGE,
+  async (req: Request<{}, {}, {}, Models.GetImageReq>, res) => {
+    try {
+      const result: Models.GetImageRes =
+        await MovieService.getImageAndTitleById(req.query);
+      res.status(200).send(result);
+    } catch (err) {
+      console.error(err);
+      res.status(500).send("SERVER ERROR: get movie poster by id");
+    }
+  }
+);
+
+router.get(
+  MoviePath.GET_DETAIL,
+  async (req: Request<{}, {}, {}, Models.GetDetailReq>, res) => {
+    try {
+      const result: Models.GetDetailRes = await MovieService.getDetail(
+        req.query
+      );
+      res.status(200).send(result);
+    } catch (err) {
+      console.error(err);
+      res.status(500).send("SERVER ERROR: get movie detail");
     }
   }
 );

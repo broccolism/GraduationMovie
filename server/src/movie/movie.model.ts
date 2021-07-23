@@ -64,7 +64,22 @@ export interface GetDetailReq {
 }
 
 export interface GetDetailRes {
-  userRating: number;
+  youtubeUrl: string;
+  award: string; // 없을 경우 "-"
   title: string;
-  // TODO: 더 필요한 항목 추가
+  year: number;
+  genre: string;
+  avgRating: number;
+  ratingPeopleCount: number;
+  userRating: number; // 없을 경우 -1
+  summary: string; // 없을 경우 "-"
+  plot: string;
+  director: string;
+  writers: string;
+  actors: Actor[];
+}
+
+export interface Actor {
+  name: string;
+  profileUrl: string;
 }

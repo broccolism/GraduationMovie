@@ -36,3 +36,15 @@ export const getTmdbIdAndTitle = async (
     title: rows[0].title,
   };
 };
+
+export const getUserRating = async (
+  userId: number,
+  movieId: number
+): Promise<number> => {
+  const [rows, _] = await db.execute(
+    `SELECT rating
+     FROM rates
+     WHERE movie_id = ${movieId} AND user_id = ${userId};`
+  );
+  return rows[0] == undefined ? -1 : rows[0].rating;
+};
