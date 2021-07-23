@@ -38,7 +38,7 @@ router.get(
       res.status(200).send(result);
     } catch (err) {
       console.error(err);
-      res.status(500).send("SERVER ERROR: get top n for every");
+      res.status(500).send("SERVER ERROR: get top n movies for every");
     }
   }
 );
@@ -52,6 +52,20 @@ router.get(
     } catch (err) {
       console.error(err);
       res.status(500).send("SERVER ERROR: rate one movie");
+    }
+  }
+);
+
+router.get(
+  MoviePath.GET_POSTER,
+  async (req: Request<{}, {}, {}, Models.GetImageReq>, res) => {
+    try {
+      const result: Models.GetImageRes =
+        await MovieService.getPosterAndTitleById(req.query);
+      res.status(200).send(result);
+    } catch (err) {
+      console.error(err);
+      res.status(500).send("SERVER ERROR: get movie poster by id");
     }
   }
 );

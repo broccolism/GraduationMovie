@@ -22,3 +22,17 @@ export const rateOneMovie = async (
      VALUES(${userId}, ${movieId}, ${rate}, ${time});`
   );
 };
+
+export const getTmdbIdAndTitle = async (
+  id: number
+): Promise<{ tmdbId: number; title: string }> => {
+  const [rows, _] = await db.execute(
+    `SELECT tmdb_id as tmdbId, title
+     FROM movie
+     WHERE id = ${id};`
+  );
+  return {
+    tmdbId: rows[0].tmdbId,
+    title: rows[0].title,
+  };
+};

@@ -1,6 +1,8 @@
 import * as express from "express";
-import { createServer } from "http";
 import * as router from "./router/routes";
+import * as dotenv from "dotenv";
+
+dotenv.config();
 
 const app = express();
 app.use(router);
