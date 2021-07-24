@@ -1,4 +1,4 @@
-import db from "../config/database";
+import db from "../config/db";
 import * as Models from "./movie.model";
 
 export const getTopNMoviesForEvery = async (topN: number) => {
