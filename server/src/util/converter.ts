@@ -15,7 +15,6 @@ export const tmdbIdToImdbId = async (id: number): Promise<string> => {
 };
 
 export const tmdbIdToCustomId = async (tmdbId: number): Promise<number> => {
-  console.log("@@@@@@@@@@ tmdb id:", tmdbId);
   const findInDB = await MovieRepo.isMovieExist(tmdbId);
   if (findInDB.isExists) {
     return findInDB.id;

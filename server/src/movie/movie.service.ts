@@ -154,8 +154,14 @@ export const searchMovieByKeyword = async (
   const tmdbIds: number[] = await TmdbApi.searchMovieByKeyword(
     blankToPlus(param.keyword)
   );
-  const ids: number[] = await Promise.all(
-    tmdbIds.map(async (tmdbId: number) => await tmdbIdToCustomId(tmdbId))
+
+  const idPromises: Promise<number>[] = tmdbIds.map(
+    async (tmdbId: number) => await tmdbIdToCustomId(tmdbId)
   );
+  const idsWithNull: number[] = await Promise.all(
+    idPromises.map((promise: Promise<number>) => promise.catch((err) => null))
+  );
+
+  const ids: number[] = idsWithNull.filter((id: number) => id != null);
   return { movieIds: ids };
 };
