@@ -1,4 +1,5 @@
 import db from "../config/database";
+import * as Models from "./movie.model";
 
 export const getTopNMoviesForEvery = async (topN: number) => {
   const [rows, _] = await db.execute(
@@ -47,4 +48,39 @@ export const getUserRating = async (
      WHERE movie_id = ${movieId} AND user_id = ${userId};`
   );
   return rows[0] == undefined ? -1 : rows[0].rating;
+};
+
+export const isMovieExist = async (
+  tmdbId: number
+): Promise<{ isExists: boolean; id: number }> => {
+  const [rows, _] = await db.execute(
+    `SELECT id
+     FROM movie
+     WHERE tmdb_id = ${tmdbId};`
+  );
+
+  return rows[0] == undefined
+    ? {
+        isExists: false,
+        id: -1,
+      }
+    : {
+        isExists: true,
+        id: rows[0].id,
+      };
+};
+
+export const createMovie = async (movie: Models.Movie): Promise<number> => {
+  await db.execute(
+    `INSERT INTO movie(title, genres, imdb_id, tmdb_id, year)
+     VALUES("${movie.title}", "${movie.genres}", ${movie.tmdb_id}, ${movie.tmdb_id}, ${movie.year});`
+  );
+
+  const [rows, _] = await db.execute(
+    `SELECT id
+     FROM movie
+     WHERE tmdb_id = ${movie.tmdb_id};`
+  );
+
+  return rows[0].id;
 };

@@ -2,9 +2,11 @@ import * as Models from "./movie.model";
 import * as Repo from "./movie.repository";
 import * as TmdbApi from "../api/tmdb";
 import {
-  getImdbIdByTmdbId,
-  getTmdbIdAndTitle,
-} from "../util/movie_id_converter";
+  blankToPlus,
+  customIdToTmdbIdAndTitle,
+  tmdbIdToCustomId,
+  tmdbIdToImdbId,
+} from "../util/converter";
 import { TMDB_IMAGE_HOST, YOUTUBE_WATCH } from "../constant/host";
 import * as OmdbApi from "../api/omdb";
 
@@ -38,7 +40,7 @@ export const getPosterAndTitleById = async (
   param: Models.GetPosterReq
 ): Promise<Models.GetPosterRes> => {
   const { tmdbId, title }: { tmdbId: number; title: string } =
-    await getTmdbIdAndTitle(param.movieId);
+    await customIdToTmdbIdAndTitle(param.movieId);
   const images = await TmdbApi.getMovieImages(tmdbId);
   const posterPath = images.posters[0].file_path;
 
@@ -53,7 +55,7 @@ export const getImageAndTitleById = async (
   param: Models.GetImageReq
 ): Promise<Models.GetImageRes> => {
   const { tmdbId, title }: { tmdbId: number; title: string } =
-    await getTmdbIdAndTitle(param.movieId);
+    await customIdToTmdbIdAndTitle(param.movieId);
   const images = await TmdbApi.getMovieImages(tmdbId);
   const imagePath = images.backdrops[0].file_path;
 
@@ -68,8 +70,8 @@ export const getDetail = async (
   param: Models.GetDetailReq
 ): Promise<Models.GetDetailRes> => {
   const { tmdbId, title }: { tmdbId: number; title: string } =
-    await getTmdbIdAndTitle(param.movieId);
-  const imdbId: string = await getImdbIdByTmdbId(tmdbId);
+    await customIdToTmdbIdAndTitle(param.movieId);
+  const imdbId: string = await tmdbIdToImdbId(tmdbId);
 
   const tmdbDetail = await TmdbApi.getTmdbMovieDetails(tmdbId);
   const omdbDetail = await OmdbApi.getOmdbMovieDetails(imdbId);
@@ -106,4 +108,54 @@ export const getDetail = async (
   };
 
   return res;
+};
+
+export const searchMovie = async (
+  param: Models.SearchMovieReq
+): Promise<Models.SearchMovieRes> => {
+  const tmdbIds: number[] = await TmdbApi.searchMovieByKeyword(
+    blankToPlus(param.keyword)
+  );
+
+  const idPromises: Promise<number>[] = tmdbIds.map(
+    async (tmdbId: number) => await tmdbIdToCustomId(tmdbId)
+  );
+  const keywordPromises: Promise<string[]>[] = tmdbIds.map(
+    async (tmdbId: number) => await TmdbApi.getKeywordsById(tmdbId)
+  );
+
+  const idsWithNull: number[] = await Promise.all(
+    idPromises.map((promise: Promise<number>) => promise.catch((err) => null))
+  );
+
+  const keywords2D: string[][] = await Promise.all(
+    keywordPromises.map((promise: Promise<string[]>) =>
+      promise.catch((err) => null)
+    )
+  );
+
+  const ids: number[] = idsWithNull.filter((id: number) => id != null);
+
+  const keywords = keywords2D
+    .filter((words: string[]) => words != null)
+    .reduce((prev, next) => {
+      return prev != null ? prev.concat(next) : prev;
+    })
+    .filter((other, index, self) => {
+      return index === self.indexOf(other);
+    });
+
+  return { movieIds: ids, keywords: keywords };
+};
+
+export const searchMovieByKeyword = async (
+  param: Models.SearchMovieByKeywordReq
+): Promise<Models.SearchMovieByKeywordRes> => {
+  const tmdbIds: number[] = await TmdbApi.searchMovieByKeyword(
+    blankToPlus(param.keyword)
+  );
+  const ids: number[] = await Promise.all(
+    tmdbIds.map(async (tmdbId: number) => await tmdbIdToCustomId(tmdbId))
+  );
+  return { movieIds: ids };
 };

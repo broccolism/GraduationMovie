@@ -6,4 +6,6 @@ export class MoviePath {
   static GET_POSTER = "/poster";
   static GET_IMAGE = "/image";
   static GET_DETAIL = "/detail";
+  static SEARCH = "/search";
+  static SEARCH_BY_KEYWORD = "/search/keyword";
 }

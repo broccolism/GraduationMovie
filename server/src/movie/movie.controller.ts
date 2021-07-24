@@ -99,4 +99,33 @@ router.get(
   }
 );
 
+router.get(
+  MoviePath.SEARCH,
+  async (req: Request<{}, {}, {}, Models.SearchMovieReq>, res) => {
+    try {
+      const result: Models.SearchMovieRes = await MovieService.searchMovie(
+        req.query
+      );
+      res.status(200).send(result);
+    } catch (err) {
+      console.error(err);
+      res.status(500).send("SERVER ERROR: search movie");
+    }
+  }
+);
+
+router.get(
+  MoviePath.SEARCH_BY_KEYWORD,
+  async (req: Request<{}, {}, {}, Models.SearchMovieByKeywordReq>, res) => {
+    try {
+      const result: Models.SearchMovieByKeywordRes =
+        await MovieService.searchMovieByKeyword(req.query);
+      res.status(200).send(result);
+    } catch (err) {
+      console.error(err);
+      res.status(500).send("SERVER ERROR: search movie by keyword");
+    }
+  }
+);
+
 export = router;

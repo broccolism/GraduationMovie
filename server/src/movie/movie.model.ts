@@ -7,6 +7,11 @@ export interface Movie {
   year: number;
 }
 
+export interface Actor {
+  name: string;
+  profileUrl: string;
+}
+
 export interface GetDissimilarReq {
   topN: number;
 }
@@ -79,7 +84,19 @@ export interface GetDetailRes {
   actors: Actor[];
 }
 
-export interface Actor {
-  name: string;
-  profileUrl: string;
+export interface SearchMovieReq {
+  keyword: string;
+}
+
+export interface SearchMovieRes {
+  movieIds: number[];
+  keywords: string[];
+}
+
+export interface SearchMovieByKeywordReq {
+  keyword: string;
+}
+
+export interface SearchMovieByKeywordRes {
+  movieIds: number[];
 }
