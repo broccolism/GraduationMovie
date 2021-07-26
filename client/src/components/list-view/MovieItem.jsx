@@ -6,7 +6,7 @@ import poster from "../../images/lalaland.jpg";
 import "../../styles/MovieItem.scss";
 
 function MovieItem() {
-  const [star, setStar] = useState(0);
+  const [star, setStar] = useState(5);
   const [isSelected, setIsSelected] = useState(false);
   const starRef = useRef(null);
 
