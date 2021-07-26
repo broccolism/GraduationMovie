@@ -1,12 +1,13 @@
-import app from "./routes/index";
-import { createServer } from "http";
+import * as express from "express";
+import * as router from "./router/routes";
+import * as dotenv from "dotenv";
 
-const port: number = Number(process.env.PORT) || 4000;
+dotenv.config();
 
-const server = createServer(app);
+const app = express();
+app.use(router);
 
-server.listen(port, () => {
+const port: number = 5000;
+app.listen(port, () => {
   console.log(`${port} 포트 서버 대기 중!`);
 });
-
-export default server;
