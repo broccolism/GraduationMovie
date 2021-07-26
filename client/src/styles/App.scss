@@ -60,6 +60,20 @@ button {
   }
 }
 
+.border-button {
+  margin: 10px 0;
+  background-color: black;
+  border-radius: 3px;
+  border: 2px solid var(--main-purple);
+  height: 35px;
+  width: 80vw;
+  color: var(--main-purple);
+  font-size: var(--small-font);
+  &:hover {
+    font-weight: bold;
+  }
+}
+
 .main-input {
   margin: 10px 0;
   background-color: black;
@@ -73,4 +87,9 @@ button {
     border: 2px solid var(--main-purple);
     outline: none;
   }
+}
+
+.MuiGrid-spacing-xs-1 {
+  margin: 0 !important;
+  width: 100% !important;
 }

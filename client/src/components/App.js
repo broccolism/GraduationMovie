@@ -4,7 +4,8 @@ import { Route } from "react-router-dom";
 import "../styles/App.scss";
 import "../styles/Util.scss";
 
-import Intro from "../routes/Intro";
+import SetNickname from "../routes/SetNickname";
+import SetTaste from "../routes/SetTaste";
 
 function App() {
   // route intro
@@ -16,7 +17,8 @@ function App() {
 
   return (
     <div className="App">
-      <Route path="/" exact component={Intro} />
+      <Route path="/" exact component={SetNickname} />
+      <Route path="/set-taste" exact component={SetTaste} />
     </div>
   );
 }

@@ -1,0 +1,25 @@
+.movie-item {
+  position: relative;
+
+  height: 150px;
+  > img {
+    height: 150px;
+    z-index: 1;
+  }
+  &__selected {
+    height: 150px;
+    position: absolute;
+    z-index: 10;
+    opacity: 0.7;
+    background-color: black;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    display: flex;
+    align-content: center;
+    justify-content: center;
+  }
+  &__star {
+    margin: auto;
+  }
+}

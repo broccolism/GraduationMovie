@@ -1,0 +1,32 @@
+.set-taste {
+  display: flex;
+  flex-direction: column;
+  margin: auto;
+  font-family: Play;
+  &__text {
+    display: flex;
+    flex-direction: column;
+    margin: 20px;
+    > span {
+      margin: 5px;
+    }
+  }
+  &__title {
+    font-size: var(--normal-font);
+    font-weight: bold;
+  }
+  &__description {
+    font-size: var(--small-font);
+  }
+  &__done {
+    display: flex;
+    flex-direction: row;
+    align-content: center;
+    justify-content: center;
+    padding: 10px;
+  }
+  &__movie-list {
+    height: calc(100vh - 180px);
+    overflow-y: scroll;
+  }
+}
