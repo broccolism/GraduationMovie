@@ -1,0 +1,11 @@
+export class MoviePath {
+  static GET_DISSIMILAR = "/dissimilar";
+  static GET_TOP_N_BY_ID = "/top-n/user";
+  static GET_TOP_N_FOR_EVERY = "/top-n/every";
+  static RATE_ONE = "/rate";
+  static GET_POSTER = "/poster";
+  static GET_IMAGE = "/image";
+  static GET_DETAIL = "/detail";
+  static SEARCH = "/search";
+  static SEARCH_BY_KEYWORD = "/search/keyword";
+}
