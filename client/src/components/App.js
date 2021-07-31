@@ -6,6 +6,7 @@ import "../styles/Util.scss";
 
 import SetNickname from "../routes/SetNickname";
 import SetTaste from "../routes/SetTaste";
+import Main from "../routes/Main";
 
 function App() {
   // route intro
@@ -19,6 +20,7 @@ function App() {
     <div className="App">
       <Route path="/" exact component={SetNickname} />
       <Route path="/set-taste" exact component={SetTaste} />
+      <Route path="/main" exact component={Main} />
     </div>
   );
 }
