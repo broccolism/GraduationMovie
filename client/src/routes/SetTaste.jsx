@@ -29,7 +29,7 @@ function SetTaste() {
         </span>
       </div>
       <div className="set-taste__movie-list">
-        <VerticalListView movieList={movieList} />
+        <VerticalListView movieList={movieList} isRating={true} />
       </div>
       <div className="set-taste__done">
         <Link to="/main">

@@ -17,7 +17,7 @@ const StyledRating = withStyles({
 })(Rating);
 
 function MovieItem(props) {
-  const { url } = props;
+  const { url, isInline, isRating } = props;
   const [star, setStar] = useState(5);
   const [isSelected, setIsSelected] = useState(false);
   const starRef = useRef(null);
@@ -39,20 +39,24 @@ function MovieItem(props) {
   // }, [starRef]);
 
   return (
-    <div className="movie-item">
+    <div className={(isInline ? "movie-inline-item" : "") + " movie-item"}>
       <img src={url} alt="movie" onClick={onClickPoster}></img>
-      {isSelected ? (
-        <div className="movie-item__selected">
-          <StyledRating
-            ref={starRef}
-            className="movie-item__star"
-            name="simple-controlled"
-            value={star}
-            onChange={(event, newValue) => {
-              setStar(newValue);
-            }}
-          />
-        </div>
+      {isRating ? (
+        isSelected ? (
+          <div className="movie-item__selected">
+            <StyledRating
+              ref={starRef}
+              className="movie-item__star"
+              name="simple-controlled"
+              value={star}
+              onChange={(event, newValue) => {
+                setStar(newValue);
+              }}
+            />
+          </div>
+        ) : (
+          <></>
+        )
       ) : (
         <></>
       )}

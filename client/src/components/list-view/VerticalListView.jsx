@@ -23,7 +23,7 @@ const useStyles = makeStyles((theme) =>
 );
 
 function VerticalListView(props) {
-  const { movieList } = props;
+  const { movieList, isRating } = props;
   const classes = useStyles();
   const [movieImageList, setMovieImageList] = useState([]);
 
@@ -41,12 +41,21 @@ function VerticalListView(props) {
     fetchData();
   }, []);
 
+  const poster =
+    "https://www.goldenglobes.com/sites/default/files/articles/cover_images/2017-la_la_land.jpg?format=pjpg&auto=webp&optimize=high&width=850";
+
   return (
     <div className={classes.root}>
       <div className="list-view__grid">
-        {movieImageList.map((url, index) => (
+        {/* {movieImageList.map((url, index) => (
           <MovieItem url={url} key={index} />
-        ))}
+        ))} */}
+        <MovieItem url={poster} isInline={false} isRating={isRating} />
+        <MovieItem url={poster} isInline={false} isRating={isRating} />
+        <MovieItem url={poster} isInline={false} isRating={isRating} />
+        <MovieItem url={poster} isInline={false} isRating={isRating} />
+        <MovieItem url={poster} isInline={false} isRating={isRating} />
+        <MovieItem url={poster} isInline={false} isRating={isRating} />
       </div>
     </div>
   );

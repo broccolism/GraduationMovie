@@ -2,7 +2,8 @@
   text-align: center;
   background-color: #000000;
   width: 100vw;
-  height: 100vh;
+  min-height: 100vh;
+  height: fit-content;
   display: flex;
   flex-direction: column;
   color: white;
@@ -52,7 +53,7 @@ button {
   background-color: var(--main-purple);
   border-radius: 3px;
   height: 35px;
-  width: 80vw;
+  width: 100%;
   color: white;
   font-size: var(--small-font);
   &:hover {
@@ -68,6 +69,20 @@ button {
   height: 35px;
   width: 80vw;
   color: var(--main-purple);
+  font-size: var(--small-font);
+  &:hover {
+    font-weight: bold;
+  }
+}
+
+.border-white-button {
+  margin: 10px 0;
+  background-color: black;
+  border-radius: 3px;
+  border: 2px solid var(--main-purple);
+  height: 35px;
+  width: 100%;
+  color: white;
   font-size: var(--small-font);
   &:hover {
     font-weight: bold;
