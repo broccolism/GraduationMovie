@@ -1,0 +1,12 @@
+.set-nickname {
+  margin: auto;
+  font-family: Play;
+  &__text {
+    margin: 20px;
+  }
+  &__form-nickname {
+    display: flex;
+    flex-direction: column;
+    padding: 20px;
+  }
+}
