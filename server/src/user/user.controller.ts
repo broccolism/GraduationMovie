@@ -79,7 +79,16 @@ router.get(
 
 router.get(
   UserPath.SEARCH_WATCHED,
-  async (req: Request<{}, {}, {}, Models.SearchMovieWatchedReq>, res) => {}
+  async (req: Request<{}, {}, {}, Models.SearchMovieWatchedReq>, res) => {
+    try {
+      const result: Models.SearchMovieWatchedRes =
+        await Service.searchMovieWatched(req.query);
+      res.status(200).send(result);
+    } catch (err) {
+      console.error(err);
+      res.status(500).send("SERVER ERROR: search movie watched failed.");
+    }
+  }
 );
 
 export = router;

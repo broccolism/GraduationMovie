@@ -49,3 +49,12 @@ export const getUserInfo = async (
 
 export const createUser = async (param: Models.CreateUserReq): Promise<void> =>
   await Repo.createUser(param.nickname);
+
+export const searchMovieWatched = async (
+  param: Models.SearchMovieWatchedReq
+): Promise<Models.SearchMovieWatchedRes> => {
+  const userId = param.userId;
+  const keyword = param.keyword;
+  const movieIds: number[] = await Repo.searchMovieWatched(userId, keyword);
+  return { movieIds };
+};

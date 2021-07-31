@@ -82,3 +82,18 @@ export const createUser = async (nickname: string): Promise<void> => {
      VALUES(${nickname});`
   );
 };
+
+export const searchMovieWatched = async (
+  userId: number,
+  keyword: string
+): Promise<number[]> => {
+  const [rows, _] = await db.execute(
+    `SELECT w.movie_id as movieId
+     FROM watched as w, movie as m
+     WHERE w.user_id = ${userId}
+           AND w.movie_id = m.id
+           AND m.title LIKE "%${keyword}%";`
+  );
+
+  return rows[0] == undefined ? [] : (rows as any).map((row) => row.movieId);
+};
