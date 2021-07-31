@@ -46,3 +46,6 @@ export const getUserInfo = async (
 
   return { nickname, unratedMovies, ratedMovies };
 };
+
+export const createUser = async (param: Models.CreateUserReq): Promise<void> =>
+  await Repo.createUser(param.nickname);

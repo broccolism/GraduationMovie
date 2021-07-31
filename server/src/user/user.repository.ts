@@ -75,3 +75,10 @@ export const getNicknameById = async (id: number): Promise<string> => {
 
   return rows[0].name;
 };
+
+export const createUser = async (nickname: string): Promise<void> => {
+  await db.execute(
+    `INSERT INTO user(name)
+     VALUES(${nickname});`
+  );
+};
