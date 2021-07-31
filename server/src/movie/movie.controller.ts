@@ -1,6 +1,6 @@
 import * as express from "express";
 import { MoviePath } from "../constant/path";
-import * as MovieService from "./movie.service";
+import * as Service from "./movie.service";
 import * as Models from "./movie.model";
 import { Request } from "express";
 
@@ -9,9 +9,7 @@ const router = express.Router();
 router.get(
   MoviePath.GET_DISSIMILAR,
   async (req: Request<{}, {}, {}, Models.GetDissimilarReq>, res) => {
-    const movieIds: number[] = await MovieService.getDissimilarMovies(
-      req.query
-    );
+    const movieIds: number[] = await Service.getDissimilarMovies(req.query);
     const result: Models.GetDissimilarRes = { movieIds: movieIds };
     res.status(200).send(result);
   }
@@ -20,7 +18,7 @@ router.get(
 router.get(
   MoviePath.GET_TOP_N_BY_ID,
   async (req: Request<{}, {}, {}, Models.GetTopNByIdReq>, res) => {
-    const movieIds: number[] = await MovieService.getTopNMoviesById(req.query);
+    const movieIds: number[] = await Service.getTopNMoviesById(req.query);
     const result: Models.GetTopNByIdRes = { movieIds: movieIds };
     res.status(200).send(result);
   }
@@ -30,9 +28,7 @@ router.get(
   MoviePath.GET_TOP_N_FOR_EVERY,
   async (req: Request<{}, {}, {}, Models.GetTopNForEveryReq>, res) => {
     try {
-      const movieIds: number[] = await MovieService.getTopNMoviesForEvery(
-        req.query
-      );
+      const movieIds: number[] = await Service.getTopNMoviesForEvery(req.query);
 
       const result: Models.GetTopNForEveryRes = { movieIds: movieIds };
       res.status(200).send(result);
@@ -47,7 +43,7 @@ router.get(
   MoviePath.RATE_ONE,
   async (req: Request<{}, {}, {}, Models.RateOneReq>, res) => {
     try {
-      await MovieService.rateOneMovie(req.query);
+      await Service.rateOneMovie(req.query);
       res.status(200).send();
     } catch (err) {
       console.error(err);
@@ -60,8 +56,9 @@ router.get(
   MoviePath.GET_POSTER,
   async (req: Request<{}, {}, {}, Models.GetPosterReq>, res) => {
     try {
-      const result: Models.GetPosterRes =
-        await MovieService.getPosterAndTitleById(req.query);
+      const result: Models.GetPosterRes = await Service.getPosterAndTitleById(
+        req.query
+      );
       res.status(200).send(result);
     } catch (err) {
       console.error(err);
@@ -74,8 +71,9 @@ router.get(
   MoviePath.GET_IMAGE,
   async (req: Request<{}, {}, {}, Models.GetImageReq>, res) => {
     try {
-      const result: Models.GetImageRes =
-        await MovieService.getImageAndTitleById(req.query);
+      const result: Models.GetImageRes = await Service.getImageAndTitleById(
+        req.query
+      );
       res.status(200).send(result);
     } catch (err) {
       console.error(err);
@@ -88,9 +86,7 @@ router.get(
   MoviePath.GET_DETAIL,
   async (req: Request<{}, {}, {}, Models.GetDetailReq>, res) => {
     try {
-      const result: Models.GetDetailRes = await MovieService.getDetail(
-        req.query
-      );
+      const result: Models.GetDetailRes = await Service.getDetail(req.query);
       res.status(200).send(result);
     } catch (err) {
       console.error(err);
@@ -103,7 +99,7 @@ router.get(
   MoviePath.SEARCH,
   async (req: Request<{}, {}, {}, Models.SearchMovieReq>, res) => {
     try {
-      const result: Models.SearchMovieRes = await MovieService.searchMovie(
+      const result: Models.SearchMovieRes = await Service.searchMovie(
         req.query
       );
       res.status(200).send(result);
@@ -119,7 +115,7 @@ router.get(
   async (req: Request<{}, {}, {}, Models.SearchMovieByKeywordReq>, res) => {
     try {
       const result: Models.SearchMovieByKeywordRes =
-        await MovieService.searchMovieByKeyword(req.query);
+        await Service.searchMovieByKeyword(req.query);
       res.status(200).send(result);
     } catch (err) {
       console.error(err);

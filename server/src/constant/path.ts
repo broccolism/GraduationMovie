@@ -9,3 +9,12 @@ export class MoviePath {
   static SEARCH = "/search";
   static SEARCH_BY_KEYWORD = "/search/keyword";
 }
+
+export class UserPath {
+  static GET_SIMILAR = "/similar";
+  static GET_REWATCHING = "/re";
+  static GET_ID_BY_NICKNAME = "/id";
+  static CREATE = "/create";
+  static GET_INFO = "/info";
+  static SEARCH_WATCHED = "/search/watched";
+}
