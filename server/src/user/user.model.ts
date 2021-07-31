@@ -1,6 +1,6 @@
-export interface WatchedMovie {
-  id: number;
-  watchedAt: Date;
+export interface MovieWithTime {
+  movieId: number;
+  timestamp: Date;
 }
 
 export interface GetSimilarUserReq {
@@ -39,15 +39,13 @@ export interface CreateUserRes {
 }
 
 export interface GetUserInfoReq {
-  id: number;
+  userId: number;
 }
 
 export interface GetUserInfoRes {
   nickname: string;
-  unratedMovieCount: number;
-  ratedMovieCount: number;
-  watchedMovies: WatchedMovie[];
-  success: boolean;
+  unratedMovies: MovieWithTime[];
+  ratedMovies: MovieWithTime[];
 }
 
 export interface SearchMovieWatchedReq {
