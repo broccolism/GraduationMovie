@@ -6,13 +6,43 @@
     padding: 15px;
     font-size: 18px;
   }
+  &__best-recommend {
+    margin-bottom: 10px;
+    position: relative;
+    height: fit-content;
+  }
+  &__best-recommend-image-wrapper {
+    position: relative;
+    height: fit-content;
+  }
+  &__best-recommend-image {
+    width: 100%;
+    > img {
+      width: 100%;
+    }
+  }
+  &__transparent-layer {
+    position: absolute;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 10;
+    background-image: linear-gradient(
+      rgba(20, 20, 20, 0) 70%,
+      rgba(20, 20, 20, 0.5) 80%,
+      rgb(0, 0, 0) 100%
+    );
+  }
+  &__best-recommend-text {
+    position: absolute;
+    bottom: 0;
+    padding: 0 15px;
+    z-index: 20;
+  }
   &__item-similar-recommend {
     padding: 15px;
   }
   &__reload-button {
-    padding: 15px;
-  }
-  &__information {
     padding: 15px;
   }
   &__emphasis {
