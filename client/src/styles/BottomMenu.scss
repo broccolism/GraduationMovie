@@ -2,3 +2,11 @@
   width: 100vw;
   background-color: black;
 }
+
+.menu-icon {
+  color: white;
+}
+
+.menu-icon--active {
+  color: var(--main-purple);
+}

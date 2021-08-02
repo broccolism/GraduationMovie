@@ -3,6 +3,8 @@ import { makeStyles } from "@material-ui/core/styles";
 import BottomNavigation from "@material-ui/core/BottomNavigation";
 import BottomNavigationAction from "@material-ui/core/BottomNavigationAction";
 
+import "../../styles/BottomMenu.scss";
+
 const useStyles = makeStyles({
   root: {
     width: "100vw",
@@ -28,19 +30,34 @@ export default function BottomMenu() {
       className={classes.root}
     >
       <BottomNavigationAction
-        label="Home"
         value="home"
-        icon={<i class="fas fa-home" />}
+        icon={
+          <span
+            className={value === "home" ? "menu-icon--active" : "menu-icon"}
+          >
+            <i class="fas fa-home" />
+          </span>
+        }
       />
       <BottomNavigationAction
-        label="Search"
         value="search"
-        icon={<i class="fas fa-search" />}
+        icon={
+          <span
+            className={value === "search" ? "menu-icon--active" : "menu-icon"}
+          >
+            <i class="fas fa-search" />
+          </span>
+        }
       />
       <BottomNavigationAction
-        label="Mypage"
         value="mypage"
-        icon={<i class="fas fa-user-alt" />}
+        icon={
+          <span
+            className={value === "mypage" ? "menu-icon--active" : "menu-icon"}
+          >
+            <i class="fas fa-user-alt" />{" "}
+          </span>
+        }
       />
     </BottomNavigation>
   );

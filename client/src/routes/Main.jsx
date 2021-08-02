@@ -18,10 +18,19 @@ function Main() {
           <div>Top 6 movies for you, {nickname}</div>
         </div>
         {/* 추천 영화 가로 이미지 (그라데이션) */}
-        <div className="main__information">
-          <div className="main__emphasis">best fit!</div>
-          <div className="main__description">etryfuimk;wetryhfjgs</div>
+        <div className="main__best-recommend">
+          <div className="main__best-recommend-image-wrapper">
+            <div className="main__best-recommend-image">
+              <img src="https://www.nultylighting.co.uk/wp-content/uploads/2017/02/la-la-land-lighting-night-sky.jpg" />
+            </div>
+            <div className="main__transparent-layer"></div>
+          </div>
+          <div className="main__best-recommend-text">
+            <div className="main__emphasis">best fit!</div>
+            <div className="main__description">etryfuimk;wetryhfjgs</div>
+          </div>
         </div>
+
         <div className="main__item-similar-recommend">
           <VerticalListView movieList={movieList} />
         </div>
