@@ -1,24 +1,24 @@
-import react, { useState, useEffect, useRef } from "react";
-import { makeStyles, createStyles } from "@material-ui/core/styles";
+import { useState, useRef } from "react";
 import Rating from "@material-ui/lab/Rating";
-import { withStyles } from "@material-ui/core/styles";
 
-import poster from "../../images/lalaland.jpg";
 import "../../styles/MovieItem.scss";
+import { withStyles } from "@material-ui/core/styles";
+import styled from "styled-components";
+import StarIcon from "@material-ui/icons/Star";
+import StarBorderIcon from "@material-ui/icons/StarBorder";
 
 const StyledRating = withStyles({
   iconFilled: {
     color: "white",
   },
   iconEmpty: {
-    stroke: "white",
-    strokeWidth: "1px",
+    color: "white",
   },
 })(Rating);
 
 function MovieItem(props) {
   const { url, isInline, isRating } = props;
-  const [star, setStar] = useState(5);
+  const [star, setStar] = useState(0);
   const [isSelected, setIsSelected] = useState(false);
   const starRef = useRef(null);
 
@@ -26,33 +26,24 @@ function MovieItem(props) {
     setIsSelected((prev) => !prev);
   }
 
-  // useEffect(() => {
-  //   function handleClickOutside(e) {
-  //     if (starRef.current && !starRef.current.contains(e.target)) {
-  //       onClickPoster();
-  //     }
-  //   }
-  //   document.addEventListener("mousedown", handleClickOutside);
-  //   return () => {
-  //     document.removeEventListener("mousedown", handleClickOutside);
-  //   };
-  // }, [starRef]);
-
   return (
     <div className={(isInline ? "movie-inline-item" : "") + " movie-item"}>
       <img src={url} alt="movie" onClick={onClickPoster}></img>
       {isRating ? (
         isSelected ? (
           <div className="movie-item__selected">
-            <StyledRating
-              ref={starRef}
-              className="movie-item__star"
-              name="simple-controlled"
-              value={star}
-              onChange={(event, newValue) => {
-                setStar(newValue);
-              }}
-            />
+            <CenterWrapper>
+              <StyledRating
+                icon={<StarIcon style={{ fontSize: "22px" }} />}
+                emptyIcon={<StarBorderIcon style={{ fontSize: "22px" }} />}
+                ref={starRef}
+                name={url}
+                value={star}
+                onChange={(_, newValue) => {
+                  setStar(newValue);
+                }}
+              />
+            </CenterWrapper>
           </div>
         ) : (
           <></>
@@ -63,5 +54,14 @@ function MovieItem(props) {
     </div>
   );
 }
+
+const CenterWrapper = styled.div`
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+`;
 
 export default MovieItem;
