@@ -1,10 +1,12 @@
 import * as express from "express";
 import * as router from "./router/routes";
 import * as dotenv from "dotenv";
+import * as cors from "cors";
 
 dotenv.config();
 
 const app = express();
+app.use(cors());
 app.use(router);
 
 const port: number = 5000;
