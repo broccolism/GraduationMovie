@@ -1,0 +1,30 @@
+.movie-detail {
+  text-align: left;
+  &__movie-image {
+    > img {
+      width: 100%;
+    }
+  }
+  &__main-information {
+    padding: 16px;
+  }
+  &__movie-title {
+    font-size: 22px;
+    font-weight: bold;
+  }
+  &__genre {
+    font-size: 14px;
+    opacity: 0.6;
+  }
+  &__title {
+    font-size: 18px;
+    opacity: 0.87;
+    font-weight: bold;
+    padding: 5px 0;
+  }
+  &__content {
+    padding: 16px;
+    font-size: 15px;
+    opacity: 0.87;
+  }
+}
