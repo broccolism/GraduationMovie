@@ -47,15 +47,15 @@ function VerticalListView(props) {
   return (
     <div className={classes.root}>
       <div className="list-view__grid">
-        {/* {movieImageList.map((url, index) => (
+        {movieImageList.map((url, index) => (
           <MovieItem url={url} key={index} />
-        ))} */}
+        ))}
+        {/* <MovieItem url={poster} isInline={false} isRating={isRating} />
         <MovieItem url={poster} isInline={false} isRating={isRating} />
         <MovieItem url={poster} isInline={false} isRating={isRating} />
         <MovieItem url={poster} isInline={false} isRating={isRating} />
         <MovieItem url={poster} isInline={false} isRating={isRating} />
-        <MovieItem url={poster} isInline={false} isRating={isRating} />
-        <MovieItem url={poster} isInline={false} isRating={isRating} />
+        <MovieItem url={poster} isInline={false} isRating={isRating} /> */}
       </div>
     </div>
   );

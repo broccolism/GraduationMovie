@@ -13,7 +13,7 @@ function SetTaste() {
   useEffect(() => {
     async function fetchData() {
       const response = await axios.get(
-        "http://localhost:5000/movie/dissimilar?topN=30"
+        "http://localhost:5000/movie/dissimilar?topN=10"
       );
       setMovieList(response.data.movieIds);
     }

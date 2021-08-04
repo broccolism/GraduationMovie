@@ -1,4 +1,5 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import axios from "axios";
 
 import "../styles/Main.scss";
 
@@ -8,8 +9,28 @@ import BottomMenu from "../components/util/BottomMenu";
 
 function Main() {
   const [movieList, setMovieList] = useState([]);
+  const [bestRecommendID, setBestRecommendID] = useState();
+  const [bestRecommendPoster, setBestRecommendPoster] = useState();
+
   const nickname = "닉네임";
   const otherNickname = "고라니";
+
+  useEffect(() => {
+    async function fetchData() {
+      const response = await axios.get(
+        "http://localhost:5000/movie/top-n/user?userId=4&topN=7"
+      );
+      const firstId = response.data.movieIds[0];
+      setBestRecommendID(firstId);
+      const poster = await axios.get(
+        "http://localhost:5000/movie/image?movieId=1"
+      );
+      console.log(poster.data);
+      setBestRecommendPoster(poster.data);
+      setMovieList(response.data.movieIds);
+    }
+    fetchData();
+  }, []);
 
   return (
     <>
@@ -21,13 +42,14 @@ function Main() {
         <div className="main__best-recommend">
           <div className="main__best-recommend-image-wrapper">
             <div className="main__best-recommend-image">
-              <img src="https://www.nultylighting.co.uk/wp-content/uploads/2017/02/la-la-land-lighting-night-sky.jpg" />
+              {/* <img src="https://www.nultylighting.co.uk/wp-content/uploads/2017/02/la-la-land-lighting-night-sky.jpg" /> */}
+              <img src={bestRecommendPoster.imageUrl} />
             </div>
             <div className="main__transparent-layer"></div>
           </div>
           <div className="main__best-recommend-text">
             <div className="main__emphasis">best fit!</div>
-            <div className="main__description">etryfuimk;wetryhfjgs</div>
+            <div className="main__description">{bestRecommendPoster.title}</div>
           </div>
         </div>
 
