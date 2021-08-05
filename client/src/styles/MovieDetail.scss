@@ -1,9 +1,66 @@
 .movie-detail {
   text-align: left;
+  padding-bottom: 70px;
   &__movie-image {
     > img {
       width: 100%;
     }
+  }
+  &__trailer {
+    height: 40px;
+    width: 100%;
+    background-color: var(--gray-darkest);
+    margin-top: 20px;
+    padding: 10px;
+    color: white;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+  }
+  &__trailer-button {
+    background-color: white;
+    color: black;
+    border-radius: 3px;
+    padding: 2px 6px;
+    margin-left: auto;
+    font-size: var(--small-font);
+    > i {
+      padding: 2px 4px 2px 2px;
+    }
+  }
+  &__award {
+    display: flex;
+    flex-direction: row;
+  }
+  &__award-icon {
+    color: yellow;
+    margin-right: 6px;
+  }
+  &__rating-information {
+    padding: 0 10px;
+  }
+  &__rating {
+    display: flex;
+    flex-direction: row;
+    text-align: left;
+    align-items: center;
+  }
+  &__rated-value {
+    width: 25px;
+    color: var(--yellow);
+    margin: 0 6px;
+  }
+  &__rated-count {
+    opacity: 0.6;
+    font-size: var(--small-font);
+  }
+  &__rating-button {
+    color: white;
+    background-color: var(--main-purple);
+    padding: 2px 16px;
+    margin-left: auto;
+    border-radius: 3px;
+    font-size: var(--small-font);
   }
   &__main-information {
     padding: 16px;
