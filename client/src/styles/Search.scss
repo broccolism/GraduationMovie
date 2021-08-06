@@ -1,0 +1,19 @@
+.search {
+  padding: 16px;
+  &__tags {
+    overflow-x: scroll;
+    display: inline-block;
+  }
+  &__tag {
+    display: inline-block;
+    border-radius: 3px;
+    font-size: 11px;
+    color: var(--gray);
+    border: 1px solid var(--dark-purple);
+    padding: 6px 8px;
+    margin: 4px;
+  }
+  &__movie-list {
+    overflow-y: scroll;
+  }
+}

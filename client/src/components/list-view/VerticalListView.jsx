@@ -50,12 +50,12 @@ function VerticalListView(props) {
         {movieImageList.map((url, index) => (
           <MovieItem url={url} key={index} />
         ))}
-        {/* <MovieItem url={poster} isInline={false} isRating={isRating} />
         <MovieItem url={poster} isInline={false} isRating={isRating} />
         <MovieItem url={poster} isInline={false} isRating={isRating} />
         <MovieItem url={poster} isInline={false} isRating={isRating} />
         <MovieItem url={poster} isInline={false} isRating={isRating} />
-        <MovieItem url={poster} isInline={false} isRating={isRating} /> */}
+        <MovieItem url={poster} isInline={false} isRating={isRating} />
+        <MovieItem url={poster} isInline={false} isRating={isRating} />
       </div>
     </div>
   );
