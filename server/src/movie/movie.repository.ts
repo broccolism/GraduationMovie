@@ -18,7 +18,6 @@ export const rateOneMovie = async (
   rate: number,
   time: number
 ) => {
-  console.log("@@@@@@@@@@", userId);
   await db.execute(
     `INSERT INTO rates(user_id, movie_id, rating, timestamp)
      VALUES(${userId}, ${movieId}, ${rate}, ${time})
