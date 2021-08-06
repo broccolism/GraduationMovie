@@ -22,14 +22,12 @@ function SetNickname() {
   };
 
   const handleNextButton = async () => {
-    console.log("@@@@@@@@@ next");
     if (!isDisabled) {
       try {
         const response = await axios.get(
           `http://${localhost}:5000/user/id?nickname="${nickname}"`
         );
         const userId = response.data.id;
-        console.log("@@@@@@@@@@@@@@@", userId);
 
         if (userId === -1) {
           const createdId = await axios.get(
