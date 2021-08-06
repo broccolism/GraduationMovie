@@ -10,14 +10,14 @@ function Main() {
   const [movieList, setMovieList] = useState([]);
   const nickname = "닉네임";
   const otherNickname = "고라니";
-
+  return <div> main </div>;
+  /*
   return (
     <>
       <div className="main">
         <div className="main__title">
           <div>Top 6 movies for you, {nickname}</div>
         </div>
-        {/* 추천 영화 가로 이미지 (그라데이션) */}
         <div className="main__best-recommend">
           <div className="main__best-recommend-image-wrapper">
             <div className="main__best-recommend-image">
@@ -63,6 +63,7 @@ function Main() {
       <BottomMenu />
     </>
   );
+  */
 }
 
 export default Main;
