@@ -20,7 +20,8 @@ export const rateOneMovie = async (
 ) => {
   await db.execute(
     `INSERT INTO rates(user_id, movie_id, rating, timestamp)
-     VALUES(${userId}, ${movieId}, ${rate}, ${time});`
+     VALUES(${userId}, ${movieId}, ${rate}, ${time})
+     ON DUPLICATE KEY UPDATE rating=${rate}, timestamp=${time};`
   );
 };
 

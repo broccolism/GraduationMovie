@@ -32,8 +32,15 @@ export const getTopNMoviesForEvery = async (
 };
 
 export const rateOneMovie = async (param: Models.RateOneReq): Promise<void> => {
-  const datetime: number = Date.now();
-  await Repo.rateOneMovie(param.userId, param.movieId, param.rating, datetime);
+  if (param.rating > 0) {
+    const datetime: number = Math.floor(Date.now() / 1000);
+    await Repo.rateOneMovie(
+      param.userId,
+      param.movieId,
+      param.rating,
+      datetime
+    );
+  }
 };
 
 export const getPosterAndTitleById = async (
