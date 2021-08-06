@@ -1,12 +1,10 @@
-// <Star/>
-// <Description/>
-// MovieListVertical을 재활용 할지?
-
+import { useState } from "react";
 import BottomMenu from "../components/util/BottomMenu";
 import HorizontalListView from "../components/list-view/HorizontalListView";
 import "../styles/MovieDetail.scss";
 
 import { BorderRating } from "../components/util/BorderRating";
+import RatingModal from "../components/util/RatingModal";
 
 function MovieDetail() {
   const movieImageUrl =
@@ -16,7 +14,6 @@ function MovieDetail() {
   const movieTitle = "LaLaLand";
   const year = 2021;
   const genre = "Adventure";
-  const userRating = 2;
   const personRating = 3.7;
   const summary = "From the moment they met it was murder!";
   const detailSummary =
@@ -26,6 +23,21 @@ function MovieDetail() {
   const peopleList = [1, 2];
   const peopleSummary =
     "Directed by Bertrand Tavernier, and written by David Rayfiel (screenplay), Bertrand Tavernier (screenplay), Colo Tavernier (French translation)";
+
+  const [modalOpen, setModalOpen] = useState(false);
+  const [userRating, setUserRating] = useState(0);
+
+  function handleOpenModal() {
+    setModalOpen(true);
+  }
+
+  function handleCloseModal() {
+    setModalOpen(false);
+  }
+
+  function onClickConfirm(rating) {
+    setUserRating(rating);
+  }
 
   return (
     <>
@@ -67,7 +79,20 @@ function MovieDetail() {
             <div className="movie-detail__rated-value">{personRating}</div>
             <div className="movie-detail__rated-count">(1124 rated)</div>
             {!!!userRating && (
-              <div className="movie-detail__rating-button">Rating</div>
+              <>
+                <div
+                  className="movie-detail__rating-button"
+                  onClick={handleOpenModal}
+                >
+                  Rating
+                </div>
+                <RatingModal
+                  modalOpen={modalOpen}
+                  movieTitle={movieTitle}
+                  handleCloseModal={handleCloseModal}
+                  onClickConfirm={onClickConfirm}
+                />
+              </>
             )}
           </div>
           {!!userRating && (
