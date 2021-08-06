@@ -35,7 +35,6 @@ export interface CreateUserReq {
 
 export interface CreateUserRes {
   id: number;
-  success: boolean;
 }
 
 export interface GetUserInfoReq {

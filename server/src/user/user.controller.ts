@@ -53,8 +53,8 @@ router.get(
   UserPath.CREATE,
   async (req: Request<{}, {}, {}, Models.CreateUserReq>, res) => {
     try {
-      await Service.createUser(req.query);
-      res.status(200).send();
+      const result = await Service.createUser(req.query);
+      res.status(200).send(result);
     } catch (err) {
       console.error(err);
       res.status(500).send("SERVER ERROR: create user failed.");
