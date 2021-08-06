@@ -17,7 +17,7 @@ const StyledRating = withStyles({
 })(Rating);
 
 function MovieItem(props) {
-  const { url, isInline, isRating } = props;
+  const { movieId, url, isInline, isRating, addNewRating } = props;
   const [star, setStar] = useState(0);
   const [isSelected, setIsSelected] = useState(false);
   const starRef = useRef(null);
@@ -37,10 +37,11 @@ function MovieItem(props) {
                 icon={<StarIcon style={{ fontSize: "22px" }} />}
                 emptyIcon={<StarBorderIcon style={{ fontSize: "22px" }} />}
                 ref={starRef}
-                name={url}
+                name={movieId.toString()}
                 value={star}
                 onChange={(_, newValue) => {
                   setStar(newValue);
+                  addNewRating({ id: movieId, rating: newValue });
                 }}
               />
             </CenterWrapper>

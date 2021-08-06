@@ -13,15 +13,21 @@ const useStyles = makeStyles((theme) =>
 );
 
 function VerticalListView(props) {
-  const { posterList, isRating } = props;
+  const { movieList, isRating, addNewRating } = props;
 
   const classes = useStyles();
 
   return (
     <div className={classes.root}>
       <div className="list-view__grid">
-        {posterList.map((url, _) => (
-          <MovieItem url={url} key={url} isRating={isRating} />
+        {movieList.map((movie, _) => (
+          <MovieItem
+            addNewRating={addNewRating}
+            movieId={movie.id}
+            url={movie.url}
+            key={movie.url}
+            isRating={isRating}
+          />
         ))}
       </div>
     </div>

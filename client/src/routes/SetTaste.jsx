@@ -2,6 +2,7 @@ import react, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import axios from "axios";
 import { localhost } from "../consts";
+import UserCookie from "../utils/cookie";
 
 import "../styles/App.scss";
 import "../styles/SetTaste.scss";
@@ -14,41 +15,87 @@ function SetTaste() {
   const [isError, setIsError] = useState(false);
   const [errorText, setErrorText] = useState("");
   const [isLoading, setIsLoading] = useState(true);
-  const [posterList, setPosterList] = useState([]);
+  const [idAndPosterList, setIdAndPosterList] = useState([]);
+  const [selectedRatings, setSelectedRatings] = useState([]);
 
-  const getMovieList = async () => {
+  useEffect(() => {
+    const fetchAll = async () => {
+      try {
+        const movieIds = await getIdList();
+        await getPosterAndIdList(movieIds);
+        setIsLoading(false);
+      } catch (err) {
+        console.log("@@@@@ fetch all ERR:", err);
+        setIsLoading(false);
+        setIsError(true);
+        setErrorText(err.toString());
+      }
+    };
+
+    fetchAll();
+  }, []);
+
+  const getIdList = async () => {
     const response = await axios.get(
       `http://${localhost}:5000/movie/dissimilar?topN=21`
     );
     return response.data.movieIds;
   };
 
-  const getPosterList = async (movieIds) => {
+  const getPosterAndIdList = async (movieIds) => {
     const promises = movieIds.map((movieId) =>
       axios
         .get(`http://${localhost}:5000/movie/poster?movieId=${movieId}`)
-        .then((res) => res.data.posterUrl)
+        .then((res) => {
+          return {
+            id: movieId,
+            url: res.data.posterUrl,
+          };
+        })
     );
-    const posters = await Promise.all(promises);
-    setPosterList(posters);
+
+    const idAndPosters = await Promise.all(promises);
+    setIdAndPosterList(idAndPosters);
   };
 
-  useEffect(() => {
-    const fetchAll = async () => {
-      try {
-        const movieIds = await getMovieList();
-        await getPosterList(movieIds);
-        setIsLoading(false);
-      } catch (err) {
-        console.log("@@@@@ ERR:", err);
-        setIsLoading(false);
-        setIsError(true);
-        setErrorText(err);
-      }
-    };
+  const addNewRating = (newRating) => {
+    const isAlreadyRated =
+      selectedRatings.find((rating) => rating.id === newRating.id) !==
+      undefined;
 
-    fetchAll();
-  }, []);
+    if (isAlreadyRated) {
+      const newSelectedRatings = selectedRatings
+        .filter((rating) => rating.id !== newRating.id)
+        .concat(newRating);
+      setSelectedRatings(newSelectedRatings);
+    } else {
+      const newSelectedRatings = selectedRatings.concat(newRating);
+      setSelectedRatings(newSelectedRatings);
+    }
+  };
+
+  const handleDoneButton = async () => {
+    try {
+      setIsLoading(true);
+      const userId = UserCookie.getUserId();
+      const promises = selectedRatings.map(async ({ id, rating }) => {
+        if (rating !== null) {
+          return await axios.get(
+            `http://${localhost}:5000/movie/rate?movieId=${id}&userId=${userId}&rating=${rating}`
+          );
+        }
+      });
+
+      await Promise.all(promises);
+      setIsLoading(false);
+      window.location.assign("/main");
+    } catch (err) {
+      console.log("@@@@ handle done button ERR", err);
+      setIsLoading(false);
+      setIsError(true);
+      setErrorText(err.toString());
+    }
+  };
 
   return (
     <div className="set-taste">
@@ -64,7 +111,11 @@ function SetTaste() {
             <CircularProgress color="primary" />
           </CenterWrapper>
         ) : (
-          <VerticalListView posterList={posterList} isRating={true} />
+          <VerticalListView
+            movieList={idAndPosterList}
+            isRating={true}
+            addNewRating={addNewRating}
+          />
         )}
         {isError ? (
           <CenterWrapper>
@@ -75,9 +126,9 @@ function SetTaste() {
         )}
       </div>
       <div className="set-taste__done">
-        <Link to="/">
-          <button className="border-button">DONE</button>
-        </Link>
+        <button className="border-button" onClick={handleDoneButton}>
+          DONE
+        </button>
       </div>
     </div>
   );
