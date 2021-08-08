@@ -1,6 +1,7 @@
 import * as Models from "./user.model";
 import * as Repo from "./user.repository";
 import * as GravatarApi from "../api/gravatar";
+import { getCurrentTimestamp } from "../util/generator";
 
 export const getSimilarUser = async (
   param: Models.GetSimilarUserReq
@@ -69,6 +70,6 @@ export const watchMovie = async (
 ): Promise<void> => {
   const userId = param.userId;
   const movieId = param.movieId;
-  const datetime: number = Math.floor(Date.now() / 1000);
-  await Repo.watchMovie(movieId, userId, datetime);
+  const timestamp: number = getCurrentTimestamp();
+  await Repo.watchMovie(movieId, userId, timestamp);
 };

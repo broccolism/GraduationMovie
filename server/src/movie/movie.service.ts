@@ -7,6 +7,7 @@ import {
   tmdbIdToCustomId,
   tmdbIdToImdbId,
 } from "../util/converter";
+import { getCurrentTimestamp } from "../util/generator";
 import { TMDB_IMAGE_HOST, YOUTUBE_WATCH } from "../constant/host";
 import * as OmdbApi from "../api/omdb";
 
@@ -33,12 +34,12 @@ export const getTopNMoviesForEvery = async (
 
 export const rateOneMovie = async (param: Models.RateOneReq): Promise<void> => {
   if (param.rating > 0) {
-    const datetime: number = Math.floor(Date.now() / 1000);
+    const timestamp: number = getCurrentTimestamp();
     await Repo.rateOneMovie(
       param.userId,
       param.movieId,
       param.rating,
-      datetime
+      timestamp
     );
   }
 };
