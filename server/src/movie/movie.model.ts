@@ -1,3 +1,5 @@
+import BaseRes from "../common/common.model";
+
 export interface Movie {
   id: number;
   title: string;
@@ -16,7 +18,7 @@ export interface GetDissimilarReq {
   topN: number;
 }
 
-export interface GetDissimilarRes {
+export interface GetDissimilarRes extends BaseRes {
   movieIds: number[];
 }
 
@@ -25,7 +27,7 @@ export interface GetTopNByIdReq {
   userId: number;
 }
 
-export interface GetTopNByIdRes {
+export interface GetTopNByIdRes extends BaseRes {
   movieIds: number[];
 }
 
@@ -33,7 +35,7 @@ export interface GetTopNForEveryReq {
   topN: number;
 }
 
-export interface GetTopNForEveryRes {
+export interface GetTopNForEveryRes extends BaseRes {
   movieIds: number[];
 }
 
@@ -43,13 +45,13 @@ export interface RateOneReq {
   rating: number;
 }
 
-export interface RateOneRes {}
+export interface RateOneRes extends BaseRes {}
 
 export interface GetPosterReq {
   movieId: number;
 }
 
-export interface GetPosterRes {
+export interface GetPosterRes extends BaseRes {
   posterUrl: string;
   title: string;
 }
@@ -58,7 +60,7 @@ export interface GetImageReq {
   movieId: number;
 }
 
-export interface GetImageRes {
+export interface GetImageRes extends BaseRes {
   imageUrl: string;
   title: string;
 }
@@ -68,7 +70,7 @@ export interface GetDetailReq {
   userId: number;
 }
 
-export interface GetDetailRes {
+export interface GetDetailRes extends BaseRes {
   youtubeUrl: string;
   award: string; // 없을 경우 "-"
   title: string;
@@ -88,7 +90,7 @@ export interface SearchMovieReq {
   keyword: string;
 }
 
-export interface SearchMovieRes {
+export interface SearchMovieRes extends BaseRes {
   movieIds: number[];
   keywords: string[];
 }
@@ -97,6 +99,6 @@ export interface SearchMovieByKeywordReq {
   keyword: string;
 }
 
-export interface SearchMovieByKeywordRes {
+export interface SearchMovieByKeywordRes extends BaseRes {
   movieIds: number[];
 }
