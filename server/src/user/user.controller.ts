@@ -91,4 +91,17 @@ router.get(
   }
 );
 
+router.get(
+  UserPath.WATCH_MOVIE,
+  async (req: Request<{}, {}, {}, Models.WatchMovieReq>, res) => {
+    try {
+      await Service.watchMovie(req.query);
+      res.status(200).send();
+    } catch (err) {
+      console.error(err);
+      res.status(500).send("SERVER ERROR: watch movie faield.");
+    }
+  }
+);
+
 export = router;

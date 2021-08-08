@@ -17,4 +17,5 @@ export class UserPath {
   static CREATE = "/create";
   static GET_INFO = "/info";
   static SEARCH_WATCHED = "/search/watched";
+  static WATCH_MOVIE = "/watch";
 }

@@ -63,3 +63,12 @@ export const searchMovieWatched = async (
   const movieIds: number[] = await Repo.searchMovieWatched(userId, keyword);
   return { movieIds };
 };
+
+export const watchMovie = async (
+  param: Models.WatchMovieReq
+): Promise<void> => {
+  const userId = param.userId;
+  const movieId = param.movieId;
+  const datetime: number = Math.floor(Date.now() / 1000);
+  await Repo.watchMovie(movieId, userId, datetime);
+};

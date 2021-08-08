@@ -55,3 +55,8 @@ export interface SearchMovieWatchedReq {
 export interface SearchMovieWatchedRes {
   movieIds: number[];
 }
+
+export interface WatchMovieReq {
+  userId: number;
+  movieId: number;
+}
