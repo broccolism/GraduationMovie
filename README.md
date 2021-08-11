@@ -6,25 +6,25 @@
 - 상세 페이지: https://www.notion.so/API-4f99a4f4ca51425799988bf50222063b
 
 도메인별로 API를 나누면 다음과 같습니다.
-### User
-- getIdByNickname: 유저 닉네임으로 아이디를 돌려줍니다.
-- createUser: 새 유저를 데이터베이스에 등록합니다.
-- getUserInfo: 현재 유저의 정보 (e.g: 시청한 영화 목록)를 돌려줍니다.
-- getSimilarUser: 현재 유저와 가장 비슷한 양상을 보이는 유저 아이디를 돌려줍니다.
-- getRewatchingMovie: 그동안 시청한 영화 중 다시보기 추천 영화를 찾아줍니다.
-- searchMovieWatched: 그동안 시청한 영화에서 검색한 결과를 돌려줍니다.
-- watchMovie: 영화를 봤다는 기록을 남깁니다.
 
-### Movie
--  getDissimilarMovies: 최대한 서로 비슷하지 않은 영화 목록을 돌려줍니다.
--  getTopNMoviesById: 특정 유저에게 추천되는 top N 영화 목록을 돌려줍니다.
--  getTopNMoviesForEvery: general하게 인기 많은 top N 영화 목록을 돌려줍니다.
--  rateOneMovie: 데이터베이스에 새 평점을 등록합니다.
--  getMoviePosterAndTitleById: 영화에 대한 포스터 url과 제목을 돌려줍니다.
--  getMovieImageAndTitleById: 영화와 관련된 가로 이미지 url과 제목을 돌려줍니다.
--  getMoviewDetailById: 영화 상세 정보 (e.g: 출연진)를 돌려줍니다.
--  searchMovie: 제목, 출연진, 키워드 등을 기준으로 검색한 결과를 돌려줍니다.
--  searchMovieByKeyword: 키워드와 연관된 영화 목록을 돌려줍니다.
+|도메인|이름|기능|
+|:---:|:---|:---|
+|User| getIdByNickname| 유저 닉네임으로 아이디를 돌려줍니다. |
+| | createUser| 새 유저를 데이터베이스에 등록합니다. |
+| | getUserInfo| 현재 유저의 정보 (e.g: 시청한 영화 목록)를 돌려줍니다. |
+| | getSimilarUser| 현재 유저와 가장 비슷한 양상을 보이는 유저 아이디를 돌려줍니다. |
+| | getRewatchingMovie| 그동안 시청한 영화 중 다시보기 추천 영화를 찾아줍니다. |
+| | searchMovieWatched| 그동안 시청한 영화에서 검색한 결과를 돌려줍니다. |
+| | watchMovie| 영화를 봤다는 기록을 남깁니다. |
+|Movie |  getDissimilarMovies| 최대한 서로 비슷하지 않은 영화 목록을 돌려줍니다. |
+| |  getTopNMoviesById| 특정 유저에게 추천되는 top N 영화 목록을 돌려줍니다. |
+| |  getTopNMoviesForEvery| general하게 인기 많은 top N 영화 목록을 돌려줍니다. |
+| |  rateOneMovie| 데이터베이스에 새 평점을 등록합니다. |
+| |  getMoviePosterAndTitleById| 영화에 대한 포스터 url과 제목을 돌려줍니다. |
+| |  getMovieImageAndTitleById| 영화와 관련된 가로 이미지 url과 제목을 돌려줍니다. |
+| |  getMoviewDetailById| 영화 상세 정보 (e.g: 출연진)를 돌려줍니다. |
+| |  searchMovie| 제목, 출연진, 키워드 등을 기준으로 검색한 결과를 돌려줍니다. |
+| |  searchMovieByKeyword| 키워드와 연관된 영화 목록을 돌려줍니다. |
 
 ### 외부 API
 
@@ -33,7 +33,7 @@
   <details>
   <summary>결과 형식</summary>
 
-  ```json
+  ```
   {
     "Genre": "Drama, Music",
     "Director": "Bertrand Tavernier",
@@ -53,7 +53,7 @@
   <details>
   <summary>결과 형식</summary>
 
-  ```json
+  ```
   {
     "page": 1, // 현재 페이지
     "results": [ // 20개씩
@@ -90,7 +90,7 @@
   <details>
   <summary>결과 형식</summary>
 
-  ```json
+  ```
   {
     "page": 1,
     "results": [
@@ -115,7 +115,7 @@
   <details>
   <summary>결과 형식</summary>
 
-  ```json
+  ```
   {
     "backdrop_path": "/u546kDNwrZ1ii6q8NqqQgHwRvoW.jpg",
     "overview": "A rich woman and a calculating insurance agent plot to kill her unsuspecting husband after he signs a double indemnity policy. Against a backdrop of distinctly Californian settings, the partners in crime plan the perfect murder to collect the insurance, which pays double if the death is accidental.",
@@ -133,7 +133,7 @@
   <details>
   <summary>결과 형식</summary>
 
-  ```json
+  ```
   {
     "backdrops": [
       {
@@ -167,7 +167,7 @@
   <details>
   <summary>결과 형식</summary>
   
-  ```json
+  ```
   // 찾았을 때
   {
     "id": 607259,
@@ -200,7 +200,7 @@
   <details>
   <summary>결과 형식</summary>
 
-  ```json
+  ```
   {
     "page": 1,
     "results": [
