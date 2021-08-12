@@ -2,6 +2,17 @@ import * as express from "express";
 import * as router from "./router/routes";
 import * as dotenv from "dotenv";
 import * as cors from "cors";
+import * as NeuMFApi from "./api/neu-mf";
+
+declare global {
+  namespace NodeJS {
+    interface Global {
+      recommendations: JSON;
+    }
+  }
+}
+
+NeuMFApi.initAllRecommendations();
 
 dotenv.config();
 

@@ -23,8 +23,9 @@ export interface GetDissimilarRes extends BaseRes {
 }
 
 export interface GetTopNByIdReq {
-  topN: number;
   userId: number;
+  size: number;
+  page: number;
 }
 
 export interface GetTopNByIdRes extends BaseRes {
