@@ -17,8 +17,5 @@ export const getRecommendationsById = (
   const allForUser: number[] = global.recommendations[userId.toString()];
   const start: number = (page - 1) * size;
   const end: number = page * size;
-  console.log(`@@@@@@@@@@ ${userId}, ${size}, ${page}`);
-  console.log(`@@@@@@@@@@ ${end - start}`);
-  console.log(`@@@@@@@@@@ from ${start} to ${end}`);
   return allForUser.slice(start, end);
 };
