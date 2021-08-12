@@ -1,8 +1,13 @@
 .search {
   padding: 16px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
   &__tags {
     overflow-x: scroll;
     display: inline-block;
+    white-space: nowrap;
+    margin-bottom: 10px;
   }
   &__tag {
     display: inline-block;
@@ -15,5 +20,6 @@
   }
   &__movie-list {
     overflow-y: scroll;
+    overflow-x: hidden;
   }
 }

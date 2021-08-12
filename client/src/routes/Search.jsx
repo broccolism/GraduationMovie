@@ -32,7 +32,7 @@ function Search() {
           ))}
         </div>
         <div className="search__movie-list">
-          <VerticalListView movieList={movieList} isRating={true} />
+          <VerticalListView movieList={movieList} isRating={false} />
         </div>
       </div>
       <BottomMenu />
