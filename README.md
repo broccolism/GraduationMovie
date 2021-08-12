@@ -240,14 +240,41 @@
 NeuMF 라이브러리를 사용했습니다. [임시 브랜치를 만들었습니다.](https://github.com/GraduationMovie/NeuRecRecommender/tree/NeuMF)
 다음과 같은 과정을 거칩니다.
 
+#### 0. 실행환경
+  - 아나콘다 가상환경: python 3.6.1
+
 #### 1. input 파일 형식 converting
   - "유저가 특정 시각에 영화에 매긴 N점" 이라는 정보를 "유저가 특정 시각에 영화에 평점을 매김" 이라는 정보로 바꿉니다.
     - NeuMF가 OCCF의 일종이기 때문입니다.
+
+  - GraduationNeuRec/dataset 폴더에 ml-latest.rating 파일이 있어야 합니다.
+ 
+  ```
+  // 실행이 완료되면 ml-latest-binary.rating 파일이 생성됩니다.
+  python3 GraduationNeuRec/dataset/input_converter.py
+  ```
+  
 #### 2. NeuMF 실행
   - 실행 결과로 모든 user-movie에 대한 예상 평점을 담은 매트릭스가 나옵니다.
+
+  - GraduationNeuRec/dataset 폴더에 ml-latest-binary.rating 파일이 있어야 합니다.
+
+  ```
+  python3 GraduationNeuRec/setup.py build_ext --inplace
+  python3 GraduationNeuRec/main.py
+  ```
+  
 #### 3. output 파일 형식 converting
   - NeuMF 라이브러리에서는 자체적으로 user, item에 대한 아이디를 부여합니다. 즉, input파일과 output 파일에서 같은 아이디 '1'이 의미하는 대상이 달라집니다.
   - 따라서 파일 converting 시 기존 데이터셋의 아이디와 NeuMF에서 사용한 아이디 간 맵핑을 진행합니다.
+
+  - GraduationNeuRect/dataset 폴더에 _tmp-ml-latest-binary 폴더와 그 아래에 파일이 있어야 합니다.
+  
+  ```
+  // python3 GraduationNeuRect/dataset/output_converter.py {output 폳더명} {타겟 파일명}
+  python3 GraduationNeuRec/dataset/output_converter.py _tmp_ml-latest-binary 2021-08-09_19:04:09.raw
+  ```
+
   - 최종 output 파일은 JSON 파일입니다. 서버 API에서는 아래와 같은 형식의 파일로부터 데이터를 가져옵니다.
   
   ```
