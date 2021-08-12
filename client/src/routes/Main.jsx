@@ -33,6 +33,7 @@ function Main() {
         console.log(poster.data);
         setBestRecommendPoster(poster.data);
         setMovieList(response.data.movieIds);
+        console.log(response.data.movieIds);
         setIsLoading(false);
       } catch (err) {
         console.log("@@@@@@ fetch data ERR", err);
@@ -41,8 +42,6 @@ function Main() {
     }
     fetchData();
   }, []);
-
-  // return <div> main </div>;
 
   return isLoading ? (
     <CenterWrapper>

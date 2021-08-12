@@ -11,6 +11,8 @@ import SetTaste from "../routes/SetTaste";
 import Main from "../routes/Main";
 import MovieDetail from "../routes/MovieDetail";
 import Search from "../routes/Search";
+import MyPage from "../routes/MyPage";
+import MyPageSearch from "../routes/MyPageSearch";
 
 function App() {
   // route intro
@@ -38,6 +40,8 @@ function App() {
       <Route path="/main" exact component={Main} />
       <Route path="/movie-detail" exact component={MovieDetail} />
       <Route path="/search" exact component={Search} />
+      <Route path="/my-page" exact component={MyPage} />
+      <Route path="/my-page/search" exact component={MyPageSearch} />
     </div>
   );
 }
