@@ -1,5 +1,8 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
+import { localhost } from "../consts";
+import styled from "styled-components";
+import CircularProgress from "@material-ui/core/CircularProgress";
 
 import "../styles/Main.scss";
 
@@ -8,6 +11,7 @@ import HorizontalListView from "../components/list-view/HorizontalListView";
 import BottomMenu from "../components/util/BottomMenu";
 
 function Main() {
+  const [isLoading, setIsLoading] = useState(true);
   const [movieList, setMovieList] = useState([]);
   const [bestRecommendID, setBestRecommendID] = useState();
   const [bestRecommendPoster, setBestRecommendPoster] = useState();
@@ -17,32 +21,42 @@ function Main() {
 
   useEffect(() => {
     async function fetchData() {
-      const response = await axios.get(
-        "http://localhost:5000/movie/top-n/user?userId=4&topN=7"
-      );
-      const firstId = response.data.movieIds[0];
-      setBestRecommendID(firstId);
-      const poster = await axios.get(
-        "http://localhost:5000/movie/image?movieId=1"
-      );
-      console.log(poster.data);
-      setBestRecommendPoster(poster.data);
-      setMovieList(response.data.movieIds);
+      try {
+        const response = await axios.get(
+          `http://${localhost}:5000/movie/top-n/user?userId=4&topN=7`
+        );
+        const firstId = response.data.movieIds[0];
+        setBestRecommendID(firstId);
+        const poster = await axios.get(
+          `http://${localhost}:5000/movie/image?movieId=1`
+        );
+        console.log(poster.data);
+        setBestRecommendPoster(poster.data);
+        setMovieList(response.data.movieIds);
+        setIsLoading(false);
+      } catch (err) {
+        console.log("@@@@@@ fetch data ERR", err);
+        setIsLoading(false);
+      }
     }
     fetchData();
   }, []);
 
-  return (
+  // return <div> main </div>;
+
+  return isLoading ? (
+    <CenterWrapper>
+      <CircularProgress color="primary" />
+    </CenterWrapper>
+  ) : (
     <>
       <div className="main">
         <div className="main__title">
           <div>Top 6 movies for you, {nickname}</div>
         </div>
-        {/* 추천 영화 가로 이미지 (그라데이션) */}
         <div className="main__best-recommend">
           <div className="main__best-recommend-image-wrapper">
             <div className="main__best-recommend-image">
-              {/* <img src="https://www.nultylighting.co.uk/wp-content/uploads/2017/02/la-la-land-lighting-night-sky.jpg" /> */}
               <img src={bestRecommendPoster.imageUrl} />
             </div>
             <div className="main__transparent-layer"></div>
@@ -86,5 +100,14 @@ function Main() {
     </>
   );
 }
+
+const CenterWrapper = styled.div`
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+`;
 
 export default Main;

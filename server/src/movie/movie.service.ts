@@ -7,8 +7,10 @@ import {
   tmdbIdToCustomId,
   tmdbIdToImdbId,
 } from "../util/converter";
+import { getCurrentTimestamp } from "../util/generator";
 import { TMDB_IMAGE_HOST, YOUTUBE_WATCH } from "../constant/host";
 import * as OmdbApi from "../api/omdb";
+import * as NeuMFApi from "../api/neu-mf";
 
 export const getDissimilarMovies = async (
   param: Models.GetDissimilarReq
@@ -20,8 +22,11 @@ export const getDissimilarMovies = async (
 export const getTopNMoviesById = async (
   param: Models.GetTopNByIdReq
 ): Promise<number[]> => {
-  // TODO: similarity 계산
-  return Array.from({ length: param.topN }, (_, i) => i + 1);
+  const userId = param.userId;
+  const size = param.size;
+  const page = param.page;
+  const result = NeuMFApi.getRecommendationsById(userId, size, page);
+  return result;
 };
 
 export const getTopNMoviesForEvery = async (
@@ -32,8 +37,15 @@ export const getTopNMoviesForEvery = async (
 };
 
 export const rateOneMovie = async (param: Models.RateOneReq): Promise<void> => {
-  const datetime: number = Date.now();
-  await Repo.rateOneMovie(param.userId, param.movieId, param.rating, datetime);
+  if (param.rating > 0) {
+    const timestamp: number = getCurrentTimestamp();
+    await Repo.rateOneMovie(
+      param.userId,
+      param.movieId,
+      param.rating,
+      timestamp
+    );
+  }
 };
 
 export const getPosterAndTitleById = async (

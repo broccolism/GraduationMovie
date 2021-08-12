@@ -1,6 +1,7 @@
 import * as Models from "./user.model";
 import * as Repo from "./user.repository";
 import * as GravatarApi from "../api/gravatar";
+import { getCurrentTimestamp } from "../util/generator";
 
 export const getSimilarUser = async (
   param: Models.GetSimilarUserReq
@@ -47,8 +48,13 @@ export const getUserInfo = async (
   return { nickname, unratedMovies, ratedMovies };
 };
 
-export const createUser = async (param: Models.CreateUserReq): Promise<void> =>
+export const createUser = async (
+  param: Models.CreateUserReq
+): Promise<Models.CreateUserRes> => {
   await Repo.createUser(param.nickname);
+  const id = await Repo.getIdByNickname(param.nickname);
+  return { id };
+};
 
 export const searchMovieWatched = async (
   param: Models.SearchMovieWatchedReq
@@ -57,4 +63,13 @@ export const searchMovieWatched = async (
   const keyword = param.keyword;
   const movieIds: number[] = await Repo.searchMovieWatched(userId, keyword);
   return { movieIds };
+};
+
+export const watchMovie = async (
+  param: Models.WatchMovieReq
+): Promise<void> => {
+  const userId = param.userId;
+  const movieId = param.movieId;
+  const timestamp: number = getCurrentTimestamp();
+  await Repo.watchMovie(movieId, userId, timestamp);
 };

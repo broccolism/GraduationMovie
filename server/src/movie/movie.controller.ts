@@ -3,6 +3,7 @@ import { MoviePath } from "../constant/path";
 import * as Service from "./movie.service";
 import * as Models from "./movie.model";
 import { Request } from "express";
+import { get200ConsoleMessage } from "../util/generator";
 
 const router = express.Router();
 
@@ -12,6 +13,7 @@ router.get(
     const movieIds: number[] = await Service.getDissimilarMovies(req.query);
     const result: Models.GetDissimilarRes = { movieIds: movieIds };
     res.status(200).send(result);
+    console.log(get200ConsoleMessage("getDissimilarMovies", result));
   }
 );
 
@@ -21,6 +23,7 @@ router.get(
     const movieIds: number[] = await Service.getTopNMoviesById(req.query);
     const result: Models.GetTopNByIdRes = { movieIds: movieIds };
     res.status(200).send(result);
+    console.log(get200ConsoleMessage("getTopNMoviesById", result));
   }
 );
 
@@ -32,6 +35,7 @@ router.get(
 
       const result: Models.GetTopNForEveryRes = { movieIds: movieIds };
       res.status(200).send(result);
+      console.log(get200ConsoleMessage("getTopNMoviesForEvery", result));
     } catch (err) {
       console.error(err);
       res.status(500).send("SERVER ERROR: get top n movies for every");
@@ -45,6 +49,7 @@ router.get(
     try {
       await Service.rateOneMovie(req.query);
       res.status(200).send();
+      console.log(get200ConsoleMessage("rateOneMovie", {}));
     } catch (err) {
       console.error(err);
       res.status(500).send("SERVER ERROR: rate one movie");
@@ -60,6 +65,7 @@ router.get(
         req.query
       );
       res.status(200).send(result);
+      console.log(get200ConsoleMessage("getPosterAndTitleById", result));
     } catch (err) {
       console.error(err);
       res.status(500).send("SERVER ERROR: get movie poster by id");
@@ -75,6 +81,7 @@ router.get(
         req.query
       );
       res.status(200).send(result);
+      console.log(get200ConsoleMessage("getImageAndTitleById", result));
     } catch (err) {
       console.error(err);
       res.status(500).send("SERVER ERROR: get movie poster by id");
@@ -88,6 +95,7 @@ router.get(
     try {
       const result: Models.GetDetailRes = await Service.getDetail(req.query);
       res.status(200).send(result);
+      console.log(get200ConsoleMessage("getDetail", result));
     } catch (err) {
       console.error(err);
       res.status(500).send("SERVER ERROR: get movie detail");
@@ -103,6 +111,7 @@ router.get(
         req.query
       );
       res.status(200).send(result);
+      console.log(get200ConsoleMessage("searchMovie", result));
     } catch (err) {
       console.error(err);
       res.status(500).send("SERVER ERROR: search movie");
@@ -117,6 +126,7 @@ router.get(
       const result: Models.SearchMovieByKeywordRes =
         await Service.searchMovieByKeyword(req.query);
       res.status(200).send(result);
+      console.log(get200ConsoleMessage("searchMovieByKeyword", result));
     } catch (err) {
       console.error(err);
       res.status(500).send("SERVER ERROR: search movie by keyword");

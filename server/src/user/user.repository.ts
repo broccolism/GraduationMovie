@@ -97,3 +97,14 @@ export const searchMovieWatched = async (
 
   return rows[0] == undefined ? [] : (rows as any).map((row) => row.movieId);
 };
+
+export const watchMovie = async (
+  movieId: number,
+  userId: number,
+  time: number
+): Promise<void> => {
+  await db.execute(
+    `INSERT INTO watched(user_id, movie_id, timestamp)
+     VALUES(${userId}, ${movieId}, ${time});`
+  );
+};

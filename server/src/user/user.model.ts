@@ -1,3 +1,5 @@
+import BaseRes from "../common/common.model";
+
 export interface MovieWithTime {
   movieId: number;
   timestamp: Date;
@@ -7,7 +9,7 @@ export interface GetSimilarUserReq {
   id: number;
 }
 
-export interface GetSimilarUserRes {
+export interface GetSimilarUserRes extends BaseRes {
   userId: number;
   nickname: string;
   likedMovieIds: number[];
@@ -17,7 +19,7 @@ export interface GetRewatchingMovieReq {
   userId: number;
 }
 
-export interface GetRewatchingMovieRes {
+export interface GetRewatchingMovieRes extends BaseRes {
   movieId: number;
 }
 
@@ -25,7 +27,7 @@ export interface GetIdByNicknameReq {
   nickname: string;
 }
 
-export interface GetIdByNicknameRes {
+export interface GetIdByNicknameRes extends BaseRes {
   id: number;
 }
 
@@ -33,16 +35,15 @@ export interface CreateUserReq {
   nickname: string;
 }
 
-export interface CreateUserRes {
+export interface CreateUserRes extends BaseRes {
   id: number;
-  success: boolean;
 }
 
 export interface GetUserInfoReq {
   userId: number;
 }
 
-export interface GetUserInfoRes {
+export interface GetUserInfoRes extends BaseRes {
   nickname: string;
   unratedMovies: MovieWithTime[];
   ratedMovies: MovieWithTime[];
@@ -53,6 +54,11 @@ export interface SearchMovieWatchedReq {
   keyword: string;
 }
 
-export interface SearchMovieWatchedRes {
+export interface SearchMovieWatchedRes extends BaseRes {
   movieIds: number[];
+}
+
+export interface WatchMovieReq {
+  userId: number;
+  movieId: number;
 }
