@@ -9,15 +9,18 @@ import "../styles/Main.scss";
 import VerticalListView from "../components/list-view/VerticalListView";
 import HorizontalListView from "../components/list-view/HorizontalListView";
 import BottomMenu from "../components/util/BottomMenu";
+import UserCookie from "../utils/cookie";
 
 function Main() {
   const [isLoading, setIsLoading] = useState(true);
   const [movieList, setMovieList] = useState([]);
   const [bestRecommendID, setBestRecommendID] = useState();
   const [bestRecommendPoster, setBestRecommendPoster] = useState();
-
-  const nickname = "닉네임";
-  const otherNickname = "고라니";
+  const [userId, setUserId] = useState();
+  const [nickname, setNickname] = useState("");
+  const [similarUserNickname, setSimilarUserNickname] = useState("");
+  const [similarUserLikedMovieIds, setSimilarUserLikedMovieIds] = useState([]);
+  const [similarUserMovieList, setSimilarUserMovieList] = useState([]);
 
   useEffect(() => {
     async function fetchData() {
@@ -33,16 +36,59 @@ function Main() {
         console.log(poster.data);
         setBestRecommendPoster(poster.data);
         setMovieList(response.data.movieIds);
+        console.log(response.data.movieIds);
         setIsLoading(false);
       } catch (err) {
         console.log("@@@@@@ fetch data ERR", err);
         setIsLoading(false);
       }
+
+      const user_id = UserCookie.getUserId();
+      setUserId(user_id);
+      await getUserNickname(user_id);
+      await getSimilarUser(user_id);
     }
     fetchData();
   }, []);
 
-  // return <div> main </div>;
+  async function getUserNickname(user_id) {
+    try {
+      const response = await axios.get(
+        `http://${localhost}:5000/user/info?userId=${user_id}`
+      );
+      setNickname(response.data.nickname);
+    } catch (err) {
+      console.log("@@@@@@ fetch data ERR", err);
+    }
+  }
+  async function getSimilarUser(user_id) {
+    try {
+      const response = await axios.get(
+        `http://${localhost}:5000/user/similar/id=${user_id}`
+      );
+      setSimilarUserNickname(response.data.nickname);
+      setSimilarUserLikedMovieIds(response.data.likedMovieIds);
+      console.log("hi", response.data);
+      await getPosterAndIdList(response.data.likedMovieIds);
+    } catch (err) {
+      console.log("@@@@@@ fetch data ERR", err);
+    }
+  }
+
+  const getPosterAndIdList = async (movieIds) => {
+    const promises = movieIds.map((movieId) =>
+      axios
+        .get(`http://${localhost}:5000/movie/poster?movieId=${movieId}`)
+        .then((res) => {
+          return {
+            id: movieId,
+            url: res.data.posterUrl,
+          };
+        })
+    );
+    const idAndPosters = await Promise.all(promises);
+    setSimilarUserMovieList(idAndPosters);
+  };
 
   return isLoading ? (
     <CenterWrapper>
@@ -85,12 +131,12 @@ function Main() {
             <img src="https://thumb.ac-illust.com/t/f6/f6e3fd6d7e60544500352e46ad300085_t.jpeg" />
           </div>
           <div className="main__title">
-            <div>익명의 {otherNickname}</div>
+            <div>익명의 {similarUserNickname}</div>
           </div>
         </div>
 
         <div className="main__title">
-          <div>{otherNickname} recently liked</div>
+          <div>{similarUserNickname} recently liked</div>
         </div>
         <div className="main__user-similar-recommend">
           <HorizontalListView movieList={movieList} />

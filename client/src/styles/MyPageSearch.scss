@@ -1,7 +1,6 @@
-.search {
-  padding: 16px;
-  overflow-x: hidden;
-  overflow-y: hidden;
+.mypage-search {
+  padding: 0 16px 16px 16px;
+  overflow: hidden;
   display: flex;
   flex-direction: column;
   &__tags {
@@ -22,6 +21,5 @@
   &__movie-list {
     overflow-y: scroll;
     overflow-x: hidden;
-    height: calc(100vh - 180px);
   }
 }

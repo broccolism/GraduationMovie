@@ -1,31 +1,87 @@
-import { useState } from "react";
-import BottomMenu from "../components/util/BottomMenu";
-import HorizontalListView from "../components/list-view/HorizontalListView";
+import { useState, useEffect } from "react";
+import axios from "axios";
+
 import "../styles/MovieDetail.scss";
 
-import { BorderRating } from "../components/util/BorderRating";
+import BottomMenu from "../components/util/BottomMenu";
+import HorizontalListView from "../components/list-view/HorizontalListView";
 import RatingModal from "../components/util/RatingModal";
+import { BorderRating } from "../components/util/BorderRating";
+import UserCookie from "../utils/cookie";
+import { localhost } from "../consts";
 
 function MovieDetail() {
-  const movieImageUrl =
-    "https://www.nultylighting.co.uk/wp-content/uploads/2017/02/la-la-land-lighting-night-sky.jpg";
-  const trailerUrl = "asdf";
-  const award = "ksjafl";
-  const movieTitle = "LaLaLand";
-  const year = 2021;
-  const genre = "Adventure";
-  const personRating = 3.7;
-  const summary = "From the moment they met it was murder!";
-  const detailSummary =
-    "A rich woman and a calculating insurance agent plot to kill her unsuspecting husband after he signs a double indemnity policy. Against a backdrop of distinctly Californian settings, the partners in crime plan the perfect murder to collect the insurance, which pays double if the death is accidental.";
+  const movieId = "425";
+  const [youtubeUrl, setYoutubeUrl] = useState("");
+  const [award, setAward] = useState("");
+  const [movieTitle, setMovieTitle] = useState("");
+  const [year, setYear] = useState();
+  const [genre, setGenre] = useState("");
+  const [avgRating, setAvgRating] = useState(0);
+  const [ratingPeopleCount, setRatingPeopleCount] = useState(0);
+  const [summary, setSummary] = useState("");
+  const [plot, setPlot] = useState("");
+  const [director, setDirector] = useState("");
+  const [writers, setWriters] = useState("");
+  const [actors, setActors] = useState([]);
+  const [movieImageUrl, setMovieImageUrl] = useState("");
+
+  // const movieImageUrl =
+  //   "https://www.nultylighting.co.uk/wp-content/uploads/2017/02/la-la-land-lighting-night-sky.jpg";
   // detail summary, 감독, 배우, 각본 쓰는 사람는 없을수도 있는거 같은데, 없을 경우 무슨 값이 들어있는지 확인 필요
   // 배우는 빈 리스트가 올 수 있음
   const peopleList = [1, 2];
-  const peopleSummary =
-    "Directed by Bertrand Tavernier, and written by David Rayfiel (screenplay), Bertrand Tavernier (screenplay), Colo Tavernier (French translation)";
 
   const [modalOpen, setModalOpen] = useState(false);
   const [userRating, setUserRating] = useState(0);
+
+  const [userId, setUserId] = useState();
+
+  useEffect(() => {
+    const user_id = UserCookie.getUserId();
+    setUserId(user_id);
+
+    async function fetchData() {
+      await getMovieDetail(movieId, user_id);
+      await getMovieImage(movieId);
+    }
+    fetchData();
+  }, []);
+
+  async function getMovieDetail(movie_id, user_id) {
+    try {
+      const response = await axios.get(
+        `http://${localhost}:5000/movie/detail?movieId=${movieId}&userId=${user_id}`
+      );
+      console.log(response.data);
+      setYoutubeUrl(response.data.youtubeUrl);
+      setAward(response.data.award);
+      setMovieTitle(response.data.title);
+      setYear(response.data.year);
+      setGenre(response.data.genre);
+      setAvgRating(response.data.avgRating);
+      setRatingPeopleCount(response.data.ratingPeopleCount);
+      setUserRating(response.data.userRating);
+      setSummary(response.data.summary);
+      setPlot(response.data.plot);
+      setDirector(response.data.director);
+      setWriters(response.data.writers);
+      setActors(response.data.actors);
+    } catch (err) {
+      console.log("@@@@@@ fetch data ERR", err);
+    }
+  }
+
+  async function getMovieImage(movie_id) {
+    try {
+      const response = await axios.get(
+        `http://${localhost}:5000/movie/image?movieId=${movieId}`
+      );
+      setMovieImageUrl(response.data.imageUrl);
+    } catch (err) {
+      console.log("@@@@@@ fetch data ERR", err);
+    }
+  }
 
   function handleOpenModal() {
     setModalOpen(true);
@@ -50,7 +106,7 @@ function MovieDetail() {
             <img src={movieImageUrl} alt="movieImageUrl" />
           </div>
         )}
-        {!!trailerUrl && (
+        {!!youtubeUrl && (
           <div className="movie-detail__trailer">
             <div>There's an official trailer for it!</div>
             <div className="movie-detail__trailer-button">
@@ -75,10 +131,12 @@ function MovieDetail() {
         </div>
         <div className="movie-detail__rating-information">
           <div className="movie-detail__rating">
-            <BorderRating name="personRating" value={personRating} readOnly />
-            <div className="movie-detail__rated-value">{personRating}</div>
-            <div className="movie-detail__rated-count">(1124 rated)</div>
-            {!!!userRating && (
+            <BorderRating name="avgRating" value={avgRating} readOnly />
+            <div className="movie-detail__rated-value">{avgRating}</div>
+            <div className="movie-detail__rated-count">
+              ({ratingPeopleCount} rated)
+            </div>
+            {userRating <= 0 && (
               <>
                 <div
                   className="movie-detail__rating-button"
@@ -95,7 +153,7 @@ function MovieDetail() {
               </>
             )}
           </div>
-          {!!userRating && (
+          {userRating > 0 && (
             <div className="movie-detail__rating">
               <BorderRating name="personRating" value={userRating} readOnly />
               <div className="movie-detail__rated-value">{userRating}</div>
@@ -105,13 +163,16 @@ function MovieDetail() {
         </div>
         <div className="movie-detail__content">
           {!!summary && <div className="movie-detail__title">{summary}</div>}
-          <div>{detailSummary}</div>
+          <div>{plot}</div>
         </div>
         <div className="movie-detail__content">
           {!!peopleList.length && (
             <div className="movie-detail__title">People</div>
           )}
-          {!!peopleSummary && <div>{peopleSummary}</div>}
+          <div>
+            {director && "Directed by " + director}{" "}
+            {writers && ", and written by " + writers}
+          </div>
         </div>
         <HorizontalListView movieList={peopleList} />
       </div>

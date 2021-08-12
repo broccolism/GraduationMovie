@@ -53,7 +53,9 @@ function SetNickname() {
         <span>Input Your Nickname!</span>
       </div>
       <div className="set-nickname__form-nickname">
-        <input className="main-input" onChange={handleInput}></input>
+        <div className="set-nickname__input">
+          <input className="main-input" onChange={handleInput}></input>
+        </div>
         <NextButton
           className="main-button"
           disabled={isDisabled}
