@@ -29,6 +29,12 @@ function VerticalListView(props) {
             isRating={isRating}
           />
         ))}
+        {/* <MovieItem url={poster} isInline={false} isRating={isRating} />
+        <MovieItem url={poster} isInline={false} isRating={isRating} />
+        <MovieItem url={poster} isInline={false} isRating={isRating} />
+        <MovieItem url={poster} isInline={false} isRating={isRating} />
+        <MovieItem url={poster} isInline={false} isRating={isRating} />
+        <MovieItem url={poster} isInline={false} isRating={isRating} /> */}
       </div>
     </div>
   );

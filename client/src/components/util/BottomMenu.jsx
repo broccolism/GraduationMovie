@@ -2,6 +2,7 @@ import React from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import BottomNavigation from "@material-ui/core/BottomNavigation";
 import BottomNavigationAction from "@material-ui/core/BottomNavigationAction";
+import { useHistory } from "react-router-dom";
 
 import "../../styles/BottomMenu.scss";
 
@@ -17,10 +18,12 @@ const useStyles = makeStyles({
 
 export default function BottomMenu() {
   const classes = useStyles();
-  const [value, setValue] = React.useState("home");
+  const history = useHistory();
+  const [value, setValue] = React.useState("main");
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
+    history.push(`/${newValue}`);
   };
 
   return (
@@ -30,10 +33,10 @@ export default function BottomMenu() {
       className={classes.root}
     >
       <BottomNavigationAction
-        value="home"
+        value="main"
         icon={
           <span
-            className={value === "home" ? "menu-icon--active" : "menu-icon"}
+            className={value === "main" ? "menu-icon--active" : "menu-icon"}
           >
             <i class="fas fa-home" />
           </span>
