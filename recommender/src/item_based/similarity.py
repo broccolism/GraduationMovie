@@ -6,6 +6,8 @@ import numpy as np
 from math import sqrt
 from numpy import random
 from sklearn.metrics import mean_squared_error
+import sklearn.preprocessing as pp
+import scipy as sp
 
 COLUMN_USERID = "userId"
 COLUMN_MOVIEID = "itemId"
@@ -24,6 +26,7 @@ OUTPUT_PATH = "dissimilar_movies.json"
 N_USER = -1
 N_MOVIE = -1
 N_RECOMMENDATIONS = 5
+N_DISSIMILARS = 21
 
 
 def init_data():
@@ -48,62 +51,52 @@ def cosine_sim(a, b):
 
 
 def adj_cosine_sim(train_data):
-    # sims = np.zeros((N_MOVIE, N_MOVIE))
+    sims = np.zeros((N_MOVIE, N_MOVIE))
 
     movie_mean = train_data.sum(axis=0)/(train_data != 0).sum(axis=0)
     sub_ratings = np.where(
         (train_data != 0), train_data - movie_mean[None, :], train_data)
-    print(len(sub_ratings))
-    sub_ratings = np.transpose(sub_ratings).copy()
-    sims = np.array([cosine_sim(sub_ratings[i], sub_ratings[j])
-                     for i in range(N_MOVIE) for j in range(i, N_MOVIE)])
-    # for i in range(N_MOVIE):
-    #     for j in range(i, N_MOVIE):
-    #         sim = cosine_sim(sub_ratings[i], sub_ratings[j])
-    #         sims[i, j] = sim
-    #         sims[j, i] = sim
+
+    col_normed_mat = pp.normalize(
+        sp.sparse.csc_matrix(sub_ratings).tocsc(), axis=0)
+    sims = col_normed_mat.T * col_normed_mat
 
     return sims
 
 
-def similarities(train_matrix):
-    sim_matrix = adj_cosine_sim(train_matrix)
-    sim_matrix = np.where((sim_matrix < 0), 0, sim_matrix)
-    return sim_matrix
+def sorted_set_by_dissimilarity(sim):
+    row_idx = (sim.nonzero()[0]).astype(np.int0)
+    col_idx = (sim.nonzero()[1]).astype(np.int0)
+
+    val_with_idx = list(zip(row_idx, col_idx, sim.data))
+    sorted_all = sorted(val_with_idx, key=lambda item: item[2])
+
+    sorted_sim = set()
+    for (row, col, _) in sorted_all:
+        sorted_sim.add(row)
+        if len(sorted_sim) == N_DISSIMILARS:
+            break
+        else:
+            sorted_sim.add(col)
+            if len(sorted_sim) == N_DISSIMILARS:
+                break
+
+    return sorted_sim
 
 
-def sort_by_dissimilarity(sim):
-    idx_arr = np.empty(shape=[0, 3])
-    for row_idx, row in enumerate(sim):
-        for col_idx, similarity in enumerate(row):
-            idx_arr = np.append(
-                idx_arr, [[row_idx, col_idx, similarity]], axis=0)
-
-    idx_arr = idx_arr[np.argsort(idx_arr[:, 2])[::-1]]
-    return idx_arr
-
-# def get_dissimilr_movies(sim):
-
-
-#     return users
-
-
-def wrtie_to_file(sim):
+def write_to_file(sorted_set):
     output_file_name = DATA_PATH + OUTPUT_PATH
     with open(output_file_name, 'w') as file:
-        file.write("{\n")
+        file.write(str(list(sorted_set)))
 
-        file.write("}")
     return
 
 
 if __name__ == "__main__":
     train = init_data()
     print(f'done init data')
-    sim = similarities(train)
+    sim = adj_cosine_sim(train)
     print("done sim")
-    sorted_sim = sort_by_dissimilarity(sim)
-    print(sim)
-    # print(f'done sim')
-    # wrtie_to_file(sim)
-    # print("DONE!")
+    sorted_set = sorted_set_by_dissimilarity(sim)
+    write_to_file(sorted_set)
+    print("DONE!")
