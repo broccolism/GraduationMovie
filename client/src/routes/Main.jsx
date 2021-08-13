@@ -18,6 +18,7 @@ function Main() {
   const [bestRecommendPoster, setBestRecommendPoster] = useState();
   const [userId, setUserId] = useState();
   const [nickname, setNickname] = useState("");
+  const [similarUserId, setSimilarUserId] = useState();
   const [similarUserNickname, setSimilarUserNickname] = useState("");
   const [similarUserLikedMovieIds, setSimilarUserLikedMovieIds] = useState([]);
   const [similarUserMovieList, setSimilarUserMovieList] = useState([]);
@@ -64,8 +65,9 @@ function Main() {
   async function getSimilarUser(user_id) {
     try {
       const response = await axios.get(
-        `http://${localhost}:5000/user/similar/id=${user_id}`
+        `http://${localhost}:5000/user/similar?id=${user_id}`
       );
+      setSimilarUserId(response.data.userId);
       setSimilarUserNickname(response.data.nickname);
       setSimilarUserLikedMovieIds(response.data.likedMovieIds);
       console.log("hi", response.data);
@@ -128,10 +130,12 @@ function Main() {
 
         <div className="main__profile">
           <div class="main__profile-image">
-            <img src="https://thumb.ac-illust.com/t/f6/f6e3fd6d7e60544500352e46ad300085_t.jpeg" />
+            <img
+              src={`https://gravatar.com/avatar/${similarUserId}?s=200&r=pg&d=identicon&f=y`}
+            />
           </div>
           <div className="main__title">
-            <div>익명의 {similarUserNickname}</div>
+            <div>{similarUserNickname}</div>
           </div>
         </div>
 
@@ -148,8 +152,8 @@ function Main() {
 }
 
 const CenterWrapper = styled.div`
-  width: 100%;
-  height: 100%;
+  width: 100vw;
+  height: 100vh;
   display: flex;
   flex-direction: row;
   align-items: center;
