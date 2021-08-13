@@ -25,5 +25,5 @@ export class UserPath {
 export class FilePath {
   static NEU_MF = path.join(__dirname, "../data/neu-mf.json");
   static USER_SIM = path.join(__dirname, "../data/user-sim.json");
-  static MOVIE_DISSIM = path.join(__dirname, "../data/movie_dissim.json");
+  static MOVIE_DISSIM = path.join(__dirname, "../data/movie-dissim.json");
 }

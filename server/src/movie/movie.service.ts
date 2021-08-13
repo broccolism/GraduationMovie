@@ -17,8 +17,8 @@ const EMPTY = "";
 export const getDissimilarMovies = async (
   param: Models.GetDissimilarReq
 ): Promise<number[]> => {
-  // TODO: similarity 계산
-  return Array.from({ length: param.topN }, (_, i) => i + 1);
+  const result = RecApi.getDissimilarMovies();
+  return result;
 };
 
 export const getTopNMoviesById = async (
