@@ -34,15 +34,17 @@ function App() {
   });
 
   return (
-    <div className="App">
-      <Route path="/" exact component={SetNickname} />
-      <Route path="/set-taste" exact component={SetTaste} />
-      <Route path="/main" exact component={Main} />
-      <Route path="/movie-detail" exact component={MovieDetail} />
-      <Route path="/search" exact component={Search} />
-      <Route path="/my-page" exact component={MyPage} />
-      <Route path="/my-page/search" exact component={MyPageSearch} />
-    </div>
+    <ThemeProvider theme={customTheme}>
+      <div className="App">
+        <Route path="/" exact component={SetNickname} />
+        <Route path="/set-taste" exact component={SetTaste} />
+        <Route path="/main" exact component={Main} />
+        <Route path="/movie-detail" exact component={MovieDetail} />
+        <Route path="/search" exact component={Search} />
+        <Route path="/my-page" exact component={MyPage} />
+        <Route path="/my-page/search" exact component={MyPageSearch} />
+      </div>
+    </ThemeProvider>
   );
 }
 
