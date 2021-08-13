@@ -15,7 +15,7 @@ function MyPageSearch() {
     <>
       <div className="header-back">
         <Link to="/my-page">
-          <i class="fas fa-chevron-left"></i>
+          <i className="fas fa-chevron-left"></i>
         </Link>
         <div className="header-back__title">Movie watched</div>
       </div>

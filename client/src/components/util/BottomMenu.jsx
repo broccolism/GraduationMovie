@@ -38,7 +38,7 @@ export default function BottomMenu() {
           <span
             className={value === "main" ? "menu-icon--active" : "menu-icon"}
           >
-            <i class="fas fa-home" />
+            <i className="fas fa-home" />
           </span>
         }
       />
@@ -48,7 +48,7 @@ export default function BottomMenu() {
           <span
             className={value === "search" ? "menu-icon--active" : "menu-icon"}
           >
-            <i class="fas fa-search" />
+            <i className="fas fa-search" />
           </span>
         }
       />
@@ -58,7 +58,7 @@ export default function BottomMenu() {
           <span
             className={value === "mypage" ? "menu-icon--active" : "menu-icon"}
           >
-            <i class="fas fa-user-alt" />{" "}
+            <i className="fas fa-user-alt" />{" "}
           </span>
         }
       />

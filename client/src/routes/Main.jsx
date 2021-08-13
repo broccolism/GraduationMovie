@@ -34,20 +34,19 @@ function Main() {
         const poster = await axios.get(
           `http://${localhost}:5000/movie/image?movieId=1`
         );
-        console.log(poster.data);
         setBestRecommendPoster(poster.data);
         setMovieList(response.data.movieIds);
-        console.log(response.data.movieIds);
+
+        const user_id = UserCookie.getUserId();
+        setUserId(user_id);
+        await getUserNickname(user_id);
+        await getSimilarUser(user_id);
+
         setIsLoading(false);
       } catch (err) {
         console.log("@@@@@@ fetch data ERR", err);
         setIsLoading(false);
       }
-
-      const user_id = UserCookie.getUserId();
-      setUserId(user_id);
-      await getUserNickname(user_id);
-      await getSimilarUser(user_id);
     }
     fetchData();
   }, []);
@@ -70,7 +69,6 @@ function Main() {
       setSimilarUserId(response.data.userId);
       setSimilarUserNickname(response.data.nickname);
       setSimilarUserLikedMovieIds(response.data.likedMovieIds);
-      console.log("hi", response.data);
       await getPosterAndIdList(response.data.likedMovieIds);
     } catch (err) {
       console.log("@@@@@@ fetch data ERR", err);
@@ -129,7 +127,7 @@ function Main() {
         </div>
 
         <div className="main__profile">
-          <div class="main__profile-image">
+          <div className="main__profile-image">
             <img
               src={`https://gravatar.com/avatar/${similarUserId}?s=200&r=pg&d=identicon&f=y`}
             />

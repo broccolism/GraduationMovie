@@ -19,10 +19,10 @@ function MyPage() {
       <div className="my-page">
         <div className="my-page__user-info">
           <div className="my-page__profile">
-            <div class="my-page__profile-image">
+            <div className="my-page__profile-image">
               <img src="https://thumb.ac-illust.com/t/f6/f6e3fd6d7e60544500352e46ad300085_t.jpeg" />
             </div>
-            <div class="my-page__profile-nickname">{nickname}</div>
+            <div className="my-page__profile-nickname">{nickname}</div>
           </div>
           <div className="my-page__movies-info">
             <div className="my-page__movie-info">
@@ -40,7 +40,7 @@ function MyPage() {
             <div className="my-page__watched-movie-title">Movie watched</div>
             <div className="my-page__search-icon">
               <Link to="/my-page/search">
-                <i class="fas fa-search"></i>
+                <i className="fas fa-search"></i>
               </Link>
             </div>
           </div>

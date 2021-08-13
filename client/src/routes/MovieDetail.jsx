@@ -98,7 +98,7 @@ function MovieDetail() {
   return (
     <>
       <div className="header-back">
-        <i class="fas fa-chevron-left"></i>
+        <i className="fas fa-chevron-left"></i>
       </div>
       <div className="movie-detail">
         {!!movieImageUrl && (
@@ -110,7 +110,7 @@ function MovieDetail() {
           <div className="movie-detail__trailer">
             <div>There's an official trailer for it!</div>
             <div className="movie-detail__trailer-button">
-              <i class="fas fa-play"></i>Youtube
+              <i className="fas fa-play"></i>Youtube
             </div>
           </div>
         )}
@@ -119,7 +119,7 @@ function MovieDetail() {
           {!!award && (
             <div className="movie-detail__award">
               <div className="movie-detail__award-icon">
-                <i class="fas fa-trophy"></i>
+                <i className="fas fa-trophy"></i>
               </div>
               {award}
             </div>
