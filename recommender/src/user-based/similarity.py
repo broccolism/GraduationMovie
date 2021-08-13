@@ -20,6 +20,7 @@ DATA_PATH = "../../data/ml-latest-small/"
 RATINGS_PATH = "ratings.csv"
 MOVIES_PATH = "movies.csv"
 SEPERATOR = ","
+OUTPUT_PATH = "similar-users.json"
 N_USER = -1
 N_MOVIE = -1
 N_RECOMMENDATIONS = 5
@@ -30,7 +31,7 @@ def init_data():
     train_data = pd.read_table(DATA_PATH + RATINGS_PATH,
                                sep=SEPERATOR, header=None, names=TRAIN_COLUMNS, skiprows=[0]).astype({COLUMN_USERID: np.float, COLUMN_MOVIEID: np.float, COLUMN_RATING: np.float}).astype({COLUMN_USERID: int, COLUMN_MOVIEID: int, COLUMN_RATING: np.float})
 
-    train_data.drop(columns=[COLUMN_TIMESTAMP], inplace=True)
+    train_data.drop([COLUMN_TIMESTAMP], inplace=True, axis=1)
     N_USER = train_data.userId.max()
     N_MOVIE = train_data.itemId.max()
 
@@ -85,11 +86,24 @@ def get_similar_users(sim, user_id):
     return users
 
 
+def wrtie_to_file(sim):
+    output_file_name = DATA_PATH + OUTPUT_PATH
+    with open(output_file_name, 'w') as file:
+        file.write("{\n")
+
+        for i in range(N_USER):
+            similar_users = get_similar_users(sim, i)
+            new_line = f'\t"{i + 1}": {similar_users.tolist()},\n'
+            file.write(new_line)
+
+        file.write("}")
+    return
+
+
 if __name__ == "__main__":
     train, test = init_data()
     print(f'done init data')
     sim = similarities(train)
     print(f'done sim')
-
-    target_id = int(input("user id > ")) - 1
-    print(get_similar_users(sim, target_id))
+    wrtie_to_file(sim)
+    print("DONE!")
