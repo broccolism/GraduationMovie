@@ -16,23 +16,25 @@ TRAIN_COLUMNS = [COLUMN_USERID, COLUMN_MOVIEID,
                  COLUMN_RATING, COLUMN_TIMESTAMP]
 MOVIES_COLUMNS = ["movieId", "title", "genre"]
 
-DATA_PATH = "../data/ml-1m/"
-RATINGS_PATH = "ratings.dat"
-MOVIES_PATH = "movies.dat"
-SEPERATOR = "::"
+DATA_PATH = "../../data/ml-latest-small/"
+RATINGS_PATH = "ratings.csv"
+MOVIES_PATH = "movies.csv"
+SEPERATOR = ","
+OUTPUT_PATH = "dissimilar-movies.json"
+
 N_USER = -1
 N_MOVIE = -1
 N_RECOMMENDATIONS = 5
-
-TRAIN_MATRIX, TEST_MATRIX, SIM, PRED = None
+N_DISSIMILARS = 21
 
 
 def init_data():
-    global N_USER, N_MOVIE, TRAIN_MATRIX, TEST_MATRIX
+    global N_USER, N_MOVIE
     train_data = pd.read_table(DATA_PATH + RATINGS_PATH,
-                               sep=SEPERATOR, header=None, names=TRAIN_COLUMNS)
+                               sep=SEPERATOR, header=None, names=TRAIN_COLUMNS, engine='python',
+                               skiprows=[0]).astype({COLUMN_USERID: np.float, COLUMN_MOVIEID: np.float, COLUMN_RATING: np.float}).astype({COLUMN_USERID: int, COLUMN_MOVIEID: int, COLUMN_RATING: np.float})
 
-    train_data.drop(columns=[COLUMN_TIMESTAMP], inplace=True)
+    train_data.drop([COLUMN_TIMESTAMP], inplace=True, axis=1)
 
     N_USER = train_data.userId.max()
     N_MOVIE = train_data.itemId.max()
@@ -63,11 +65,25 @@ def cosine_sim(a, b):
 
 def adj_cosine_sim(train_data):
     sims = np.zeros((N_MOVIE, N_MOVIE))
+    # user_mean = train_data.sum(
+    #     axis=0)/((train_data != 0).sum(axis=0)) if (train_data != 0).sum(axis=0) else 0
+    user_mean = np.array([
+        np.sum(train_data[i])/(train_data != 0).sum(axis=0)[i]
+        if (train_data != 0).sum(axis=0)[i] > 0
+        else 0
+        for i in range(N_USER)
+    ])
 
-    user_mean = train_data.sum(axis=1)/(train_data != 0).sum(axis=1)
+    # sub_ratings = np.where(
+    #     (train_data != 0), train_data - (user_mean.T)[None, :], train_data)
 
-    sub_ratings = np.where(
-        (train_data != 0), train_data - user_mean[:, None], train_data)
+    sub_ratings = np.array([
+        train_data[row, col] - user_mean[row]
+        if train_data[row, col] != 0
+        else 0
+        for row in range(N_USER)
+        for col in range(N_MOVIE)])
+
     for i in range(N_MOVIE):
         for j in range(i, N_MOVIE):
             sim = cosine_sim(sub_ratings[i], sub_ratings[j])
@@ -111,9 +127,36 @@ def get_recommendations(pred, user_id):
     movie_data = pd.read_table(DATA_PATH + MOVIES_PATH,
                                sep=SEPERATOR, header=None, names=MOVIES_COLUMNS)
 
-    # recommendations = [movie_data.iloc[i + 1] for i in descending_indicies]
     recommendations = movie_data.iloc[descending_indicies + 1]
     return recommendations
+
+
+def sort_by_dissimilarity(sim):
+    idx_arr = np.empty(shape=[0, 3])
+    for row_idx, row in enumerate(sim):
+        for col_idx, similarity in enumerate(row):
+            idx_arr = np.append(
+                idx_arr, [[row_idx, col_idx, similarity]], axis=0)
+
+    idx_arr = idx_arr[np.argsort(idx_arr[:, 2])[::-1]]
+    return idx_arr
+
+
+def get_dissimilar_movies(sorted_sim):
+    result = []
+
+    return
+
+
+def write_to_file(target):
+    output_file_name = DATA_PATH + OUTPUT_PATH
+    with open(output_file_name, 'w') as file:
+        file.write("{\n")
+
+        file.write("}")
+    return
+
+    return
 
 
 if __name__ == "__main__":
@@ -121,11 +164,11 @@ if __name__ == "__main__":
     print(f'done init data')
     sim = similarities(train)
     print(f'done sim')
+    print(sort_by_dissimilarity(sim))
+    # pred = np.copy(predictions(train, sim))
+    # print(f'done pred')
+    # err = err_rmse(test, pred)
+    # print(f'done training. RMSE = ', err)
 
-    pred = np.copy(predictions(train, sim))
-    print(f'done pred')
-    err = err_rmse(test, pred)
-    print(f'done training. RMSE = ', err)
-
-    target_user = int(input("user id for recommendation: ")) - 1
-    print(get_recommendations(pred, target_user))
+    # target_user = int(input("user id for recommendation: ")) - 1
+    # print(get_recommendations(pred, target_user))

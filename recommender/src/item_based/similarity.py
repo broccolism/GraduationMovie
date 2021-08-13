@@ -20,7 +20,7 @@ DATA_PATH = "../../data/ml-latest-small/"
 RATINGS_PATH = "ratings.csv"
 MOVIES_PATH = "movies.csv"
 SEPERATOR = ","
-OUTPUT_PATH = "similar-users.json"
+OUTPUT_PATH = "dissimilar_movies.json"
 N_USER = -1
 N_MOVIE = -1
 N_RECOMMENDATIONS = 5
@@ -40,17 +40,6 @@ def init_data():
         rating[row[1] - 1, row[2] - 1] = row[3]
 
     train_matrix = np.copy(rating)
-    # test_matrix = np.zeros((N_USER, N_MOVIE))
-
-    # u = 0
-    # for row in train_matrix:
-    #     nonzero_indicies = np.nonzero(row)
-    #     per_0 = int(len(nonzero_indicies[0]) * 0.2)
-    #     rand = random.choice(nonzero_indicies[0], per_20, replace=False)
-    #     for i in range(per_20):
-    #         test_matrix[u, rand[i]] = train_matrix[u, rand[i]]
-    #         train_matrix[u, rand[i]] = 0
-    #     u = u + 1
     return train_matrix
 
 
@@ -59,17 +48,20 @@ def cosine_sim(a, b):
 
 
 def adj_cosine_sim(train_data):
-    sims = np.zeros((N_USER, N_USER))
+    # sims = np.zeros((N_MOVIE, N_MOVIE))
 
     movie_mean = train_data.sum(axis=0)/(train_data != 0).sum(axis=0)
-
     sub_ratings = np.where(
         (train_data != 0), train_data - movie_mean[None, :], train_data)
-    for i in range(N_USER):
-        for j in range(i, N_USER):
-            sim = cosine_sim(sub_ratings[i], sub_ratings[j])
-            sims[i, j] = sim
-            sims[j, i] = sim
+    print(len(sub_ratings))
+    sub_ratings = np.transpose(sub_ratings).copy()
+    sims = np.array([cosine_sim(sub_ratings[i], sub_ratings[j])
+                     for i in range(N_MOVIE) for j in range(i, N_MOVIE)])
+    # for i in range(N_MOVIE):
+    #     for j in range(i, N_MOVIE):
+    #         sim = cosine_sim(sub_ratings[i], sub_ratings[j])
+    #         sims[i, j] = sim
+    #         sims[j, i] = sim
 
     return sims
 
@@ -80,21 +72,26 @@ def similarities(train_matrix):
     return sim_matrix
 
 
-def get_similar_users(sim, user_id):
-    users = np.argsort(-sim[user_id])[:N_RECOMMENDATIONS]
+def sort_by_dissimilarity(sim):
+    idx_arr = np.empty(shape=[0, 3])
+    for row_idx, row in enumerate(sim):
+        for col_idx, similarity in enumerate(row):
+            idx_arr = np.append(
+                idx_arr, [[row_idx, col_idx, similarity]], axis=0)
 
-    return users
+    idx_arr = idx_arr[np.argsort(idx_arr[:, 2])[::-1]]
+    return idx_arr
+
+# def get_dissimilr_movies(sim):
+
+
+#     return users
 
 
 def wrtie_to_file(sim):
     output_file_name = DATA_PATH + OUTPUT_PATH
     with open(output_file_name, 'w') as file:
         file.write("{\n")
-
-        for i in range(N_USER):
-            similar_users = get_similar_users(sim, i)
-            new_line = f'\t"{i + 1}": {similar_users.tolist()},\n'
-            file.write(new_line)
 
         file.write("}")
     return
@@ -104,6 +101,9 @@ if __name__ == "__main__":
     train = init_data()
     print(f'done init data')
     sim = similarities(train)
-    print(f'done sim')
-    wrtie_to_file(sim)
-    print("DONE!")
+    print("done sim")
+    sorted_sim = sort_by_dissimilarity(sim)
+    print(sim)
+    # print(f'done sim')
+    # wrtie_to_file(sim)
+    # print("DONE!")
