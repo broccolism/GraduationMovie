@@ -2,7 +2,7 @@ import * as express from "express";
 import * as router from "./router/routes";
 import * as dotenv from "dotenv";
 import * as cors from "cors";
-import * as NeuMFApi from "./api/neu-mf";
+import * as NeuMFApi from "./api/recommender";
 
 declare global {
   namespace NodeJS {

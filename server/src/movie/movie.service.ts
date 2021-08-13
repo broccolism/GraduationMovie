@@ -10,7 +10,7 @@ import {
 import { getCurrentTimestamp } from "../util/generator";
 import { TMDB_IMAGE_HOST, YOUTUBE_WATCH } from "../constant/host";
 import * as OmdbApi from "../api/omdb";
-import * as NeuMFApi from "../api/neu-mf";
+import * as NeuMFApi from "../api/recommender";
 
 const EMPTY = "";
 

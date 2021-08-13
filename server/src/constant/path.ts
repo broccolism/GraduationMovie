@@ -1,3 +1,5 @@
+import * as path from "path";
+
 export class MoviePath {
   static GET_DISSIMILAR = "/dissimilar";
   static GET_TOP_N_BY_ID = "/top-n/user";
@@ -18,4 +20,8 @@ export class UserPath {
   static GET_INFO = "/info";
   static SEARCH_WATCHED = "/search/watched";
   static WATCH_MOVIE = "/watch";
+}
+
+export class FilePath {
+  static NEU_MF = path.join(__dirname, "../data/NeuMF.json");
 }

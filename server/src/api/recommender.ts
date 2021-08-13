@@ -1,8 +1,8 @@
 import * as fs from "fs";
-import * as path from "path";
+import { FilePath } from "../constant/path";
 
 export const initAllRecommendations = () => {
-  const filePath: string = path.join(__dirname, "../data/NeuMF.json");
+  const filePath: string = FilePath.NEU_MF;
   const buffer: Buffer = fs.readFileSync(filePath);
   const data: JSON = JSON.parse(buffer.toString("binary"));
 
