@@ -2,12 +2,13 @@ import * as Models from "./user.model";
 import * as Repo from "./user.repository";
 import * as GravatarApi from "../api/gravatar";
 import { getCurrentTimestamp } from "../util/generator";
+import * as RecApi from "../api/recommender";
 
 export const getSimilarUser = async (
   param: Models.GetSimilarUserReq
 ): Promise<Models.GetSimilarUserRes> => {
-  const userId: number = 100;
-  const nickname: string = "scornfulDingo7";
+  const userId: number = RecApi.getSimilarUser(param.id);
+  const nickname: string = await Repo.getNicknameById(userId);
   const likedMovies: Models.MovieWithTime[] = await Repo.getRatedMovies(
     userId,
     true

@@ -2,17 +2,19 @@ import * as express from "express";
 import * as router from "./router/routes";
 import * as dotenv from "dotenv";
 import * as cors from "cors";
-import * as NeuMFApi from "./api/recommender";
+import * as RecApi from "./api/recommender";
 
 declare global {
   namespace NodeJS {
     interface Global {
       recommendations: JSON;
+      similarUsers: JSON;
+      dissimilarMovies: JSON;
     }
   }
 }
 
-NeuMFApi.initAllRecommendations();
+RecApi.initAllJSON();
 
 dotenv.config();
 

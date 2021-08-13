@@ -10,7 +10,7 @@ import {
 import { getCurrentTimestamp } from "../util/generator";
 import { TMDB_IMAGE_HOST, YOUTUBE_WATCH } from "../constant/host";
 import * as OmdbApi from "../api/omdb";
-import * as NeuMFApi from "../api/recommender";
+import * as RecApi from "../api/recommender";
 
 const EMPTY = "";
 
@@ -27,7 +27,7 @@ export const getTopNMoviesById = async (
   const userId = param.userId;
   const size = param.size;
   const page = param.page;
-  const result = NeuMFApi.getRecommendationsById(userId, size, page);
+  const result = RecApi.getRecommendationsById(userId, size, page);
   return result;
 };
 
