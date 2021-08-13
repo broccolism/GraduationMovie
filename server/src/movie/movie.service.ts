@@ -12,6 +12,8 @@ import { TMDB_IMAGE_HOST, YOUTUBE_WATCH } from "../constant/host";
 import * as OmdbApi from "../api/omdb";
 import * as NeuMFApi from "../api/neu-mf";
 
+const EMPTY = "";
+
 export const getDissimilarMovies = async (
   param: Models.GetDissimilarReq
 ): Promise<number[]> => {
@@ -54,10 +56,10 @@ export const getPosterAndTitleById = async (
   const { tmdbId, title }: { tmdbId: number; title: string } =
     await customIdToTmdbIdAndTitle(param.movieId);
   const images = await TmdbApi.getMovieImages(tmdbId);
-  const posterPath = images.posters[0].file_path;
+  const posterPath = images.posters[0]?.file_path ?? EMPTY;
 
   const res: Models.GetPosterRes = {
-    posterUrl: TMDB_IMAGE_HOST + posterPath,
+    posterUrl: posterPath !== EMPTY ? TMDB_IMAGE_HOST + posterPath : EMPTY,
     title: title,
   };
   return res;
@@ -69,10 +71,10 @@ export const getImageAndTitleById = async (
   const { tmdbId, title }: { tmdbId: number; title: string } =
     await customIdToTmdbIdAndTitle(param.movieId);
   const images = await TmdbApi.getMovieImages(tmdbId);
-  const imagePath = images.backdrops[0].file_path;
+  const imagePath = images.backdrops[0]?.file_path ?? EMPTY;
 
   const res: Models.GetImageRes = {
-    imageUrl: TMDB_IMAGE_HOST + imagePath,
+    imageUrl: imagePath !== EMPTY ? TMDB_IMAGE_HOST + imagePath : EMPTY,
     title: title,
   };
   return res;

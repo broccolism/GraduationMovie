@@ -1,8 +1,6 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
 import { localhost } from "../consts";
-import styled from "styled-components";
-import CircularProgress from "@material-ui/core/CircularProgress";
 
 import "../styles/Main.scss";
 
@@ -10,6 +8,7 @@ import VerticalListView from "../components/list-view/VerticalListView";
 import HorizontalListView from "../components/list-view/HorizontalListView";
 import BottomMenu from "../components/util/BottomMenu";
 import UserCookie from "../utils/cookie";
+import CenterLoading from "../components/util/CenterLoading";
 
 function Main() {
   const [isLoading, setIsLoading] = useState(true);
@@ -90,12 +89,11 @@ function Main() {
     setSimilarUserMovieList(idAndPosters);
   };
 
-  return isLoading ? (
-    <CenterWrapper>
-      <CircularProgress color="primary" />
-    </CenterWrapper>
-  ) : (
-    <>
+  return;
+  <>
+    {isLoading ? (
+      <CenterLoading />
+    ) : (
       <div className="main">
         <div className="main__title">
           <div>Top 6 movies for you, {nickname}</div>
@@ -144,18 +142,9 @@ function Main() {
           <HorizontalListView movieList={movieList} />
         </div>
       </div>
-      <BottomMenu />
-    </>
-  );
+    )}
+    <BottomMenu />
+  </>;
 }
-
-const CenterWrapper = styled.div`
-  width: 100vw;
-  height: 100vh;
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: center;
-`;
 
 export default Main;

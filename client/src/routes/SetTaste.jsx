@@ -10,6 +10,7 @@ import styled from "styled-components";
 import CircularProgress from "@material-ui/core/CircularProgress";
 
 import VerticalListView from "../components/list-view/VerticalListView";
+import CenterLoading from "../components/util/CenterLoading";
 
 function SetTaste() {
   const [isError, setIsError] = useState(false);
@@ -108,9 +109,7 @@ function SetTaste() {
       </div>
       <div className="set-taste__movie-list">
         {isLoading ? (
-          <CenterWrapper>
-            <CircularProgress color="primary" />
-          </CenterWrapper>
+          <CenterLoading />
         ) : (
           <VerticalListView
             movieList={idAndPosterList}

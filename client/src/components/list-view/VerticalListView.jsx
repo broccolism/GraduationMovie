@@ -25,16 +25,10 @@ function VerticalListView(props) {
             addNewRating={addNewRating}
             movieId={movie.id}
             url={movie.url}
-            key={movie.url}
+            key={movie.id}
             isRating={isRating}
           />
         ))}
-        {/* <MovieItem url={poster} isInline={false} isRating={isRating} />
-        <MovieItem url={poster} isInline={false} isRating={isRating} />
-        <MovieItem url={poster} isInline={false} isRating={isRating} />
-        <MovieItem url={poster} isInline={false} isRating={isRating} />
-        <MovieItem url={poster} isInline={false} isRating={isRating} />
-        <MovieItem url={poster} isInline={false} isRating={isRating} /> */}
       </div>
     </div>
   );

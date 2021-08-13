@@ -8,8 +8,10 @@ import "../styles/Search.scss";
 
 import VerticalListView from "../components/list-view/VerticalListView";
 import BottomMenu from "../components/util/BottomMenu";
+import CenterLoading from "../components/util/CenterLoading";
 
 function Search() {
+  const [isLoading, setIsLoading] = useState(false);
   const [movieIds, setMovieIds] = useState([]);
   const [keywords, setKeywords] = useState([]);
   const [searchText, setSearchText] = useState("");
@@ -21,13 +23,17 @@ function Search() {
 
   async function handleKeyPressSearch(e) {
     if (e.key === "Enter") {
+      setIsLoading(true);
       await searchMovie(searchText);
+      setIsLoading(false);
     }
   }
 
-  function onClickTag(keyword) {
+  async function onClickTag(keyword) {
+    setIsLoading(true);
     setSearchText(keyword);
-    searchMovieByKeyword(keyword);
+    await searchMovieByKeyword(keyword);
+    setIsLoading(false);
   }
 
   async function searchMovie(searchText) {
@@ -66,7 +72,9 @@ function Search() {
           };
         })
     );
-    const idAndPosters = await Promise.all(promises);
+    const idAndPosters = (await Promise.all(promises)).filter(
+      (movie) => movie.url !== ""
+    );
     setMovieList(idAndPosters);
   };
 
@@ -82,18 +90,23 @@ function Search() {
         {keywords && (
           <div className="search__tags">
             {keywords.map((keyword) => (
-              <div className="search__tag" onClick={() => onClickTag(keyword)}>
+              <div
+                className="search__tag"
+                onClick={async () => await onClickTag(keyword)}
+              >
                 {keyword}
               </div>
             ))}
           </div>
         )}
-        {movieIds && (
+        {isLoading && <CenterLoading />}
+        {!isLoading && movieIds && (
           <div className="search__movie-list">
             <VerticalListView movieList={movieList} isRating={false} />
           </div>
         )}
       </div>
+
       <BottomMenu />
     </>
   );

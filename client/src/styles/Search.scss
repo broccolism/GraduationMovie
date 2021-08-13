@@ -2,6 +2,7 @@
   padding: 16px;
   overflow-x: hidden;
   overflow-y: hidden;
+  flex: 1;
   display: flex;
   flex-direction: column;
   &__tags {
@@ -9,6 +10,7 @@
     display: inline-block;
     white-space: nowrap;
     margin-bottom: 10px;
+    text-align: start;
   }
   &__tag {
     display: inline-block;
