@@ -17,8 +17,7 @@ TRAIN_COLUMNS = [COLUMN_USERID, COLUMN_MOVIEID,
 MOVIES_COLUMNS = ["movieId", "title", "genre"]
 
 DATA_PATH = "../../data/ml-latest-small/"
-RATINGS_PATH = "ratings.csv"
-MOVIES_PATH = "movies.csv"
+RATINGS_PATH = "converter/rating_to_database.csv"
 SEPERATOR = ","
 OUTPUT_PATH = "similar-users.json"
 N_USER = -1
@@ -40,17 +39,6 @@ def init_data():
         rating[row[1] - 1, row[2] - 1] = row[3]
 
     train_matrix = np.copy(rating)
-    # test_matrix = np.zeros((N_USER, N_MOVIE))
-
-    # u = 0
-    # for row in train_matrix:
-    #     nonzero_indicies = np.nonzero(row)
-    #     per_0 = int(len(nonzero_indicies[0]) * 0.2)
-    #     rand = random.choice(nonzero_indicies[0], per_20, replace=False)
-    #     for i in range(per_20):
-    #         test_matrix[u, rand[i]] = train_matrix[u, rand[i]]
-    #         train_matrix[u, rand[i]] = 0
-    #     u = u + 1
     return train_matrix
 
 
@@ -93,7 +81,8 @@ def wrtie_to_file(sim):
 
         for i in range(N_USER):
             similar_users = get_similar_users(sim, i)
-            new_line = f'\t"{i + 1}": {similar_users.tolist()},\n'
+            id_added = similar_users + 1
+            new_line = f'\t"{i + 1}": {id_added.tolist()},\n'
             file.write(new_line)
 
         file.write("}")

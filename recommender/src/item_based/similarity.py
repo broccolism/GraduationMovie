@@ -19,8 +19,8 @@ TRAIN_COLUMNS = [COLUMN_USERID, COLUMN_MOVIEID,
 MOVIES_COLUMNS = ["movieId", "title", "genre"]
 
 DATA_PATH = "../../data/ml-latest-small/"
-RATINGS_PATH = "ratings.csv"
-MOVIES_PATH = "movies.csv"
+RATINGS_PATH = "converter/rating_to_database.csv"
+MOVIES_PATH = "converter/movie_to_database.csv"
 SEPERATOR = ","
 OUTPUT_PATH = "dissimilar_movies.json"
 N_USER = -1
@@ -86,8 +86,9 @@ def sorted_set_by_dissimilarity(sim):
 
 def write_to_file(sorted_set):
     output_file_name = DATA_PATH + OUTPUT_PATH
+    id_added = [num + 1 for num in sorted_set]
     with open(output_file_name, 'w') as file:
-        file.write(str(list(sorted_set)))
+        file.write(str(id_added))
 
     return
 

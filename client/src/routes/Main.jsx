@@ -89,62 +89,65 @@ function Main() {
     setSimilarUserMovieList(idAndPosters);
   };
 
-  return;
-  <>
-    {isLoading ? (
-      <CenterLoading />
-    ) : (
-      <div className="main">
-        <div className="main__title">
-          <div>Top 6 movies for you, {nickname}</div>
-        </div>
-        <div className="main__best-recommend">
-          <div className="main__best-recommend-image-wrapper">
-            <div className="main__best-recommend-image">
-              <img src={bestRecommendPoster.imageUrl} />
-            </div>
-            <div className="main__transparent-layer"></div>
-          </div>
-          <div className="main__best-recommend-text">
-            <div className="main__emphasis">best fit!</div>
-            <div className="main__description">{bestRecommendPoster.title}</div>
-          </div>
-        </div>
-
-        <div className="main__item-similar-recommend">
-          <VerticalListView movieList={movieList} />
-        </div>
-        <div className="main__reload-button">
-          <button className="border-white-button">
-            <i className="fas fa-redo"></i> &nbsp;&nbsp; I want more
-          </button>
-        </div>
-
-        <div className="main__title">
-          <div>We found someone like you!</div>
-        </div>
-
-        <div className="main__profile">
-          <div className="main__profile-image">
-            <img
-              src={`https://gravatar.com/avatar/${similarUserId}?s=200&r=pg&d=identicon&f=y`}
-            />
-          </div>
+  return (
+    <>
+      {isLoading ? (
+        <CenterLoading />
+      ) : (
+        <div className="main">
           <div className="main__title">
-            <div>{similarUserNickname}</div>
+            <div>Top 6 movies for you, {nickname}</div>
+          </div>
+          <div className="main__best-recommend">
+            <div className="main__best-recommend-image-wrapper">
+              <div className="main__best-recommend-image">
+                <img src={bestRecommendPoster.imageUrl} />
+              </div>
+              <div className="main__transparent-layer"></div>
+            </div>
+            <div className="main__best-recommend-text">
+              <div className="main__emphasis">best fit!</div>
+              <div className="main__description">
+                {bestRecommendPoster.title}
+              </div>
+            </div>
+          </div>
+
+          <div className="main__item-similar-recommend">
+            <VerticalListView movieList={movieList} />
+          </div>
+          <div className="main__reload-button">
+            <button className="border-white-button">
+              <i className="fas fa-redo"></i> &nbsp;&nbsp; I want more
+            </button>
+          </div>
+
+          <div className="main__title">
+            <div>We found someone like you!</div>
+          </div>
+
+          <div className="main__profile">
+            <div className="main__profile-image">
+              <img
+                src={`https://gravatar.com/avatar/${similarUserId}?s=200&r=pg&d=identicon&f=y`}
+              />
+            </div>
+            <div className="main__title">
+              <div>{similarUserNickname}</div>
+            </div>
+          </div>
+
+          <div className="main__title">
+            <div>{similarUserNickname} recently liked</div>
+          </div>
+          <div className="main__user-similar-recommend">
+            <HorizontalListView movieList={movieList} />
           </div>
         </div>
-
-        <div className="main__title">
-          <div>{similarUserNickname} recently liked</div>
-        </div>
-        <div className="main__user-similar-recommend">
-          <HorizontalListView movieList={movieList} />
-        </div>
-      </div>
-    )}
-    <BottomMenu />
-  </>;
+      )}
+      <BottomMenu />
+    </>
+  );
 }
 
 export default Main;
