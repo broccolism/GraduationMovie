@@ -45,8 +45,8 @@ function HorizontalListView(props) {
     "https://www.goldenglobes.com/sites/default/files/articles/cover_images/2017-la_la_land.jpg?format=pjpg&auto=webp&optimize=high&width=850";
 
   return (
-    <div className={classes.root}>
-      <div className="list-view__horizontal">
+    <div class={classes.root}>
+      <div class="list-view__horizontal">
         {/* {movieImageList.map((url, index) => (
           <MovieItem url={url} key={index} />
         ))} */}

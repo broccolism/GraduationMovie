@@ -18,8 +18,8 @@ function VerticalListView(props) {
   const classes = useStyles();
 
   return (
-    <div className={classes.root}>
-      <div className="list-view__grid">
+    <div class={classes.root}>
+      <div class="list-view__grid">
         {movieList.map((movie, _) => (
           <MovieItem
             addNewRating={addNewRating}

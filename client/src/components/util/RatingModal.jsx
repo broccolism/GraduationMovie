@@ -36,16 +36,16 @@ function RatingModal(props) {
     <Modal
       open={modalOpen}
       onClose={handleCloseModal}
-      className={classes.modal}
+      class={classes.modal}
       aria-labelledby="simple-modal-title"
       aria-describedby="simple-modal-description"
     >
-      <div className={classes.paper}>
-        <div className="rating-modal__header">
-          <div className="rating-modal__question">How was the movie?</div>
-          <div className="rating-modal__movie-title">{movieTitle}</div>
+      <div class={classes.paper}>
+        <div class="rating-modal__header">
+          <div class="rating-modal__question">How was the movie?</div>
+          <div class="rating-modal__movie-title">{movieTitle}</div>
         </div>
-        <div className="rating-modal__rating">
+        <div class="rating-modal__rating">
           <BorderRating
             name="personRating"
             value={rating}
@@ -54,15 +54,15 @@ function RatingModal(props) {
             }}
           />
         </div>
-        <div className="rating-modal__buttons">
+        <div class="rating-modal__buttons">
           <button
-            className="rating-modal__cancle-button"
+            class="rating-modal__cancle-button"
             onClick={handleCloseModal}
           >
             Cancel
           </button>
           <button
-            className={
+            class={
               !!rating
                 ? "rating-modal__submit-button"
                 : "rating-modal__submit-button--disable"
