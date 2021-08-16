@@ -97,49 +97,49 @@ function MovieDetail() {
 
   return (
     <>
-      <div class="header-back">
-        <i class="fas fa-chevron-left"></i>
+      <div className="header-back">
+        <i className="fas fa-chevron-left"></i>
       </div>
-      <div class="movie-detail">
+      <div className="movie-detail">
         {!!movieImageUrl && (
-          <div class="movie-detail__movie-image">
+          <div className="movie-detail__movie-image">
             <img src={movieImageUrl} alt="movieImageUrl" />
           </div>
         )}
         {!!youtubeUrl && (
-          <div class="movie-detail__trailer">
+          <div className="movie-detail__trailer">
             <div>There's an official trailer for it!</div>
-            <div class="movie-detail__trailer-button">
-              <i class="fas fa-play"></i>Youtube
+            <div className="movie-detail__trailer-button">
+              <i className="fas fa-play"></i>Youtube
             </div>
           </div>
         )}
 
-        <div class="movie-detail__main-information">
+        <div className="movie-detail__main-information">
           {!!award && (
-            <div class="movie-detail__award">
-              <div class="movie-detail__award-icon">
-                <i class="fas fa-trophy"></i>
+            <div className="movie-detail__award">
+              <div className="movie-detail__award-icon">
+                <i className="fas fa-trophy"></i>
               </div>
               {award}
             </div>
           )}
-          <div class="movie-detail__movie-title">{movieTitle}</div>
-          <div class="movie-detail__genre">
+          <div className="movie-detail__movie-title">{movieTitle}</div>
+          <div className="movie-detail__genre">
             {year} ⋅ {genre}
           </div>
         </div>
-        <div class="movie-detail__rating-information">
-          <div class="movie-detail__rating">
+        <div className="movie-detail__rating-information">
+          <div className="movie-detail__rating">
             <BorderRating name="avgRating" value={avgRating} readOnly />
-            <div class="movie-detail__rated-value">{avgRating}</div>
-            <div class="movie-detail__rated-count">
+            <div className="movie-detail__rated-value">{avgRating}</div>
+            <div className="movie-detail__rated-count">
               ({ratingPeopleCount} rated)
             </div>
             {userRating <= 0 && (
               <>
                 <div
-                  class="movie-detail__rating-button"
+                  className="movie-detail__rating-button"
                   onClick={handleOpenModal}
                 >
                   Rating
@@ -154,19 +154,21 @@ function MovieDetail() {
             )}
           </div>
           {userRating > 0 && (
-            <div class="movie-detail__rating">
+            <div className="movie-detail__rating">
               <BorderRating name="personRating" value={userRating} readOnly />
-              <div class="movie-detail__rated-value">{userRating}</div>
-              <div class="movie-detail__rated-count">(my rating)</div>
+              <div className="movie-detail__rated-value">{userRating}</div>
+              <div className="movie-detail__rated-count">(my rating)</div>
             </div>
           )}
         </div>
-        <div class="movie-detail__content">
-          {!!summary && <div class="movie-detail__title">{summary}</div>}
+        <div className="movie-detail__content">
+          {!!summary && <div className="movie-detail__title">{summary}</div>}
           <div>{plot}</div>
         </div>
-        <div class="movie-detail__content">
-          {!!peopleList.length && <div class="movie-detail__title">People</div>}
+        <div className="movie-detail__content">
+          {!!peopleList.length && (
+            <div className="movie-detail__title">People</div>
+          )}
           <div>
             {director && "Directed by " + director}{" "}
             {writers && ", and written by " + writers}

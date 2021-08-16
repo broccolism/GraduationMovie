@@ -48,16 +48,16 @@ function SetNickname() {
   };
 
   return (
-    <div class="set-nickname">
-      <div class="set-nickname__text">
+    <div className="set-nickname">
+      <div className="set-nickname__text">
         <span>Input Your Nickname!</span>
       </div>
-      <div class="set-nickname__form-nickname">
-        <div class="set-nickname__input">
-          <input class="main-input" onChange={handleInput}></input>
+      <div className="set-nickname__form-nickname">
+        <div className="set-nickname__input">
+          <input className="main-input" onChange={handleInput}></input>
         </div>
         <NextButton
-          class="main-button"
+          className="main-button"
           disabled={isDisabled}
           onClick={handleNextButton}
         >

@@ -80,18 +80,18 @@ function Search() {
 
   return (
     <>
-      <div class="search">
+      <div className="search">
         <input
-          class="main-input fa"
+          className="main-input fa"
           value={searchText}
           onChange={onChangeSearch}
           onKeyPress={handleKeyPressSearch}
         ></input>
         {keywords && (
-          <div class="search__tags">
+          <div className="search__tags">
             {keywords.map((keyword) => (
               <div
-                class="search__tag"
+                className="search__tag"
                 onClick={async () => await onClickTag(keyword)}
               >
                 {keyword}
@@ -101,7 +101,7 @@ function Search() {
         )}
         {isLoading && <CenterLoading />}
         {!isLoading && movieIds && (
-          <div class="search__movie-list">
+          <div className="search__movie-list">
             <VerticalListView movieList={movieList} isRating={false} />
           </div>
         )}

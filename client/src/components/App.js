@@ -35,7 +35,7 @@ function App() {
 
   return (
     <ThemeProvider theme={customTheme}>
-      <div class="App">
+      <div className="App">
         <Route path="/" exact component={SetNickname} />
         <Route path="/set-taste" exact component={SetTaste} />
         <Route path="/main" exact component={Main} />

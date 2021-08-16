@@ -100,14 +100,14 @@ function SetTaste() {
   };
 
   return (
-    <div class="set-taste">
-      <div class="set-taste__text">
-        <span class="set-taste__title">Let me know your taste</span>
-        <span class="set-taste__description">
+    <div className="set-taste">
+      <div className="set-taste__text">
+        <span className="set-taste__title">Let me know your taste</span>
+        <span className="set-taste__description">
           Just pick as many as you can!
         </span>
       </div>
-      <div class="set-taste__movie-list">
+      <div className="set-taste__movie-list">
         {isLoading ? (
           <CenterLoading />
         ) : (
@@ -125,8 +125,8 @@ function SetTaste() {
           <></>
         )}
       </div>
-      <div class="set-taste__done">
-        <button class="border-button" onClick={handleDoneButton}>
+      <div className="set-taste__done">
+        <button className="border-button" onClick={handleDoneButton}>
           DONE
         </button>
       </div>

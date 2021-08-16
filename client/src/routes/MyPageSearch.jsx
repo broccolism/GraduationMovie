@@ -13,15 +13,15 @@ function MyPageSearch() {
 
   return (
     <>
-      <div class="header-back">
+      <div className="header-back">
         <Link to="/my-page">
-          <i class="fas fa-chevron-left"></i>
+          <i className="fas fa-chevron-left"></i>
         </Link>
-        <div class="header-back__title">Movie watched</div>
+        <div className="header-back__title">Movie watched</div>
       </div>
-      <div class="mypage-search">
-        <input class="main-input"></input>
-        <div class="search__movie-list">
+      <div className="mypage-search">
+        <input className="main-input"></input>
+        <div className="search__movie-list">
           <VerticalListView movieList={movieList} isRating={false} />
         </div>
       </div>

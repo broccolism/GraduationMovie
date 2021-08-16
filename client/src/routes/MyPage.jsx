@@ -16,35 +16,35 @@ function MyPage() {
 
   return (
     <>
-      <div class="my-page">
-        <div class="my-page__user-info">
-          <div class="my-page__profile">
-            <div class="my-page__profile-image">
+      <div className="my-page">
+        <div className="my-page__user-info">
+          <div className="my-page__profile">
+            <div className="my-page__profile-image">
               <img src="https://thumb.ac-illust.com/t/f6/f6e3fd6d7e60544500352e46ad300085_t.jpeg" />
             </div>
-            <div class="my-page__profile-nickname">{nickname}</div>
+            <div className="my-page__profile-nickname">{nickname}</div>
           </div>
-          <div class="my-page__movies-info">
-            <div class="my-page__movie-info">
-              <div class="my-page__movie-info-title">watched</div>
-              <div class="my-page__movie-info-count">{watchedMovie}</div>
+          <div className="my-page__movies-info">
+            <div className="my-page__movie-info">
+              <div className="my-page__movie-info-title">watched</div>
+              <div className="my-page__movie-info-count">{watchedMovie}</div>
             </div>
-            <div class="my-page__movie-info">
-              <div class="my-page__movie-info-title">rated</div>
-              <div class="my-page__movie-info-count">{ratedMovie}</div>
+            <div className="my-page__movie-info">
+              <div className="my-page__movie-info-title">rated</div>
+              <div className="my-page__movie-info-count">{ratedMovie}</div>
             </div>
           </div>
         </div>
-        <div class="my-page__watched-movie">
-          <div class="my-page__watched-movie-header">
-            <div class="my-page__watched-movie-title">Movie watched</div>
-            <div class="my-page__search-icon">
+        <div className="my-page__watched-movie">
+          <div className="my-page__watched-movie-header">
+            <div className="my-page__watched-movie-title">Movie watched</div>
+            <div className="my-page__search-icon">
               <Link to="/my-page/search">
-                <i class="fas fa-search"></i>
+                <i className="fas fa-search"></i>
               </Link>
             </div>
           </div>
-          <div class="my-page__movie-list">
+          <div className="my-page__movie-list">
             <VerticalListView movieList={movieList} isRating={false} />
           </div>
         </div>

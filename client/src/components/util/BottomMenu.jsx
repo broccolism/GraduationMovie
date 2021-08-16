@@ -30,29 +30,35 @@ export default function BottomMenu() {
     <BottomNavigation
       value={value}
       onChange={handleChange}
-      class={classes.root}
+      className={classes.root}
     >
       <BottomNavigationAction
         value="main"
         icon={
-          <span class={value === "main" ? "menu-icon--active" : "menu-icon"}>
-            <i class="fas fa-home" />
+          <span
+            className={value === "main" ? "menu-icon--active" : "menu-icon"}
+          >
+            <i className="fas fa-home" />
           </span>
         }
       />
       <BottomNavigationAction
         value="search"
         icon={
-          <span class={value === "search" ? "menu-icon--active" : "menu-icon"}>
-            <i class="fas fa-search" />
+          <span
+            className={value === "search" ? "menu-icon--active" : "menu-icon"}
+          >
+            <i className="fas fa-search" />
           </span>
         }
       />
       <BottomNavigationAction
         value="mypage"
         icon={
-          <span class={value === "mypage" ? "menu-icon--active" : "menu-icon"}>
-            <i class="fas fa-user-alt" />{" "}
+          <span
+            className={value === "mypage" ? "menu-icon--active" : "menu-icon"}
+          >
+            <i className="fas fa-user-alt" />{" "}
           </span>
         }
       />

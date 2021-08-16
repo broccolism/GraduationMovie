@@ -27,11 +27,11 @@ function MovieItem(props) {
   }
 
   return (
-    <div class={(isInline ? "movie-inline-item" : "") + " movie-item"}>
+    <div className={(isInline ? "movie-inline-item" : "") + " movie-item"}>
       <img src={url} alt="movie" onClick={onClickPoster}></img>
       {isRating ? (
         isSelected ? (
-          <div class="movie-item__selected">
+          <div className="movie-item__selected">
             <CenterWrapper>
               <StyledRating
                 icon={<StarIcon style={{ fontSize: "22px" }} />}
