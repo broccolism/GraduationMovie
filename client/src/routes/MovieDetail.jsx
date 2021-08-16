@@ -9,21 +9,25 @@ import RatingModal from "../components/util/RatingModal";
 import { BorderRating } from "../components/util/BorderRating";
 import UserCookie from "../utils/cookie";
 import { localhost } from "../consts";
+import ActorListView from "../components/list-view/ActorListView";
 
 function MovieDetail() {
   const movieId = "425";
-  const [youtubeUrl, setYoutubeUrl] = useState("");
-  const [award, setAward] = useState("");
-  const [movieTitle, setMovieTitle] = useState("");
-  const [year, setYear] = useState();
-  const [genre, setGenre] = useState("");
-  const [avgRating, setAvgRating] = useState(0);
-  const [ratingPeopleCount, setRatingPeopleCount] = useState(0);
-  const [summary, setSummary] = useState("");
-  const [plot, setPlot] = useState("");
-  const [director, setDirector] = useState("");
-  const [writers, setWriters] = useState("");
-  const [actors, setActors] = useState([]);
+  const [movieInfo, setMovieInfo] = useState({
+    youtubeUrl: "",
+    award: "",
+    movieTitle: "",
+    year: 0,
+    genre: "",
+    avgRating: 0,
+    ratingPeopleCount: 0,
+    summary: "",
+    plot: "",
+    director: "",
+    writers: "",
+    actors: [],
+    movieImageUrl: "",
+  });
   const [movieImageUrl, setMovieImageUrl] = useState("");
 
   // const movieImageUrl =
@@ -54,19 +58,21 @@ function MovieDetail() {
         `http://${localhost}:5000/movie/detail?movieId=${movieId}&userId=${user_id}`
       );
       console.log(response.data);
-      setYoutubeUrl(response.data.youtubeUrl);
-      setAward(response.data.award);
-      setMovieTitle(response.data.title);
-      setYear(response.data.year);
-      setGenre(response.data.genre);
-      setAvgRating(response.data.avgRating);
-      setRatingPeopleCount(response.data.ratingPeopleCount);
-      setUserRating(response.data.userRating);
-      setSummary(response.data.summary);
-      setPlot(response.data.plot);
-      setDirector(response.data.director);
-      setWriters(response.data.writers);
-      setActors(response.data.actors);
+      setMovieInfo({
+        youtubeUrl: response.data.youtubeUrl,
+        award: response.data.award,
+        movieTitle: response.data.title,
+        year: response.data.year,
+        genre: response.data.genre,
+        avgRating: response.data.avgRating,
+        ratingPeopleCount: response.data.ratingPeopleCount,
+        userRating: response.data.userRating,
+        summary: response.data.summary,
+        plot: response.data.plot,
+        director: response.data.director,
+        writers: response.data.writers,
+        actors: response.data.actors,
+      });
     } catch (err) {
       console.log("@@@@@@ fetch data ERR", err);
     }
@@ -106,35 +112,46 @@ function MovieDetail() {
             <img src={movieImageUrl} alt="movieImageUrl" />
           </div>
         )}
-        {!!youtubeUrl && (
+        {!!movieInfo.youtubeUrl && (
           <div className="movie-detail__trailer">
             <div>There's an official trailer for it!</div>
-            <div className="movie-detail__trailer-button">
+            <a
+              href={movieInfo.youtubeUrl}
+              className="movie-detail__trailer-button"
+            >
               <i className="fas fa-play"></i>Youtube
-            </div>
+            </a>
           </div>
         )}
 
         <div className="movie-detail__main-information">
-          {!!award && (
+          {!!movieInfo.award && (
             <div className="movie-detail__award">
               <div className="movie-detail__award-icon">
                 <i className="fas fa-trophy"></i>
               </div>
-              {award}
+              {movieInfo.award}
             </div>
           )}
-          <div className="movie-detail__movie-title">{movieTitle}</div>
+          <div className="movie-detail__movie-title">
+            {movieInfo.movieTitle}
+          </div>
           <div className="movie-detail__genre">
-            {year} ⋅ {genre}
+            {movieInfo.year} ⋅ {movieInfo.genre}
           </div>
         </div>
         <div className="movie-detail__rating-information">
           <div className="movie-detail__rating">
-            <BorderRating name="avgRating" value={avgRating} readOnly />
-            <div className="movie-detail__rated-value">{avgRating}</div>
+            <BorderRating
+              name="avgRating"
+              value={movieInfo.avgRating}
+              readOnly
+            />
+            <div className="movie-detail__rated-value">
+              {movieInfo.avgRating}
+            </div>
             <div className="movie-detail__rated-count">
-              ({ratingPeopleCount} rated)
+              ({movieInfo.ratingPeopleCount} rated)
             </div>
             {userRating <= 0 && (
               <>
@@ -146,7 +163,7 @@ function MovieDetail() {
                 </div>
                 <RatingModal
                   modalOpen={modalOpen}
-                  movieTitle={movieTitle}
+                  movieTitle={movieInfo.movieTitle}
                   handleCloseModal={handleCloseModal}
                   onClickConfirm={onClickConfirm}
                 />
@@ -162,19 +179,21 @@ function MovieDetail() {
           )}
         </div>
         <div className="movie-detail__content">
-          {!!summary && <div className="movie-detail__title">{summary}</div>}
-          <div>{plot}</div>
+          {!!movieInfo.summary && (
+            <div className="movie-detail__title">{movieInfo.summary}</div>
+          )}
+          <div>{movieInfo.plot}</div>
         </div>
         <div className="movie-detail__content">
           {!!peopleList.length && (
             <div className="movie-detail__title">People</div>
           )}
           <div>
-            {director && "Directed by " + director}{" "}
-            {writers && ", and written by " + writers}
+            {movieInfo.director && "Directed by " + movieInfo.director}{" "}
+            {movieInfo.writers && ", and written by " + movieInfo.writers}
           </div>
         </div>
-        <HorizontalListView movieList={peopleList} />
+        <ActorListView actors={movieInfo.actors} />
       </div>
       <BottomMenu />
     </>
