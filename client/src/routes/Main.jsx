@@ -229,7 +229,9 @@ function Main() {
             </div>
             <div className="main__best-recommend-text">
               <div className="main__emphasis">{bestFitString()}</div>
-              <div className="main__description">{firstMovie.title}</div>
+              <div className="main__description">
+                {firstMovie.title.split(", The")[0]}
+              </div>
             </div>
           </div>
 
