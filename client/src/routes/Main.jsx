@@ -23,7 +23,9 @@ function Main() {
   const [similarUserLikedMovieIds, setSimilarUserLikedMovieIds] = useState([]);
   const [similarUserMovieList, setSimilarUserMovieList] = useState([]);
 
-  const [moreButtonCount, setMoreButtonCount] = useState(1);
+  const [byUserCount, setByUserCount] = useState(1);
+  const [forEveryCount, setForEveryCount] = useState(1);
+  const BY_USER_ERROR = "by user error";
   const PAGE_SIZE = 7;
   const BY_USER_COUNT = 3;
 
@@ -31,7 +33,7 @@ function Main() {
     async function fetchData() {
       try {
         const getTopNMoviesRes = await getTopNMoviesById();
-        setMoreButtonCount(moreButtonCount + 1);
+        setByUserCount(byUserCount + 1);
 
         const firstId = getTopNMoviesRes.data.movieIds[0];
         const otherIds = getTopNMoviesRes.data.movieIds.filter(
@@ -47,7 +49,25 @@ function Main() {
 
         setIsLoading(false);
       } catch (err) {
-        console.log("@@@@@@ fetch data ERR", err);
+        if (err === BY_USER_ERROR) {
+          const getTopNMoviesRes = await getTopNMoviesForEvery();
+
+          const firstId = getTopNMoviesRes.data.movieIds[0];
+          const otherIds = getTopNMoviesRes.data.movieIds.filter(
+            (id) => id !== firstId
+          );
+
+          await Promise.all([
+            getFirstMovie(firstId),
+            getOtherMovies(otherIds),
+            getUserNickname(),
+            getSimilarUser(),
+          ]);
+
+          setForEveryCount(forEveryCount + 1);
+          setIsLoading(false);
+        } else {
+        }
         setIsLoading(false);
       }
     }
@@ -81,17 +101,20 @@ function Main() {
   };
 
   const getTopNMoviesById = async () => {
-    const userId = UserCookie.getUserId();
-    return await axios.get(
-      `http://${localhost}:5000/movie/top-n/user?userId=${userId}&size=${PAGE_SIZE}&page=${moreButtonCount}`
-    );
+    try {
+      const userId = UserCookie.getUserId();
+      return await axios.get(
+        `http://${localhost}:5000/movie/top-n/user?userId=${userId}&size=${PAGE_SIZE}&page=${byUserCount}`
+      );
+    } catch (err) {
+      throw BY_USER_ERROR;
+    }
   };
 
   const getTopNMoviesForEvery = async () => {
+    console.log("@@@@@@@@@@", forEveryCount);
     return await axios.get(
-      `http://${localhost}:5000/movie/top-n/every?size=${PAGE_SIZE}&page=${
-        moreButtonCount - BY_USER_COUNT
-      }`
+      `http://${localhost}:5000/movie/top-n/every?size=${PAGE_SIZE}&page=${forEveryCount}`
     );
   };
 
@@ -121,23 +144,36 @@ function Main() {
 
   const handleMoreButton = async () => {
     setIsMoviesLoading(true);
-    if (moreButtonCount <= BY_USER_COUNT) {
-      const getTopNMoviesRes = await getTopNMoviesById();
-      const firstId = getTopNMoviesRes.data.movieIds[0];
-      const otherIds = getTopNMoviesRes.data.movieIds.filter(
-        (id) => id !== firstId
-      );
-      await Promise.all([getFirstMovie(firstId), getOtherMovies(otherIds)]);
-    } else {
-      const getTopNMoviesEveryRes = await getTopNMoviesForEvery();
-      const firstId = getTopNMoviesEveryRes.data.movieIds[0];
-      const otherIds = getTopNMoviesEveryRes.data.movieIds.filter(
-        (id) => id !== firstId
-      );
-      await Promise.all([getFirstMovie(firstId), getOtherMovies(otherIds)]);
+    try {
+      if (byUserCount <= BY_USER_COUNT) {
+        const getTopNMoviesRes = await getTopNMoviesById();
+        const firstId = getTopNMoviesRes.data.movieIds[0];
+        const otherIds = getTopNMoviesRes.data.movieIds.filter(
+          (id) => id !== firstId
+        );
+        await Promise.all([getFirstMovie(firstId), getOtherMovies(otherIds)]);
+        setByUserCount(byUserCount + 1);
+      } else {
+        const getTopNMoviesEveryRes = await getTopNMoviesForEvery();
+        const firstId = getTopNMoviesEveryRes.data.movieIds[0];
+        const otherIds = getTopNMoviesEveryRes.data.movieIds.filter(
+          (id) => id !== firstId
+        );
+        await Promise.all([getFirstMovie(firstId), getOtherMovies(otherIds)]);
+        setForEveryCount(forEveryCount + 1);
+      }
+    } catch (err) {
+      if (err === BY_USER_ERROR) {
+        const getTopNMoviesEveryRes = await getTopNMoviesForEvery();
+        const firstId = getTopNMoviesEveryRes.data.movieIds[0];
+        const otherIds = getTopNMoviesEveryRes.data.movieIds.filter(
+          (id) => id !== firstId
+        );
+        await Promise.all([getFirstMovie(firstId), getOtherMovies(otherIds)]);
+        setForEveryCount(forEveryCount + 1);
+      }
     }
     setIsMoviesLoading(false);
-    setMoreButtonCount(moreButtonCount + 1);
   };
 
   const getPosterAndIdList = async (movieIds) => {
@@ -156,19 +192,19 @@ function Main() {
   };
 
   const moviesString = () => {
-    if (moreButtonCount === 2) {
+    if (byUserCount === 2) {
       return `Top 7 movies for you, ${nickname}`;
-    } else if (moreButtonCount < BY_USER_COUNT + 1) {
+    } else if (byUserCount <= BY_USER_COUNT + 1) {
       return "How about this?";
     } else {
-      return "Recently liked by most people";
+      return "Recently most people liked";
     }
   };
 
   const bestFitString = () => {
-    if (moreButtonCount === 2) {
+    if (byUserCount === 2) {
       return "best fit!";
-    } else if (moreButtonCount < BY_USER_COUNT + 1) {
+    } else if (byUserCount <= BY_USER_COUNT + 1) {
       return "you might like...";
     } else {
       return "";
