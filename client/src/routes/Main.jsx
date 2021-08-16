@@ -155,6 +155,26 @@ function Main() {
     setSimilarUserMovieList(idAndPosters);
   };
 
+  const moviesString = () => {
+    if (moreButtonCount === 2) {
+      return `Top 7 movies for you, ${nickname}`;
+    } else if (moreButtonCount < BY_USER_COUNT + 1) {
+      return "How about this?";
+    } else {
+      return "Recently liked by most people";
+    }
+  };
+
+  const bestFitString = () => {
+    if (moreButtonCount === 2) {
+      return "best fit!";
+    } else if (moreButtonCount < BY_USER_COUNT + 1) {
+      return "you might like...";
+    } else {
+      return "";
+    }
+  };
+
   return (
     <>
       {isLoading ? (
@@ -162,7 +182,7 @@ function Main() {
       ) : (
         <div className="main">
           <div className="main__title">
-            <div>Top 7 movies for you, {nickname}</div>
+            <div>{moviesString()}</div>
           </div>
           <div className="main__best-recommend">
             <div className="main__best-recommend-image-wrapper">
@@ -172,7 +192,7 @@ function Main() {
               <div className="main__transparent-layer"></div>
             </div>
             <div className="main__best-recommend-text">
-              <div className="main__emphasis">best fit!</div>
+              <div className="main__emphasis">{bestFitString()}</div>
               <div className="main__description">{firstMovie.title}</div>
             </div>
           </div>
