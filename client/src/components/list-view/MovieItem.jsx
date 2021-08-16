@@ -17,7 +17,7 @@ const StyledRating = withStyles({
 })(Rating);
 
 function MovieItem(props) {
-  const { movieId, url, isInline, isRating, addNewRating } = props;
+  const { movieId, url, isInline, isRating, addNewRating, title } = props;
   const [star, setStar] = useState(0);
   const [isSelected, setIsSelected] = useState(false);
   const starRef = useRef(null);
@@ -27,8 +27,18 @@ function MovieItem(props) {
   }
 
   return (
-    <div className={(isInline ? "movie-inline-item" : "") + " movie-item"}>
-      <img src={url} alt="movie" onClick={onClickPoster}></img>
+    <div
+      className={(isInline ? "movie-inline-item" : "") + " movie-item"}
+      style={!!title ? { height: "170px" } : {}}
+    >
+      <div className="movie-item__item">
+        <img src={url} alt="movie" onClick={onClickPoster}></img>
+        {!!title && (
+          <div className="movie-item__title">
+            {title.length < 13 ? title : title.slice(0, 11) + "..."}
+          </div>
+        )}
+      </div>
       {isRating ? (
         isSelected ? (
           <div className="movie-item__selected">

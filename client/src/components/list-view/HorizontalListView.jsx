@@ -47,9 +47,9 @@ function HorizontalListView(props) {
   return (
     <div className={classes.root}>
       <div className="list-view__horizontal">
-        {/* {movieImageList.map((url, index) => (
-          <MovieItem url={url} key={index} />
-        ))} */}
+        {movieImageList.map((url, index) => (
+          <MovieItem url={url} isInline={true} key={index} />
+        ))}
         <MovieItem url={poster} isInline={true} isRating={false} />
         <MovieItem url={poster} isInline={true} isRating={false} />
         <MovieItem url={poster} isInline={true} isRating={false} />
