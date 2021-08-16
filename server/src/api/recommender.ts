@@ -24,10 +24,10 @@ export const getRecommendationsById = (
   size: number,
   page: number
 ): number[] => {
-  const allForUser: number[] = global.recommendations[userId.toString()];
   const start: number = (page - 1) * size;
   const end: number = page * size;
-  return allForUser.slice(start, end);
+  const forOneUser: number[] = global.recommendations[userId.toString()];
+  return forOneUser.slice(start, end);
 };
 
 export const getSimilarUser = (userId: number): number => {

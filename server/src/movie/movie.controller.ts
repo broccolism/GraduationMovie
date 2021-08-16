@@ -20,7 +20,7 @@ router.get(
 router.get(
   MoviePath.GET_TOP_N_BY_ID,
   async (req: Request<{}, {}, {}, Models.GetTopNByIdReq>, res) => {
-    const movieIds: number[] = await Service.getTopNMoviesById(req.query);
+    const movieIds: number[] = Service.getTopNMoviesById(req.query);
     const result: Models.GetTopNByIdRes = { movieIds: movieIds };
     res.status(200).send(result);
     console.log(get200ConsoleMessage("getTopNMoviesById", result));

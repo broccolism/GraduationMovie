@@ -16,7 +16,6 @@ function VerticalListView(props) {
   const { movieList, isRating, addNewRating } = props;
 
   const classes = useStyles();
-
   return (
     <div className={classes.root}>
       <div className="list-view__grid">

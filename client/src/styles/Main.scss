@@ -40,7 +40,9 @@
     z-index: 20;
   }
   &__item-similar-recommend {
+    height: 342px;
     padding: 15px;
+    display: flex;
   }
   &__reload-button {
     padding: 15px;

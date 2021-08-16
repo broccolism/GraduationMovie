@@ -1,13 +1,19 @@
 import db from "../config/db";
 import * as Models from "./movie.model";
 
-export const getTopNMoviesForEvery = async (topN: number) => {
+export const getTopNMoviesForEvery = async (
+  limit: number,
+  offset: number,
+  time: number
+) => {
   const [rows, _] = await db.execute(
-    `SELECT movie_id as movieId, COUNT(id) as count
+    `SELECT movie_id as movieId, avg(rating), count(*)
      FROM rates
+     WHERE timestamp >= ${time}
      GROUP BY movie_id
-     ORDER BY COUNT(id) DESC
-     LIMIT ${topN};`
+     ORDER BY AVG(rating) DESC, COUNT(*) DESC
+     LIMIT ${limit}
+     OFFSET ${offset};`
   );
   return (rows as any).map((row) => row.movieId);
 };

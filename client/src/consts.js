@@ -1,1 +1,1 @@
-export const localhost = "192.168.1.101";
+export const localhost = "localhost";

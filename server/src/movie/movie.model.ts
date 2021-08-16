@@ -33,7 +33,8 @@ export interface GetTopNByIdRes extends BaseRes {
 }
 
 export interface GetTopNForEveryReq {
-  topN: number;
+  size: number;
+  page: number;
 }
 
 export interface GetTopNForEveryRes extends BaseRes {

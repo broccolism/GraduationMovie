@@ -21,20 +21,25 @@ export const getDissimilarMovies = async (
   return result;
 };
 
-export const getTopNMoviesById = async (
-  param: Models.GetTopNByIdReq
-): Promise<number[]> => {
-  const userId = param.userId;
-  const size = param.size;
-  const page = param.page;
-  const result = RecApi.getRecommendationsById(userId, size, page);
+export const getTopNMoviesById = (param: Models.GetTopNByIdReq): number[] => {
+  const userId: number = param.userId;
+  const size: number = param.size;
+  const page: number = param.page;
+  const result: number[] = RecApi.getRecommendationsById(userId, size, page);
   return result;
 };
 
 export const getTopNMoviesForEvery = async (
   param: Models.GetTopNForEveryReq
 ): Promise<number[]> => {
-  const result = await Repo.getTopNMoviesForEvery(param.topN);
+  const time: number = getCurrentTimestamp() - getCurrentTimestamp();
+  const limit: number = param.size;
+  const offset: number = param.size * (param.page - 1);
+  const result: number[] = await Repo.getTopNMoviesForEvery(
+    limit,
+    offset,
+    time
+  );
   return result;
 };
 
