@@ -22,13 +22,15 @@ function MyPage() {
     unratedMovies: [],
     ratedMovies: [],
   });
+  const [unratedMovie, setUnratedMovie] = useState();
 
   useEffect(() => {
     async function fetchData() {
       try {
         const user_id = UserCookie.getUserId();
         setUserId(user_id);
-        await getUserInfo(user_id);
+        const unratedMovies = await getUserInfo(user_id);
+        await getUnratedMovieTitle(unratedMovies);
 
         const watchedMovieIds = userInfo.unratedMovies.map(
           (movie) => movie.movieId
@@ -76,65 +78,107 @@ function MyPage() {
         unratedMovies: response.data.unratedMovies,
         ratedMovies: response.data.ratedMovies,
       });
+      return response.data.unratedMovies;
     } catch (err) {
       console.log("@@@@@@ fetch data ERR", err);
     }
   }
 
+  const getUnratedMovieTitle = async (unratedMovies) => {
+    if (unratedMovies.length > 0) {
+      try {
+        const targetId = unratedMovies[0].movieId;
+        const res = await axios.get(
+          `http://${localhost}:5000/movie/poster?movieId=${targetId}`
+        );
+        setUnratedMovie(res.data);
+      } catch (err) {
+        console.error("@@@@@ get unrated movie title ERR", err);
+      }
+    }
+  };
+
   const ratedMoviePercent =
     (userInfo.ratedMovies.length /
       (userInfo.ratedMovies.length + userInfo.unratedMovies.length)) *
     100;
+  const doneRating = ratedMoviePercent === 100;
+
   return (
     <>
       <div className="my-page">
-        <div className="my-page__user-info">
-          <div className="my-page__profile">
-            <div className="my-page__profile-image">
-              <img src="https://thumb.ac-illust.com/t/f6/f6e3fd6d7e60544500352e46ad300085_t.jpeg" />
-            </div>
-            <div className="my-page__profile-nickname">{userInfo.nickname}</div>
-          </div>
-          <div className="my-page__movies-info">
-            <div className="my-page__movie-info">
-              <div className="my-page__movie-info-title">watched</div>
-              <div className="my-page__movie-info-count">
-                {userInfo.ratedMovies.length + userInfo.unratedMovies.length}
+        {isLoading ? (
+          <CenterLoading />
+        ) : (
+          <>
+            <div className="my-page__user-info">
+              <div className="my-page__profile">
+                <div className="my-page__profile-image">
+                  <img src="https://thumb.ac-illust.com/t/f6/f6e3fd6d7e60544500352e46ad300085_t.jpeg" />
+                </div>
+                <div className="my-page__profile-nickname">
+                  {userInfo.nickname}
+                </div>
+              </div>
+              <div className="my-page__movies-info">
+                <div className="my-page__movie-info">
+                  <div className="my-page__movie-info-title">watched</div>
+                  <div className="my-page__movie-info-count">
+                    {userInfo.ratedMovies.length +
+                      userInfo.unratedMovies.length}
+                  </div>
+                </div>
+                <div className="my-page__movie-info">
+                  <div className="my-page__movie-info-title">rated</div>
+                  <div className="my-page__movie-info-count">
+                    {userInfo.ratedMovies.length}
+                  </div>
+                </div>
               </div>
             </div>
-            <div className="my-page__movie-info">
-              <div className="my-page__movie-info-title">rated</div>
-              <div className="my-page__movie-info-count">
-                {userInfo.ratedMovies.length}
+
+            <Column>
+              <RatedRatio>{ratedMoviePercent}% rated</RatedRatio>
+              <StyledEmptyDiv height="4px" />
+              <BarWrapper>
+                <HorizontalBar
+                  width={ratedMoviePercent.toString()}
+                  color="var(--main-purple)"
+                />
+                <HorizontalBar
+                  width={(100 - ratedMoviePercent).toString()}
+                  color="gray"
+                />
+              </BarWrapper>
+              <StyledEmptyDiv height="12px" />
+              {doneRating ? (
+                <BarText>🎉All rated. Well done!</BarText>
+              ) : (
+                <BarText>
+                  How was '{unratedMovie.title.substring(0, 12) + "..."}'?
+                  <BarButtonIcon className="fas fa-chevron-right" />
+                </BarText>
+              )}
+              <StyledEmptyDiv height="12px" />
+            </Column>
+
+            <div className="my-page__watched-movie">
+              <div className="my-page__watched-movie-header">
+                <div className="my-page__watched-movie-title">
+                  Movie watched
+                </div>
+                <div className="my-page__search-icon">
+                  <Link to="/mypage/search">
+                    <i className="fas fa-search"></i>
+                  </Link>
+                </div>
+              </div>
+              <div className="my-page__movie-list">
+                <VerticalListView movieList={movieList} isRating={false} />
               </div>
             </div>
-          </div>
-        </div>
-
-        <Column>
-          <RatedRatio>{ratedMoviePercent}% rated</RatedRatio>
-          <StyledEmptyDiv height="4px" />
-          <BarWrapper>
-            <HorizontalBar width={ratedMoviePercent} color="#a662ea" />
-            <HorizontalBar width={100 - ratedMoviePercent} color="gray" />
-          </BarWrapper>
-          <StyledEmptyDiv height="12px" />
-          <BarText>🎉All rated. Well done!</BarText>
-        </Column>
-
-        <div className="my-page__watched-movie">
-          <div className="my-page__watched-movie-header">
-            <div className="my-page__watched-movie-title">Movie watched</div>
-            <div className="my-page__search-icon">
-              <Link to="/mypage/search">
-                <i className="fas fa-search"></i>
-              </Link>
-            </div>
-          </div>
-          <div className="my-page__movie-list">
-            <VerticalListView movieList={movieList} isRating={false} />
-          </div>
-        </div>
+          </>
+        )}
       </div>
       <BottomMenu />
     </>
@@ -174,4 +218,12 @@ const BarText = styled.div`
   display: flex;
   font-size: 14px;
   color: white;
+`;
+
+const BarButtonIcon = styled.i`
+  display: flex;
+  padding-left: 6px;
+  font-size: 18px;
+  color: white;
+  opacity: 0.87;
 `;
