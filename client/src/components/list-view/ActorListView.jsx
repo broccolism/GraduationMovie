@@ -12,6 +12,8 @@ import "../../styles/ListView.scss";
 const useStyles = makeStyles((theme) =>
   createStyles({
     root: {
+      paddingLeft: "16px",
+      paddingRight: "16px",
       flexGrow: 1,
     },
     paper: {

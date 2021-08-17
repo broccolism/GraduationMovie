@@ -3,10 +3,10 @@ import { withStyles } from "@material-ui/core/styles";
 
 export const BorderRating = withStyles({
   iconFilled: {
-    color: "var(--yellow)",
+    color: "#FFC95A",
   },
   iconEmpty: {
-    stroke: "var(--yellow)",
+    stroke: "#FFC95A",
     strokeWidth: "1px",
   },
 })(Rating);

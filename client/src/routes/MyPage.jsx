@@ -135,7 +135,9 @@ function MyPage() {
             <div className="my-page__user-info">
               <div className="my-page__profile">
                 <div className="my-page__profile-image">
-                  <img src="https://thumb.ac-illust.com/t/f6/f6e3fd6d7e60544500352e46ad300085_t.jpeg" />
+                  <img
+                    src={`https://gravatar.com/avatar/${UserCookie.getUserId()}?s=200&r=pg&d=identicon&f=y`}
+                  />
                 </div>
                 <div className="my-page__profile-nickname">
                   {userInfo.nickname}

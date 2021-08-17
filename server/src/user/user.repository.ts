@@ -105,6 +105,7 @@ export const watchMovie = async (
 ): Promise<void> => {
   await db.execute(
     `INSERT INTO watched(user_id, movie_id, timestamp)
-     VALUES(${userId}, ${movieId}, ${time});`
+     VALUES(${userId}, ${movieId}, ${time})
+     ON DUPLICATE KEY UPDATE timestamp=${time};`
   );
 };

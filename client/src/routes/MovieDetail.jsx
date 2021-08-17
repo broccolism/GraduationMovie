@@ -111,6 +111,20 @@ function MovieDetail(props) {
     history.goBack();
   }
 
+  const handleWatchMovie = async () => {
+    const userId = UserCookie.getUserId();
+    const movieId = props.match.params.id;
+    try {
+      await axios.get(
+        `http://${localhost}:5000/user/watch?userId=${userId}&movieId=${movieId}`
+      );
+      window.location.assign(movieInfo.youtubeUrl);
+    } catch (err) {
+      console.error(err);
+      window.location.assign(movieInfo.youtubeUrl);
+    }
+  };
+
   return (
     <>
       {isLoading ? (
@@ -127,14 +141,14 @@ function MovieDetail(props) {
               </div>
             )}
             {!!movieInfo.youtubeUrl && (
-              <div className="movie-detail__trailer">
+              <div className="movie-detail__trailer" onClick={handleWatchMovie}>
                 <div>There's an official trailer for it!</div>
-                <a
-                  href={movieInfo.youtubeUrl}
+                <span
                   className="movie-detail__trailer-button"
+                  style={{ textDecoration: "none" }}
                 >
                   <i className="fas fa-play"></i>Youtube
-                </a>
+                </span>
               </div>
             )}
 
@@ -142,7 +156,10 @@ function MovieDetail(props) {
               {!!movieInfo.award && (
                 <div className="movie-detail__award">
                   <div className="movie-detail__award-icon">
-                    <i className="fas fa-trophy"></i>
+                    <i
+                      className="fas fa-trophy"
+                      style={{ color: "var(--yellow)" }}
+                    ></i>
                   </div>
                   {movieInfo.award}
                 </div>
@@ -165,7 +182,7 @@ function MovieDetail(props) {
                   {movieInfo.avgRating}
                 </div>
                 <div className="movie-detail__rated-count">
-                  ({movieInfo.ratingPeopleCount} rated)
+                  &nbsp;&nbsp;({movieInfo.ratingPeopleCount} rated)
                 </div>
                 {userRating <= 0 && (
                   <>
