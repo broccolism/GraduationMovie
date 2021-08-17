@@ -8,6 +8,7 @@ import "../styles/Search.scss";
 
 import VerticalListView from "../components/list-view/VerticalListView";
 import CenterLoading from "../components/util/CenterLoading";
+import styled from "styled-components";
 
 function Search() {
   const [isLoading, setIsLoading] = useState(false);
@@ -99,6 +100,13 @@ function Search() {
           </div>
         )}
         {isLoading && <CenterLoading />}
+        {!isLoading && movieIds.length === 0 && (
+          <EmptyText>
+            Oops, no results yet. <br />
+            <br />
+            Search by title, keyword, actors... etc.
+          </EmptyText>
+        )}
         {!isLoading && movieIds && (
           <div className="search__movie-list">
             <VerticalListView movieList={movieList} isRating={false} />
@@ -110,3 +118,16 @@ function Search() {
 }
 
 export default Search;
+
+const EmptyText = styled.div`
+  width: 100%;
+  padding: 200px 0px;
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
+  color: white;
+  opacity: 0.65;
+`;
