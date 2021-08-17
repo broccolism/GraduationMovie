@@ -10,9 +10,12 @@ import UserCookie from "../utils/cookie";
 import { localhost } from "../consts";
 import ActorListView from "../components/list-view/ActorListView";
 import CenterLoading from "../components/util/CenterLoading";
+import ShimmerLoading from "../components/movie-detail/ShimmerLoading";
 
 function MovieDetail(props) {
-  const movieId = props.match.params.id;
+  console.log("@@@@@@@@@@@@@@@", props.match.params.id);
+  const movieId = props.match.params.id.split("_")[0];
+  const movieTitle = props.match.params.id.split("_")[1].split(", The")[0];
   const [movieInfo, setMovieInfo] = useState({
     youtubeUrl: "",
     award: "",
@@ -63,7 +66,8 @@ function MovieDetail(props) {
       setMovieInfo({
         youtubeUrl: response.data.youtubeUrl,
         award: response.data.award,
-        movieTitle: response.data.title,
+        // movieTitle: response.data.title,
+        movieTitle: movieTitle,
         year: response.data.year,
         genre: response.data.genre,
         avgRating: response.data.avgRating,
@@ -126,7 +130,7 @@ function MovieDetail(props) {
   return (
     <>
       {isLoading ? (
-        <CenterLoading />
+        <ShimmerLoading title={movieTitle} />
       ) : (
         <>
           <div className="header-back" onClick={onClickBack}>
@@ -151,7 +155,7 @@ function MovieDetail(props) {
             )}
 
             <div className="movie-detail__main-information">
-              {!!movieInfo.award && (
+              {!!movieInfo.award && movieInfo.award !== "N/A" && (
                 <div className="movie-detail__award">
                   <div className="movie-detail__award-icon">
                     <i

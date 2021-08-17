@@ -21,6 +21,7 @@ function VerticalListView(props) {
       <div className="list-view__grid">
         {movieList.map((movie, _) => (
           <MovieItem
+            title={movie.title}
             addNewRating={addNewRating}
             movieId={movie.id}
             url={movie.url}

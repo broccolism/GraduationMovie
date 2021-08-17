@@ -31,6 +31,7 @@ function HorizontalListView(props) {
               url={movie.url}
               key={index}
               isInline={true}
+              title={movie.title}
             />
           );
         })}

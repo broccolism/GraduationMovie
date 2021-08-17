@@ -55,6 +55,7 @@ function MyPage() {
           return {
             id: movieId,
             url: res.data.posterUrl,
+            title: res.data.title.split(", The")[0],
           };
         })
     );
@@ -124,7 +125,11 @@ function MyPage() {
     <>
       <div className="my-page">
         {isLoading ? (
-          <CenterLoading />
+          <div
+            style={{ height: "100vh", display: "flex", alignItems: "center" }}
+          >
+            <CenterLoading />
+          </div>
         ) : (
           <>
             <RatingModal

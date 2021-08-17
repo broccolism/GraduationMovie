@@ -53,6 +53,7 @@ function MyPageSearch() {
           return {
             id: movieId,
             url: res.data.posterUrl,
+            title: res.data.title.split(", The")[0],
           };
         })
     );

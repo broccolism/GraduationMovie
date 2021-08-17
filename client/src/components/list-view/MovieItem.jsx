@@ -18,7 +18,8 @@ const StyledRating = withStyles({
 })(Rating);
 
 function MovieItem(props) {
-  const { movieId, url, isInline, isRating, addNewRating, title } = props;
+  const { movieId, url, isInline, isRating, addNewRating, title, showTitle } =
+    props;
   const [star, setStar] = useState(0);
   const [isSelected, setIsSelected] = useState(false);
   const starRef = useRef(null);
@@ -26,7 +27,7 @@ function MovieItem(props) {
 
   function onClickPoster() {
     if (isRating) setIsSelected((prev) => !prev);
-    else history.push(`/movie-detail/${movieId}`);
+    else history.push(`/movie-detail/${movieId}_${title}`);
   }
 
   return (
@@ -41,9 +42,9 @@ function MovieItem(props) {
           alt="movie"
           onClick={onClickPoster}
         ></img>
-        {!!title && (
+        {!!title && showTitle && (
           <div className="movie-item__title">
-            {title.length < 13 ? title : title.slice(0, 11) + "..."}
+            {title.length < 12 ? title : title.slice(0, 10) + "..."}
           </div>
         )}
       </div>

@@ -136,6 +136,7 @@ function Main() {
           return {
             id: movieId,
             url: res.data.posterUrl,
+            title: res.data.title.split(", The")[0],
           };
         })
     );
@@ -186,6 +187,7 @@ function Main() {
           return {
             id: movieId,
             url: res.data.posterUrl,
+            title: res.data.title.split(", The")[0],
           };
         })
     );
@@ -217,7 +219,7 @@ function Main() {
   };
 
   const moveToFirstMovieDetail = () => {
-    history.push(`/movie-detail/${firstMovie.movieId}`);
+    history.push(`/movie-detail/${firstMovie.movieId}_${firstMovie.title}`);
   };
 
   return (

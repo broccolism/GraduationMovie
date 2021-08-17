@@ -38,6 +38,7 @@ function ActorListView(props) {
               isInline={true}
               key={index}
               title={actor.name}
+              showTitle={true}
             />
           ) : (
             <Column>
