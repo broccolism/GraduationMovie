@@ -90,6 +90,7 @@ export interface GetDetailRes extends BaseRes {
 
 export interface SearchMovieReq {
   keyword: string;
+  page: number;
 }
 
 export interface SearchMovieRes extends BaseRes {
@@ -99,6 +100,7 @@ export interface SearchMovieRes extends BaseRes {
 
 export interface SearchMovieByKeywordReq {
   keyword: string;
+  page: number;
 }
 
 export interface SearchMovieByKeywordRes extends BaseRes {

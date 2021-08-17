@@ -15,21 +15,26 @@ export const tmdbIdToImdbId = async (id: number): Promise<string> => {
 };
 
 export const tmdbIdToCustomId = async (tmdbId: number): Promise<number> => {
-  const findInDB = await MovieRepo.isMovieExist(tmdbId);
-  if (findInDB.isExists) {
-    return findInDB.id;
+  console.log("@@@@@@@@@ TMDBID to:", tmdbId);
+  try {
+    const findInDB = await MovieRepo.isMovieExist(tmdbId);
+    if (findInDB.isExists) {
+      return findInDB.id;
+    }
+
+    const tmdbDetail = await TmdbApi.getTmdbMovieDetails(tmdbId);
+    const movie: Models.Movie = {
+      id: -1,
+      title: tmdbDetail.title,
+      genres: "undefined",
+      imdb_id: 0,
+      tmdb_id: tmdbId,
+      year: +tmdbDetail.release_date.split("-")[0],
+    };
+
+    const id = await MovieRepo.createMovie(movie);
+    return id;
+  } catch (err) {
+    // console.error("tmdbid to custom id err", err.);
   }
-
-  const tmdbDetail = await TmdbApi.getTmdbMovieDetails(tmdbId);
-  const movie: Models.Movie = {
-    id: -1,
-    title: tmdbDetail.title,
-    genres: "undefined",
-    imdb_id: 0,
-    tmdb_id: tmdbId,
-    year: +tmdbDetail.release_date.split("-")[0],
-  };
-
-  const id = await MovieRepo.createMovie(movie);
-  return id;
 };

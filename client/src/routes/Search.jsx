@@ -16,6 +16,7 @@ function Search() {
   const [keywords, setKeywords] = useState([]);
   const [searchText, setSearchText] = useState("");
   const [movieList, setMovieList] = useState([]);
+  const [page, setPage] = useState(1);
 
   function onChangeSearch(e) {
     setSearchText(e.target.value);
@@ -38,21 +39,45 @@ function Search() {
 
   async function searchMovie(searchText) {
     try {
-      const response = await axios.get(
-        `http://${localhost}:5000/movie/search?keyword=${searchText}`
-      );
-      setKeywords(response.data.keywords);
-      setMovieIds(response.data.movieIds);
-      await getPosterAndIdList(response.data.movieIds);
+      let curPage = page;
+      let keywords = [];
+      let movieIds = [];
+      while (movieIds.length < 21) {
+        console.log("@@@@@@@@@@@@@@ page:", curPage);
+        const res = await axios.get(
+          `http://${localhost}:5000/movie/search?keyword=${searchText}&page=${curPage}`
+        );
+        const data = res.data;
+        keywords = keywords.concat(data.keywords);
+        movieIds = movieIds.concat(data.movieIds);
+        curPage += 1;
+      }
+
+      setPage(curPage);
+      setKeywords(keywords);
+      setMovieIds(movieIds);
+      await getPosterAndIdList(movieIds);
     } catch (err) {
       console.log("@@@@@@ fetch data ERR", err);
     }
   }
+
+  const searchOnScrollDown = async () => {
+    try {
+      const response = await axios.get(
+        `http://${localhost}:5000/movie/search?keyword=${searchText}&page=${page}`
+      );
+      setMovieIds(movieIds.concat(response.data.movieIds));
+      await getPosterAndIdList(response.data.movieIds);
+    } catch (err) {
+      console.log("@@@@@@ fetch data ERR", err);
+    }
+  };
 
   async function searchMovieByKeyword(keyword) {
     try {
       const response = await axios.get(
-        `http://${localhost}:5000/movie/search/keyword?keyword=${keyword}`
+        `http://${localhost}:5000/movie/search/keyword?keyword=${keyword}&page=${page}`
       );
       setMovieIds(response.data.movieIds);
       await getPosterAndIdList(response.data.movieIds);
@@ -61,7 +86,7 @@ function Search() {
     }
   }
 
-  const getPosterAndIdList = async (movieIds) => {
+  const getPosterAndIdList = async (movieIds, isConcat) => {
     const promises = movieIds.map((movieId) =>
       axios
         .get(`http://${localhost}:5000/movie/poster?movieId=${movieId}`)
@@ -75,7 +100,18 @@ function Search() {
     const idAndPosters = (await Promise.all(promises)).filter(
       (movie) => movie.url !== ""
     );
-    setMovieList(idAndPosters);
+    setMovieList(isConcat ? idAndPosters.concat(movieList) : idAndPosters);
+  };
+
+  useEffect(() => {
+    window.addEventListener("scroll", handleScroll);
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+    };
+  }, []);
+
+  const handleScroll = async () => {
+    console.log("@@@@@@@@ scroll");
   };
 
   return (
@@ -91,6 +127,7 @@ function Search() {
           <div className="search__tags">
             {keywords.map((keyword) => (
               <div
+                key={keyword}
                 className="search__tag"
                 onClick={async () => await onClickTag(keyword)}
               >
