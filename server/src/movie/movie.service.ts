@@ -1,5 +1,6 @@
 import * as Models from "./movie.model";
 import * as Repo from "./movie.repository";
+import * as UserRepo from "../user/user.repository";
 import * as TmdbApi from "../api/tmdb";
 import {
   blankToPlus,
@@ -46,6 +47,7 @@ export const getTopNMoviesForEvery = async (
 export const rateOneMovie = async (param: Models.RateOneReq): Promise<void> => {
   if (param.rating > 0) {
     const timestamp: number = getCurrentTimestamp();
+    await UserRepo.watchMovie(param.movieId, param.userId, timestamp);
     await Repo.rateOneMovie(
       param.userId,
       param.movieId,
