@@ -7,7 +7,6 @@ import styled from "styled-components";
 
 import VerticalListView from "../components/list-view/VerticalListView";
 import HorizontalListView from "../components/list-view/HorizontalListView";
-import BottomMenu from "../components/util/BottomMenu";
 import UserCookie from "../utils/cookie";
 import CenterLoading from "../components/util/CenterLoading";
 
@@ -278,7 +277,6 @@ function Main() {
           )}
         </div>
       )}
-      <BottomMenu />
     </>
   );
 }

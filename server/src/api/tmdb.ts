@@ -34,13 +34,12 @@ export const getKeywordsById = async (movieId: number): Promise<string[]> => {
 };
 
 export const searchMovieByKeyword = async (
-  keyword: string
+  keyword: string,
+  page: number
 ): Promise<number[]> => {
-  const res = await tmdb.get(`/search/movie?query=${keyword}&${KEY}`);
-  const tmdbIds = res.data.results.map((movie: any) => movie.id);
-  return await Promise.all(
-    tmdbIds.map(
-      async (id: number) => await tmdbIdToCustomId(id).catch((err) => {})
-    )
+  const res = await tmdb.get(
+    `/search/movie?query=${keyword}&year=2020&${KEY}&page=${page}&include_adult=false`
   );
+  const tmdbIds = res.data.results.map((movie: any) => movie.id);
+  return tmdbIds;
 };

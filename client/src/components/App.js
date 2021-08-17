@@ -13,15 +13,10 @@ import MovieDetail from "../routes/MovieDetail";
 import Search from "../routes/Search";
 import MyPage from "../routes/MyPage";
 import MyPageSearch from "../routes/MyPageSearch";
+import BottomMenu from "./util/BottomMenu";
+import { ConsoleWriter } from "istanbul-lib-report";
 
 function App() {
-  // route intro
-  // route main
-  // route movie detail
-  // route search
-  // route my page
-  // <MenuTab/>
-
   const customTheme = createTheme({
     palette: {
       primary: {
@@ -32,7 +27,7 @@ function App() {
       },
     },
   });
-
+  console.log("@@@", window.location.pathname);
   return (
     <ThemeProvider theme={customTheme}>
       <div className="App">
@@ -44,6 +39,8 @@ function App() {
         <Route path="/mypage" exact component={MyPage} />
         <Route path="/mypage/search" exact component={MyPageSearch} />
       </div>
+      {window.location.pathname !== "/set-taste" &&
+        window.location.pathname !== "/" && <BottomMenu />}
     </ThemeProvider>
   );
 }

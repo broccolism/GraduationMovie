@@ -7,7 +7,6 @@ import "../styles/App.scss";
 import "../styles/MyPageSearch.scss";
 
 import VerticalListView from "../components/list-view/VerticalListView";
-import BottomMenu from "../components/util/BottomMenu";
 import UserCookie from "../utils/cookie";
 import CenterLoading from "../components/util/CenterLoading";
 
@@ -36,8 +35,9 @@ function MyPageSearch() {
   async function searchMovie(searchText) {
     try {
       const response = await axios.get(
-        `http://${localhost}:5000/movie/user/search/watched?keyword=${searchText}&userId=${userId}`
+        `http://${localhost}:5000/user/search/watched?keyword=${searchText}&userId=${userId}`
       );
+
       setWatchedMovieList(response.data.movieIds);
       await getPosterAndIdList(response.data.movieIds);
     } catch (err) {
@@ -99,7 +99,6 @@ function MyPageSearch() {
           <div className="search__nothing">No results</div>
         )}
       </div>
-      <BottomMenu />
     </>
   );
 }

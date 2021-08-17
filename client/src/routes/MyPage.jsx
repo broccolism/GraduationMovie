@@ -9,10 +9,8 @@ import styled from "styled-components";
 import StyledEmptyDiv from "../components/util/StyledEmptyDiv";
 
 import VerticalListView from "../components/list-view/VerticalListView";
-import BottomMenu from "../components/util/BottomMenu";
 import UserCookie from "../utils/cookie";
 import CenterLoading from "../components/util/CenterLoading";
-import Dialog from "@material-ui/core/Dialog";
 import RatingModal from "../components/util/RatingModal";
 
 function MyPage() {
@@ -30,22 +28,16 @@ function MyPage() {
   useEffect(() => {
     async function fetchData() {
       try {
-        const user_id = UserCookie.getUserId();
-        setUserId(user_id);
-        const unratedMovies = await getUserInfo(user_id);
-        await getUnratedMovieTitle(unratedMovies);
-        console.log("userInfo", userInfo);
+        const userId = UserCookie.getUserId();
+        const info = await getUserInfo(userId);
 
-        const watchedMovieIds = userInfo.unratedMovies.map(
-          (movie) => movie.movieId
-        );
-        watchedMovieIds.push.apply(
-          watchedMovieIds,
-          userInfo.ratedMovies.map((movie) => movie.movieId)
-        );
+        const watchedMovieIds = info.unratedMovies
+          .map((movie) => movie.movieId)
+          .concat(info.ratedMovies.map((movie) => movie.movieId));
 
+        setUserId(userId);
+        await getUnratedMovieTitle(info.unratedMovies);
         await getPosterAndIdList(watchedMovieIds);
-
         setIsLoading(false);
       } catch (err) {
         console.log("@@@@@@ fetch data ERR", err);
@@ -82,7 +74,7 @@ function MyPage() {
         unratedMovies: response.data.unratedMovies,
         ratedMovies: response.data.ratedMovies,
       });
-      return response.data.unratedMovies;
+      return response.data;
     } catch (err) {
       console.log("@@@@@@ fetch data ERR", err);
     }
@@ -209,7 +201,6 @@ function MyPage() {
           </>
         )}
       </div>
-      <BottomMenu />
     </>
   );
 }

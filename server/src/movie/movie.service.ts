@@ -135,7 +135,8 @@ export const searchMovie = async (
   param: Models.SearchMovieReq
 ): Promise<Models.SearchMovieRes> => {
   const tmdbIds: number[] = await TmdbApi.searchMovieByKeyword(
-    blankToPlus(param.keyword)
+    blankToPlus(param.keyword),
+    param.page
   );
 
   const idPromises: Promise<number>[] = tmdbIds.map(
@@ -173,7 +174,8 @@ export const searchMovieByKeyword = async (
   param: Models.SearchMovieByKeywordReq
 ): Promise<Models.SearchMovieByKeywordRes> => {
   const tmdbIds: number[] = await TmdbApi.searchMovieByKeyword(
-    blankToPlus(param.keyword)
+    blankToPlus(param.keyword),
+    param.page
   );
 
   const idPromises: Promise<number>[] = tmdbIds.map(

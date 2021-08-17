@@ -7,8 +7,8 @@ import "../styles/App.scss";
 import "../styles/Search.scss";
 
 import VerticalListView from "../components/list-view/VerticalListView";
-import BottomMenu from "../components/util/BottomMenu";
 import CenterLoading from "../components/util/CenterLoading";
+import styled from "styled-components";
 
 function Search() {
   const [isLoading, setIsLoading] = useState(false);
@@ -16,6 +16,7 @@ function Search() {
   const [keywords, setKeywords] = useState([]);
   const [searchText, setSearchText] = useState("");
   const [movieList, setMovieList] = useState([]);
+  const [page, setPage] = useState(1);
 
   function onChangeSearch(e) {
     setSearchText(e.target.value);
@@ -38,21 +39,45 @@ function Search() {
 
   async function searchMovie(searchText) {
     try {
-      const response = await axios.get(
-        `http://${localhost}:5000/movie/search?keyword=${searchText}`
-      );
-      setKeywords(response.data.keywords);
-      setMovieIds(response.data.movieIds || []);
-      await getPosterAndIdList(response.data.movieIds);
+      let curPage = page;
+      let keywords = [];
+      let movieIds = [];
+      while (movieIds.length < 21) {
+        console.log("@@@@@@@@@@@@@@ page:", curPage);
+        const res = await axios.get(
+          `http://${localhost}:5000/movie/search?keyword=${searchText}&page=${curPage}`
+        );
+        const data = res.data;
+        keywords = keywords.concat(data.keywords);
+        movieIds = movieIds.concat(data.movieIds);
+        curPage += 1;
+      }
+
+      setPage(curPage);
+      setKeywords(keywords);
+      setMovieIds(movieIds);
+      await getPosterAndIdList(movieIds);
     } catch (err) {
       console.log("@@@@@@ fetch data ERR", err);
     }
   }
 
+  const searchOnScrollDown = async () => {
+    try {
+      const response = await axios.get(
+        `http://${localhost}:5000/movie/search?keyword=${searchText}&page=${page}`
+      );
+      setMovieIds(movieIds.concat(response.data.movieIds));
+      await getPosterAndIdList(response.data.movieIds);
+    } catch (err) {
+      console.log("@@@@@@ fetch data ERR", err);
+    }
+  };
+
   async function searchMovieByKeyword(keyword) {
     try {
       const response = await axios.get(
-        `http://${localhost}:5000/movie/search/keyword?keyword=${keyword}`
+        `http://${localhost}:5000/movie/search/keyword?keyword=${keyword}&page=${page}`
       );
       setMovieIds(response.data.movieIds);
       await getPosterAndIdList(response.data.movieIds);
@@ -61,7 +86,7 @@ function Search() {
     }
   }
 
-  const getPosterAndIdList = async (movieIds) => {
+  const getPosterAndIdList = async (movieIds, isConcat) => {
     const promises = movieIds.map((movieId) =>
       axios
         .get(`http://${localhost}:5000/movie/poster?movieId=${movieId}`)
@@ -75,7 +100,18 @@ function Search() {
     const idAndPosters = (await Promise.all(promises)).filter(
       (movie) => movie.url !== ""
     );
-    setMovieList(idAndPosters);
+    setMovieList(isConcat ? idAndPosters.concat(movieList) : idAndPosters);
+  };
+
+  useEffect(() => {
+    window.addEventListener("scroll", handleScroll);
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+    };
+  }, []);
+
+  const handleScroll = async () => {
+    console.log("@@@@@@@@ scroll");
   };
 
   return (
@@ -91,6 +127,7 @@ function Search() {
           <div className="search__tags">
             {keywords.map((keyword) => (
               <div
+                key={keyword}
                 className="search__tag"
                 onClick={async () => await onClickTag(keyword)}
               >
@@ -99,20 +136,35 @@ function Search() {
             ))}
           </div>
         )}
-        {isLoading ? (
-          <CenterLoading />
-        ) : movieIds ? (
+        {isLoading && <CenterLoading />}
+        {!isLoading && movieIds.length === 0 && (
+          <EmptyText>
+            Oops, no results yet. <br />
+            <br />
+            Search by title, keyword, actors... etc.
+          </EmptyText>
+        )}
+        {!isLoading && movieIds && (
           <div className="search__movie-list">
             <VerticalListView movieList={movieList} isRating={false} />
           </div>
-        ) : (
-          <div className="search__nothing">No results</div>
         )}
       </div>
-
-      <BottomMenu />
     </>
   );
 }
 
 export default Search;
+
+const EmptyText = styled.div`
+  width: 100%;
+  padding: 200px 0px;
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
+  color: white;
+  opacity: 0.65;
+`;

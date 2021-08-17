@@ -32,7 +32,7 @@ function HorizontalListView(props) {
       let urls = [];
       for (const movieId of movieList) {
         const response = await axios.get(
-          `http://localhost:5000/movie/poster?movieId=${movieId}`
+          `http://localhost:5000/movie/poster?movieId=${movieId.id}`
         );
         urls.push(response.data.posterUrl);
       }
@@ -50,13 +50,13 @@ function HorizontalListView(props) {
         {movieImageList.map((url, index) => (
           <MovieItem url={url} isInline={true} key={index} />
         ))}
+        {/* <MovieItem url={poster} isInline={true} isRating={false} />
         <MovieItem url={poster} isInline={true} isRating={false} />
         <MovieItem url={poster} isInline={true} isRating={false} />
         <MovieItem url={poster} isInline={true} isRating={false} />
         <MovieItem url={poster} isInline={true} isRating={false} />
         <MovieItem url={poster} isInline={true} isRating={false} />
-        <MovieItem url={poster} isInline={true} isRating={false} />
-        <MovieItem url={poster} isInline={true} isRating={false} />
+        <MovieItem url={poster} isInline={true} isRating={false} /> */}
       </div>
     </div>
   );

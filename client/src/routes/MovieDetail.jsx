@@ -4,8 +4,6 @@ import { useHistory } from "react-router-dom";
 
 import "../styles/MovieDetail.scss";
 
-import BottomMenu from "../components/util/BottomMenu";
-import HorizontalListView from "../components/list-view/HorizontalListView";
 import RatingModal from "../components/util/RatingModal";
 import { BorderRating } from "../components/util/BorderRating";
 import UserCookie from "../utils/cookie";
@@ -61,7 +59,7 @@ function MovieDetail(props) {
       const response = await axios.get(
         `http://${localhost}:5000/movie/detail?movieId=${movieId}&userId=${user_id}`
       );
-      console.log(response.data);
+      console.log(response.data.actors);
       setMovieInfo({
         youtubeUrl: response.data.youtubeUrl,
         award: response.data.award,
@@ -75,7 +73,9 @@ function MovieDetail(props) {
         plot: response.data.plot,
         director: response.data.director,
         writers: response.data.writers,
-        actors: response.data.actors,
+        actors: response.data.actors.filter(
+          (actor) => actor.profileUrl !== "https://image.tmdb.org/t/p/w500/null"
+        ),
       });
       setIsLoading(false);
     } catch (err) {
@@ -213,7 +213,6 @@ function MovieDetail(props) {
             </div>
             <ActorListView actors={movieInfo.actors} />
           </div>
-          <BottomMenu />
         </>
       )}
     </>

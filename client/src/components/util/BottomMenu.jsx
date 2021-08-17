@@ -1,4 +1,4 @@
-import React from "react";
+import { useState } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import BottomNavigation from "@material-ui/core/BottomNavigation";
 import BottomNavigationAction from "@material-ui/core/BottomNavigationAction";
@@ -19,11 +19,11 @@ const useStyles = makeStyles({
 export default function BottomMenu() {
   const classes = useStyles();
   const history = useHistory();
-  const [value, setValue] = React.useState("main");
+  const [value, setValue] = useState("main");
 
   const handleChange = (event, newValue) => {
-    setValue(newValue);
     history.push(`/${newValue}`);
+    setValue(newValue);
   };
 
   return (
@@ -58,7 +58,7 @@ export default function BottomMenu() {
           <span
             className={value === "mypage" ? "menu-icon--active" : "menu-icon"}
           >
-            <i className="fas fa-user-alt" />{" "}
+            <i className="fas fa-user-alt" />
           </span>
         }
       />
