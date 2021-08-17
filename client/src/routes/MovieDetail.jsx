@@ -3,7 +3,6 @@ import axios from "axios";
 
 import "../styles/MovieDetail.scss";
 
-import BottomMenu from "../components/util/BottomMenu";
 import HorizontalListView from "../components/list-view/HorizontalListView";
 import RatingModal from "../components/util/RatingModal";
 import { BorderRating } from "../components/util/BorderRating";
@@ -195,7 +194,6 @@ function MovieDetail() {
         </div>
         <ActorListView actors={movieInfo.actors} />
       </div>
-      <BottomMenu />
     </>
   );
 }

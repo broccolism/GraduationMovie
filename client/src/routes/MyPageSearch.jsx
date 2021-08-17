@@ -7,7 +7,6 @@ import "../styles/App.scss";
 import "../styles/MyPageSearch.scss";
 
 import VerticalListView from "../components/list-view/VerticalListView";
-import BottomMenu from "../components/util/BottomMenu";
 import UserCookie from "../utils/cookie";
 import CenterLoading from "../components/util/CenterLoading";
 
@@ -75,7 +74,6 @@ function MyPageSearch() {
           <VerticalListView movieList={watchedMovieList} isRating={false} />
         </div>
       </div>
-      <BottomMenu />
     </>
   );
 }

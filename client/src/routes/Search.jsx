@@ -7,7 +7,6 @@ import "../styles/App.scss";
 import "../styles/Search.scss";
 
 import VerticalListView from "../components/list-view/VerticalListView";
-import BottomMenu from "../components/util/BottomMenu";
 import CenterLoading from "../components/util/CenterLoading";
 
 function Search() {
@@ -106,8 +105,6 @@ function Search() {
           </div>
         )}
       </div>
-
-      <BottomMenu />
     </>
   );
 }

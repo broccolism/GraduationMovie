@@ -13,15 +13,9 @@ import MovieDetail from "../routes/MovieDetail";
 import Search from "../routes/Search";
 import MyPage from "../routes/MyPage";
 import MyPageSearch from "../routes/MyPageSearch";
+import BottomMenu from "./util/BottomMenu";
 
 function App() {
-  // route intro
-  // route main
-  // route movie detail
-  // route search
-  // route my page
-  // <MenuTab/>
-
   const customTheme = createTheme({
     palette: {
       primary: {
@@ -44,6 +38,7 @@ function App() {
         <Route path="/mypage" exact component={MyPage} />
         <Route path="/mypage/search" exact component={MyPageSearch} />
       </div>
+      <BottomMenu />
     </ThemeProvider>
   );
 }

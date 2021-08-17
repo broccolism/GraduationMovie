@@ -9,10 +9,8 @@ import styled from "styled-components";
 import StyledEmptyDiv from "../components/util/StyledEmptyDiv";
 
 import VerticalListView from "../components/list-view/VerticalListView";
-import BottomMenu from "../components/util/BottomMenu";
 import UserCookie from "../utils/cookie";
 import CenterLoading from "../components/util/CenterLoading";
-import Dialog from "@material-ui/core/Dialog";
 import RatingModal from "../components/util/RatingModal";
 
 function MyPage() {
@@ -203,7 +201,6 @@ function MyPage() {
           </>
         )}
       </div>
-      <BottomMenu />
     </>
   );
 }
