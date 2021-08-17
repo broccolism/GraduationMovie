@@ -41,8 +41,8 @@ function App() {
         <Route path="/main" exact component={Main} />
         <Route path="/movie-detail" exact component={MovieDetail} />
         <Route path="/search" exact component={Search} />
-        <Route path="/my-page" exact component={MyPage} />
-        <Route path="/my-page/search" exact component={MyPageSearch} />
+        <Route path="/mypage" exact component={MyPage} />
+        <Route path="/mypage/search" exact component={MyPageSearch} />
       </div>
     </ThemeProvider>
   );

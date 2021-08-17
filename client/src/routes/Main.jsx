@@ -18,9 +18,7 @@ function Main() {
   const [movieList, setMovieList] = useState([]);
   const [firstMovie, setFirstMovie] = useState();
   const [nickname, setNickname] = useState("");
-  const [similarUserId, setSimilarUserId] = useState();
-  const [similarUserNickname, setSimilarUserNickname] = useState("");
-  const [similarUserLikedMovieIds, setSimilarUserLikedMovieIds] = useState([]);
+  const [similarUser, setSimilarUser] = useState();
   const [similarUserMovieList, setSimilarUserMovieList] = useState([]);
 
   const [byUserCount, setByUserCount] = useState(1);
@@ -91,9 +89,12 @@ function Main() {
       const response = await axios.get(
         `http://${localhost}:5000/user/similar?id=${userId}`
       );
-      setSimilarUserId(response.data.userId);
-      setSimilarUserNickname(response.data.nickname);
-      setSimilarUserLikedMovieIds(response.data.likedMovieIds);
+      console.log("similar user", response.data);
+      setSimilarUser({
+        userId: response.data.userId,
+        nickname: response.data.nickname,
+        likedMovieIds: response.data.likedMovieIds,
+      });
       await getPosterAndIdList(response.data.likedMovieIds);
     } catch (err) {
       console.log("@@@@@@ fetch data ERR", err);
@@ -248,27 +249,31 @@ function Main() {
             </button>
           </div>
 
-          <div className="main__title">
-            <div>We found someone like you!</div>
-          </div>
+          {!!similarUser && (
+            <div>
+              <div className="main__title">
+                <div>We found someone like you!</div>
+              </div>
 
-          <div className="main__profile">
-            <div className="main__profile-image">
-              <img
-                src={`https://gravatar.com/avatar/${similarUserId}?s=200&r=pg&d=identicon&f=y`}
-              />
-            </div>
-            <div className="main__title">
-              <div>{similarUserNickname}</div>
-            </div>
-          </div>
+              <div className="main__profile">
+                <div className="main__profile-image">
+                  <img
+                    src={`https://gravatar.com/avatar/${similarUser.userId}?s=200&r=pg&d=identicon&f=y`}
+                  />
+                </div>
+                <div className="main__title">
+                  <div>{similarUser.nickname}</div>
+                </div>
+              </div>
 
-          <div className="main__title">
-            <div>{similarUserNickname} recently liked</div>
-          </div>
-          <div className="main__user-similar-recommend">
-            <HorizontalListView movieList={movieList} />
-          </div>
+              <div className="main__title">
+                <div>{similarUser.nickname} recently liked</div>
+              </div>
+              <div className="main__user-similar-recommend">
+                <HorizontalListView movieList={similarUserMovieList} />
+              </div>
+            </div>
+          )}
         </div>
       )}
       <BottomMenu />
