@@ -35,7 +35,12 @@ function MovieItem(props) {
       style={!!title ? { height: "170px" } : {}}
     >
       <div className="movie-item__item">
-        <img src={url} alt="movie" onClick={onClickPoster}></img>
+        <img
+          style={{ width: "100px" }}
+          src={url}
+          alt="movie"
+          onClick={onClickPoster}
+        ></img>
         {!!title && (
           <div className="movie-item__title">
             {title.length < 13 ? title : title.slice(0, 11) + "..."}

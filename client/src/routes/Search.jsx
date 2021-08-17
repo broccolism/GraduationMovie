@@ -43,7 +43,6 @@ function Search() {
       let keywords = [];
       let movieIds = [];
       while (movieIds.length < 21) {
-        console.log("@@@@@@@@@@@@@@ page:", curPage);
         const res = await axios.get(
           `http://${localhost}:5000/movie/search?keyword=${searchText}&page=${curPage}`
         );
@@ -110,9 +109,7 @@ function Search() {
     };
   }, []);
 
-  const handleScroll = async () => {
-    console.log("@@@@@@@@ scroll");
-  };
+  const handleScroll = async () => {};
 
   return (
     <>

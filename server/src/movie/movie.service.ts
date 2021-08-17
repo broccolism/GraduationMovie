@@ -106,7 +106,8 @@ export const getDetail = async (
       const profilePath = await TmdbApi.getActorProfileByName(name);
       const actor: Models.Actor = {
         name: name,
-        profileUrl: TMDB_IMAGE_HOST + profilePath,
+        profileUrl:
+          profilePath !== "-" ? TMDB_IMAGE_HOST + profilePath : profilePath,
       };
       return actor;
     })

@@ -8,6 +8,7 @@ import MovieItem from "./MovieItem";
 import axios from "axios";
 
 import "../../styles/ListView.scss";
+import styled from "styled-components";
 
 const useStyles = makeStyles((theme) =>
   createStyles({
@@ -27,25 +28,53 @@ const useStyles = makeStyles((theme) =>
 function ActorListView(props) {
   const { actors } = props;
   const classes = useStyles();
-  const [movieImageList, setMovieImageList] = useState([]);
-
-  const poster =
-    "https://www.goldenglobes.com/sites/default/files/articles/cover_images/2017-la_la_land.jpg?format=pjpg&auto=webp&optimize=high&width=850";
-
   return (
     <div className={classes.root}>
       <div className="list-view__horizontal">
-        {actors.map((actor, index) => (
-          <MovieItem
-            url={actor.profileUrl}
-            isInline={true}
-            key={index}
-            title={actor.name}
-          />
-        ))}
+        {actors.map((actor, index) =>
+          actor.profileUrl !== "-" ? (
+            <MovieItem
+              url={actor.profileUrl}
+              isInline={true}
+              key={index}
+              title={actor.name}
+            />
+          ) : (
+            <Column>
+              <EmptyProfileImage>
+                <i
+                  class="fas fa-portrait"
+                  style={{ opacity: "0.3", fontSize: "30px" }}
+                ></i>
+              </EmptyProfileImage>
+              <EmptyProfileName>{actor.name}</EmptyProfileName>
+            </Column>
+          )
+        )}
       </div>
     </div>
   );
 }
 
 export default ActorListView;
+
+const Column = styled.div`
+  display: flex;
+  flex-direction: column;
+`;
+
+const EmptyProfileImage = styled.div`
+  margin: 5px 6px 0px 6px;
+  width: 100px;
+  height: 150px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #222;
+`;
+
+const EmptyProfileName = styled.div`
+  padding-left: 10px;
+  font-size: 16px;
+  text-overflow: ellipsis;
+`;

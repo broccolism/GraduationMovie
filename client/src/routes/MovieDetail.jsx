@@ -73,9 +73,7 @@ function MovieDetail(props) {
         plot: response.data.plot,
         director: response.data.director,
         writers: response.data.writers,
-        actors: response.data.actors.filter(
-          (actor) => actor.profileUrl !== "https://image.tmdb.org/t/p/w500/null"
-        ),
+        actors: response.data.actors,
       });
       setIsLoading(false);
     } catch (err) {

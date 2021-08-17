@@ -181,7 +181,7 @@ function Main() {
   const getPosterAndIdList = async (movieIds) => {
     const promises = movieIds.map((movieId) =>
       axios
-        .get(`http://${localhost}:5000/movie/firstMovie?movieId=${movieId}`)
+        .get(`http://${localhost}:5000/movie/poster?movieId=${movieId}`)
         .then((res) => {
           return {
             id: movieId,

@@ -27,7 +27,6 @@ function App() {
       },
     },
   });
-  console.log("@@@", window.location.pathname);
   return (
     <ThemeProvider theme={customTheme}>
       <div className="App">
