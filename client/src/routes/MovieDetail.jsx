@@ -15,7 +15,6 @@ import CenterLoading from "../components/util/CenterLoading";
 
 function MovieDetail(props) {
   const movieId = props.match.params.id;
-  console.log(movieId);
   const [movieInfo, setMovieInfo] = useState({
     youtubeUrl: "",
     award: "",
