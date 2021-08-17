@@ -113,10 +113,11 @@ function MyPage() {
     window.location.reload();
   };
 
-  const ratedMoviePercent =
+  const ratedMoviePercent = Math.floor(
     (userInfo.ratedMovies.length /
       (userInfo.ratedMovies.length + userInfo.unratedMovies.length)) *
-    100;
+      100
+  );
   const doneRating = ratedMoviePercent === 100;
 
   return (

@@ -19,7 +19,7 @@ const useStyles = makeStyles({
 export default function BottomMenu() {
   const classes = useStyles();
   const history = useHistory();
-  const [value, setValue] = useState("main");
+  const [value, setValue] = useState(window.location.pathname.replace("/", ""));
 
   const handleChange = (event, newValue) => {
     history.push(`/${newValue}`);

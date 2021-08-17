@@ -3,12 +3,13 @@ import axios from "axios";
 import { localhost } from "../consts";
 
 import "../styles/Main.scss";
-import styled from "styled-components";
+import styled, { isStyledComponent } from "styled-components";
 
 import VerticalListView from "../components/list-view/VerticalListView";
 import HorizontalListView from "../components/list-view/HorizontalListView";
 import UserCookie from "../utils/cookie";
 import CenterLoading from "../components/util/CenterLoading";
+import { useHistory } from "react-router-dom";
 
 function Main() {
   const [isLoading, setIsLoading] = useState(true);
@@ -24,6 +25,8 @@ function Main() {
   const BY_USER_ERROR = "by user error";
   const PAGE_SIZE = 7;
   const BY_USER_COUNT = 3;
+
+  const history = useHistory();
 
   useEffect(() => {
     async function fetchData() {
@@ -122,7 +125,7 @@ function Main() {
       `http://${localhost}:5000/movie/image?movieId=${movieId}`
     );
 
-    setFirstMovie(getImageAndIdRes.data);
+    setFirstMovie({ ...getImageAndIdRes.data, movieId });
   };
 
   const getOtherMovies = async (movieIds) => {
@@ -213,16 +216,30 @@ function Main() {
     }
   };
 
+  const moveToFirstMovieDetail = () => {
+    history.push(`/movie-detail/${firstMovie.movieId}`);
+  };
+
   return (
     <>
       {isLoading ? (
         <CenterLoading />
       ) : (
         <div className="main">
+          <LogoWrapper>
+            {/* <i class="fas fa-star" style={{ fontSize: "30px" }} /> */}
+            movie
+            <br />
+            .com
+          </LogoWrapper>
+
           <div className="main__title">
             <div>{moviesString()}</div>
           </div>
-          <div className="main__best-recommend">
+          <div
+            className="main__best-recommend"
+            onClick={moveToFirstMovieDetail}
+          >
             <div className="main__best-recommend-image-wrapper">
               <div className="main__best-recommend-image">
                 <img src={firstMovie.imageUrl} />
@@ -282,3 +299,16 @@ function Main() {
 }
 
 export default Main;
+
+const LogoWrapper = styled.div`
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: start;
+  padding-top: 20px;
+  padding-bottom: 40px;
+  opacity: 1;
+  font-weight: 700;
+  font-family: "Rock Salt", cursive;
+`;
