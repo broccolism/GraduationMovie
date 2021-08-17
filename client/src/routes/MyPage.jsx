@@ -113,7 +113,6 @@ function MyPage() {
     const movieId = userInfo.unratedMovies[0].movieId;
     const userId = UserCookie.getUserId();
     const rating = rate;
-    console.log("@@@@@@@@@@@", movieId, userId, rating);
     await axios.get(
       `http://${localhost}:5000/movie/rate?movieId=${movieId}&userId=${userId}&rating=${rating}`
     );
