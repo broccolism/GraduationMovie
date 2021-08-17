@@ -224,7 +224,7 @@ function MovieDetail(props) {
                 <div className="movie-detail__title">People</div>
               )}
               <div>
-                {movieInfo.director && "Directed by " + movieInfo.director}{" "}
+                {movieInfo.director && "Directed by " + movieInfo.director}
                 {movieInfo.writers && ", and written by " + movieInfo.writers}
               </div>
             </div>

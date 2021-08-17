@@ -121,8 +121,8 @@ export const getDetail = async (
     avgRating: tmdbDetail.vote_average / 2,
     ratingPeopleCount: tmdbDetail.vote_count,
     userRating: userRating, // 없을 경우 -1
-    summary: tmdbDetail.overview ?? "-", // 없을 경우 "-"
-    plot: omdbDetail.Plot,
+    summary: tmdbDetail.tagline ?? "-", // 없을 경우 "-"
+    plot: tmdbDetail.overview,
     director: omdbDetail.Director,
     writers: omdbDetail.Writer,
     actors: actorProfiles,
