@@ -14,7 +14,6 @@ import Search from "../routes/Search";
 import MyPage from "../routes/MyPage";
 import MyPageSearch from "../routes/MyPageSearch";
 import BottomMenu from "./util/BottomMenu";
-import { ConsoleWriter } from "istanbul-lib-report";
 
 function App() {
   const customTheme = createTheme({

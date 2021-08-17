@@ -1,5 +1,4 @@
 import react, { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
 import axios from "axios";
 import { localhost } from "../consts";
 
@@ -7,8 +6,8 @@ import "../styles/App.scss";
 import "../styles/Search.scss";
 
 import VerticalListView from "../components/list-view/VerticalListView";
-import CenterLoading from "../components/util/CenterLoading";
 import styled from "styled-components";
+import ShimmerGird from "../components/search/ShimmerGrid";
 
 function Search() {
   const [isLoading, setIsLoading] = useState(false);
@@ -18,7 +17,34 @@ function Search() {
   const [movieList, setMovieList] = useState([]);
   const [page, setPage] = useState(1);
 
+  const saveCurState = () => {
+    console.log("@@@@@@@@@@@@@@@@@@@ save ");
+    window.localStorage.setItem(
+      "search",
+      JSON.stringify({
+        movieIds,
+        keywords,
+        searchText,
+        movieList,
+        page,
+      })
+    );
+  };
+
+  useEffect(() => {
+    const state = JSON.parse(window.localStorage.getItem("search"));
+    console.log("@@@@@@@@@@@@@@@@@@@@state", state);
+    if (state) {
+      setMovieIds(state.movieIds);
+      setKeywords(state.keywords);
+      setSearchText(state.searchText);
+      setMovieList(state.movieList);
+      setPage(state.page);
+    }
+  }, []);
+
   function onChangeSearch(e) {
+    setPage(1);
     setSearchText(e.target.value);
   }
 
@@ -123,9 +149,9 @@ function Search() {
         ></input>
         {keywords && (
           <div className="search__tags">
-            {keywords.map((keyword) => (
+            {keywords.map((keyword, index) => (
               <div
-                key={keyword}
+                key={keyword + index.toString()}
                 className="search__tag"
                 onClick={async () => await onClickTag(keyword)}
               >
@@ -134,7 +160,7 @@ function Search() {
             ))}
           </div>
         )}
-        {isLoading && <CenterLoading />}
+        {isLoading && <ShimmerGird />}
         {!isLoading && movieIds.length === 0 && (
           <EmptyText>
             Oops, no results yet. <br />
@@ -144,7 +170,11 @@ function Search() {
         )}
         {!isLoading && movieIds && (
           <div className="search__movie-list">
-            <VerticalListView movieList={movieList} isRating={false} />
+            <VerticalListView
+              movieList={movieList}
+              isRating={false}
+              onClickItem={saveCurState}
+            />
           </div>
         )}
       </div>

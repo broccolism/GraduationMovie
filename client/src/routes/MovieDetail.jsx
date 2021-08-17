@@ -34,13 +34,11 @@ function MovieDetail(props) {
   const [movieImageUrl, setMovieImageUrl] = useState("");
   const history = useHistory();
   const [isLoading, setIsLoading] = useState(true);
-
+  const [isError, setIsError] = useState(false);
   // const movieImageUrl =
   //   "https://www.nultylighting.co.uk/wp-content/uploads/2017/02/la-la-land-lighting-night-sky.jpg";
   // detail summary, 감독, 배우, 각본 쓰는 사람는 없을수도 있는거 같은데, 없을 경우 무슨 값이 들어있는지 확인 필요
   // 배우는 빈 리스트가 올 수 있음
-  const peopleList = [1, 2];
-
   const [modalOpen, setModalOpen] = useState(false);
   const [userRating, setUserRating] = useState(0);
 
@@ -62,7 +60,6 @@ function MovieDetail(props) {
       const response = await axios.get(
         `http://${localhost}:5000/movie/detail?movieId=${movieId}&userId=${user_id}`
       );
-      console.log(response.data.actors);
       setMovieInfo({
         youtubeUrl: response.data.youtubeUrl,
         award: response.data.award,
@@ -77,11 +74,13 @@ function MovieDetail(props) {
         plot: response.data.plot,
         director: response.data.director,
         writers: response.data.writers,
-        actors: response.data.actors,
+        actors: response.data.actors.filter((actor) => actor.name !== "N/A"),
       });
+      setIsError(false);
       setIsLoading(false);
     } catch (err) {
       console.log("@@@@@@ fetch data ERR", err);
+      setIsError(true);
       setIsLoading(false);
     }
   }
@@ -126,7 +125,7 @@ function MovieDetail(props) {
       window.location.assign(movieInfo.youtubeUrl);
     }
   };
-
+  console.log("@@@@@@@@@INFO", movieInfo);
   return (
     <>
       {isLoading ? (
@@ -142,7 +141,7 @@ function MovieDetail(props) {
                 <img src={movieImageUrl} alt="movieImageUrl" />
               </div>
             )}
-            {!!movieInfo.youtubeUrl && (
+            {!!movieInfo.youtubeUrl && movieInfo.youtubeUrl !== "-" && (
               <div className="movie-detail__trailer" onClick={handleWatchMovie}>
                 <div>There's an official trailer for it!</div>
                 <span
@@ -155,17 +154,19 @@ function MovieDetail(props) {
             )}
 
             <div className="movie-detail__main-information">
-              {!!movieInfo.award && movieInfo.award !== "N/A" && (
-                <div className="movie-detail__award">
-                  <div className="movie-detail__award-icon">
-                    <i
-                      className="fas fa-trophy"
-                      style={{ color: "var(--yellow)" }}
-                    ></i>
+              {!!movieInfo.award &&
+                movieInfo.award !== "N/A" &&
+                movieInfo.award !== "-" && (
+                  <div className="movie-detail__award">
+                    <div className="movie-detail__award-icon">
+                      <i
+                        className="fas fa-trophy"
+                        style={{ color: "var(--yellow)" }}
+                      ></i>
+                    </div>
+                    {movieInfo.award}
                   </div>
-                  {movieInfo.award}
-                </div>
-              )}
+                )}
               <div className="movie-detail__movie-title">
                 {movieInfo.movieTitle}
               </div>
@@ -175,17 +176,23 @@ function MovieDetail(props) {
             </div>
             <div className="movie-detail__rating-information">
               <div className="movie-detail__rating">
-                <BorderRating
-                  name="avgRating"
-                  value={movieInfo.avgRating}
-                  readOnly
-                />
-                <div className="movie-detail__rated-value">
-                  {movieInfo.avgRating}
-                </div>
-                <div className="movie-detail__rated-count">
-                  &nbsp;&nbsp;({movieInfo.ratingPeopleCount} rated)
-                </div>
+                {movieInfo.avgRating > 0 && (
+                  <BorderRating
+                    name="avgRating"
+                    value={movieInfo.avgRating}
+                    readOnly
+                  />
+                )}
+                {movieInfo.avgRating > 0 && (
+                  <div className="movie-detail__rated-value">
+                    {movieInfo.avgRating}
+                  </div>
+                )}
+                {movieInfo.ratingPeopleCount > 0 && (
+                  <div className="movie-detail__rated-count">
+                    &nbsp;&nbsp;({movieInfo.ratingPeopleCount} rated)
+                  </div>
+                )}
                 {userRating <= 0 && (
                   <>
                     <div
@@ -221,16 +228,24 @@ function MovieDetail(props) {
               )}
               <div>{movieInfo.plot}</div>
             </div>
-            <div className="movie-detail__content">
-              {!!peopleList.length && (
-                <div className="movie-detail__title">People</div>
-              )}
-              <div>
-                {movieInfo.director && "Directed by " + movieInfo.director}
-                {movieInfo.writers && ", and written by " + movieInfo.writers}
-              </div>
-            </div>
-            <ActorListView actors={movieInfo.actors} />
+            {movieInfo.director ||
+            movieInfo.writers ||
+            movieInfo.actors.length > 0 ? (
+              <>
+                <div className="movie-detail__content">
+                  <div className="movie-detail__title">People</div>
+
+                  <div>
+                    {movieInfo.director && "Directed by " + movieInfo.director}
+                    {movieInfo.writers &&
+                      ", and written by " + movieInfo.writers}
+                  </div>
+                </div>
+                <ActorListView actors={movieInfo.actors} />
+              </>
+            ) : (
+              <div></div>
+            )}
           </div>
         </>
       )}

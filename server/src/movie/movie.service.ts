@@ -100,7 +100,7 @@ export const getDetail = async (
   const videos = await TmdbApi.getMovieVideo(tmdbId);
   const userRating = await Repo.getUserRating(param.userId, param.movieId);
 
-  const actorNames: string[] = omdbDetail.Actors.split(", ");
+  const actorNames: string[] = omdbDetail.Actors?.split(", ") ?? [];
   const actorProfiles: Models.Actor[] = await Promise.all(
     actorNames.map(async (name: string) => {
       const profilePath = await TmdbApi.getActorProfileByName(name);
@@ -118,7 +118,7 @@ export const getDetail = async (
     award: omdbDetail.Awards ?? "-", // 없을 경우 "-"
     title: title,
     year: tmdbDetail.release_date.split("-")[0],
-    genre: omdbDetail.Genre.split(", ")[0],
+    genre: omdbDetail.Genre?.split(", ")[0] ?? "",
     avgRating: tmdbDetail.vote_average / 2,
     ratingPeopleCount: tmdbDetail.vote_count,
     userRating: userRating, // 없을 경우 -1

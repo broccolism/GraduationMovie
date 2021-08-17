@@ -44,11 +44,15 @@ function ActorListView(props) {
             <Column>
               <EmptyProfileImage>
                 <i
-                  class="fas fa-portrait"
-                  style={{ opacity: "0.3", fontSize: "30px" }}
+                  class="fas fa-user-lock"
+                  style={{ opacity: "0.3", fontSize: "24px" }}
                 ></i>
               </EmptyProfileImage>
-              <EmptyProfileName>{actor.name}</EmptyProfileName>
+              <EmptyProfileName>
+                {actor.name.length < 11
+                  ? actor.name
+                  : actor.name.slice(0, 10) + "..."}
+              </EmptyProfileName>
             </Column>
           )
         )}

@@ -13,7 +13,7 @@ const useStyles = makeStyles((theme) =>
 );
 
 function VerticalListView(props) {
-  const { movieList, isRating, addNewRating } = props;
+  const { movieList, isRating, addNewRating, onClickItem } = props;
 
   const classes = useStyles();
   return (
@@ -27,6 +27,7 @@ function VerticalListView(props) {
             url={movie.url}
             key={movie.id}
             isRating={isRating}
+            onClickItem={onClickItem}
           />
         ))}
       </div>
