@@ -5,11 +5,13 @@ import { localhost } from "../consts";
 
 import "../styles/App.scss";
 import "../styles/MyPage.scss";
+import StyledEmptyDiv from "../components/util/StyledEmptyDiv";
 
 import VerticalListView from "../components/list-view/VerticalListView";
 import BottomMenu from "../components/util/BottomMenu";
 import UserCookie from "../utils/cookie";
 import CenterLoading from "../components/util/CenterLoading";
+import styled from "styled-components";
 
 function MyPage() {
   const [movieList, setMovieList] = useState([]);
@@ -79,6 +81,10 @@ function MyPage() {
     }
   }
 
+  const ratedMoviePercent =
+    (userInfo.ratedMovies.length /
+      (userInfo.ratedMovies.length + userInfo.unratedMovies.length)) *
+    100;
   return (
     <>
       <div className="my-page">
@@ -104,6 +110,18 @@ function MyPage() {
             </div>
           </div>
         </div>
+
+        <Column>
+          <RatedRatio>{ratedMoviePercent}% rated</RatedRatio>
+          <StyledEmptyDiv height="4px" />
+          <BarWrapper>
+            <HorizontalBar width={ratedMoviePercent} color="#a662ea" />
+            <HorizontalBar width={100 - ratedMoviePercent} color="gray" />
+          </BarWrapper>
+          <StyledEmptyDiv height="12px" />
+          <BarText>🎉All rated. Well done!</BarText>
+        </Column>
+
         <div className="my-page__watched-movie">
           <div className="my-page__watched-movie-header">
             <div className="my-page__watched-movie-title">Movie watched</div>
@@ -124,3 +142,36 @@ function MyPage() {
 }
 
 export default MyPage;
+
+const Column = styled.div`
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  padding: 0px 16px;
+  align-items: flex-end;
+`;
+
+const RatedRatio = styled.div`
+  display: flex;
+  font-size: 14px;
+  color: white;
+`;
+
+const BarWrapper = styled.div`
+  display: flex;
+  width: 100%;
+`;
+
+const HorizontalBar = styled.div`
+  display: inline-flex;
+  height: 6px;
+  width: ${(props) => props.width}%;
+  background-color: ${(props) => props.color};
+  color: ${(props) => props.color};
+`;
+
+const BarText = styled.div`
+  display: flex;
+  font-size: 14px;
+  color: white;
+`;

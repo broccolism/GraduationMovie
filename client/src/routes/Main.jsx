@@ -10,7 +10,6 @@ import HorizontalListView from "../components/list-view/HorizontalListView";
 import BottomMenu from "../components/util/BottomMenu";
 import UserCookie from "../utils/cookie";
 import CenterLoading from "../components/util/CenterLoading";
-import StyledEmptyDiv from "../components/util/StyledEmptyDiv";
 
 function Main() {
   const [isLoading, setIsLoading] = useState(true);
