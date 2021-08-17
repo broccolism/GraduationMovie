@@ -31,7 +31,6 @@ function Main() {
     async function fetchData() {
       try {
         const getTopNMoviesRes = await getTopNMoviesById();
-        setByUserCount(byUserCount + 1);
 
         const firstId = getTopNMoviesRes.data.movieIds[0];
         const otherIds = getTopNMoviesRes.data.movieIds.filter(
@@ -45,6 +44,7 @@ function Main() {
           getSimilarUser(),
         ]);
 
+        setByUserCount(byUserCount + 1);
         setIsLoading(false);
       } catch (err) {
         if (err === BY_USER_ERROR) {
@@ -84,12 +84,13 @@ function Main() {
     }
   };
 
-  const getSimilarUser = async (userId) => {
+  const getSimilarUser = async () => {
     try {
+      const userId = UserCookie.getUserId();
       const response = await axios.get(
         `http://${localhost}:5000/user/similar?id=${userId}`
       );
-      console.log("similar user", response.data);
+
       setSimilarUser({
         userId: response.data.userId,
         nickname: response.data.nickname,
@@ -113,7 +114,6 @@ function Main() {
   };
 
   const getTopNMoviesForEvery = async () => {
-    console.log("@@@@@@@@@@", forEveryCount);
     return await axios.get(
       `http://${localhost}:5000/movie/top-n/every?size=${PAGE_SIZE}&page=${forEveryCount}`
     );
@@ -193,6 +193,9 @@ function Main() {
   };
 
   const moviesString = () => {
+    if (forEveryCount > 1) {
+      return "Recently most people liked";
+    }
     if (byUserCount === 2) {
       return `Top 7 movies for you, ${nickname}`;
     } else if (byUserCount <= BY_USER_COUNT + 1) {
