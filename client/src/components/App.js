@@ -39,7 +39,7 @@ function App() {
         <Route path="/" exact component={SetNickname} />
         <Route path="/set-taste" exact component={SetTaste} />
         <Route path="/main" exact component={Main} />
-        <Route path="/movie-detail" exact component={MovieDetail} />
+        <Route path="/movie-detail/:id" exact component={MovieDetail} />
         <Route path="/search" exact component={Search} />
         <Route path="/mypage" exact component={MyPage} />
         <Route path="/mypage/search" exact component={MyPageSearch} />

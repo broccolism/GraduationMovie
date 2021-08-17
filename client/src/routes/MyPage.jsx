@@ -34,6 +34,7 @@ function MyPage() {
         setUserId(user_id);
         const unratedMovies = await getUserInfo(user_id);
         await getUnratedMovieTitle(unratedMovies);
+        console.log("userInfo", userInfo);
 
         const watchedMovieIds = userInfo.unratedMovies.map(
           (movie) => movie.movieId
