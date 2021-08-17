@@ -26,4 +26,10 @@
     overflow-x: hidden;
     height: calc(100vh - 180px);
   }
+  &__nothing {
+    height: 75vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
 }

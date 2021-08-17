@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
+import { useHistory } from "react-router-dom";
 
 import "../styles/MovieDetail.scss";
 
@@ -10,9 +11,10 @@ import { BorderRating } from "../components/util/BorderRating";
 import UserCookie from "../utils/cookie";
 import { localhost } from "../consts";
 import ActorListView from "../components/list-view/ActorListView";
+import CenterLoading from "../components/util/CenterLoading";
 
-function MovieDetail() {
-  const movieId = "425";
+function MovieDetail(props) {
+  const movieId = props.match.params.id;
   const [movieInfo, setMovieInfo] = useState({
     youtubeUrl: "",
     award: "",
@@ -29,6 +31,8 @@ function MovieDetail() {
     movieImageUrl: "",
   });
   const [movieImageUrl, setMovieImageUrl] = useState("");
+  const history = useHistory();
+  const [isLoading, setIsLoading] = useState(true);
 
   // const movieImageUrl =
   //   "https://www.nultylighting.co.uk/wp-content/uploads/2017/02/la-la-land-lighting-night-sky.jpg";
@@ -73,8 +77,10 @@ function MovieDetail() {
         writers: response.data.writers,
         actors: response.data.actors,
       });
+      setIsLoading(false);
     } catch (err) {
       console.log("@@@@@@ fetch data ERR", err);
+      setIsLoading(false);
     }
   }
 
@@ -101,101 +107,115 @@ function MovieDetail() {
     setUserRating(rating);
   }
 
+  function onClickBack() {
+    history.goBack();
+  }
+
   return (
     <>
-      <div className="header-back">
-        <i className="fas fa-chevron-left"></i>
-      </div>
-      <div className="movie-detail">
-        {!!movieImageUrl && (
-          <div className="movie-detail__movie-image">
-            <img src={movieImageUrl} alt="movieImageUrl" />
+      {isLoading ? (
+        <CenterLoading />
+      ) : (
+        <>
+          <div className="header-back" onClick={onClickBack}>
+            <i className="fas fa-chevron-left"></i>
           </div>
-        )}
-        {!!movieInfo.youtubeUrl && (
-          <div className="movie-detail__trailer">
-            <div>There's an official trailer for it!</div>
-            <a
-              href={movieInfo.youtubeUrl}
-              className="movie-detail__trailer-button"
-            >
-              <i className="fas fa-play"></i>Youtube
-            </a>
-          </div>
-        )}
-
-        <div className="movie-detail__main-information">
-          {!!movieInfo.award && (
-            <div className="movie-detail__award">
-              <div className="movie-detail__award-icon">
-                <i className="fas fa-trophy"></i>
+          <div className="movie-detail">
+            {!!movieImageUrl && (
+              <div className="movie-detail__movie-image">
+                <img src={movieImageUrl} alt="movieImageUrl" />
               </div>
-              {movieInfo.award}
-            </div>
-          )}
-          <div className="movie-detail__movie-title">
-            {movieInfo.movieTitle}
-          </div>
-          <div className="movie-detail__genre">
-            {movieInfo.year} ⋅ {movieInfo.genre}
-          </div>
-        </div>
-        <div className="movie-detail__rating-information">
-          <div className="movie-detail__rating">
-            <BorderRating
-              name="avgRating"
-              value={movieInfo.avgRating}
-              readOnly
-            />
-            <div className="movie-detail__rated-value">
-              {movieInfo.avgRating}
-            </div>
-            <div className="movie-detail__rated-count">
-              ({movieInfo.ratingPeopleCount} rated)
-            </div>
-            {userRating <= 0 && (
-              <>
-                <div
-                  className="movie-detail__rating-button"
-                  onClick={handleOpenModal}
-                >
-                  Rating
-                </div>
-                <RatingModal
-                  modalOpen={modalOpen}
-                  movieTitle={movieInfo.movieTitle}
-                  handleCloseModal={handleCloseModal}
-                  onClickConfirm={onClickConfirm}
-                />
-              </>
             )}
-          </div>
-          {userRating > 0 && (
-            <div className="movie-detail__rating">
-              <BorderRating name="personRating" value={userRating} readOnly />
-              <div className="movie-detail__rated-value">{userRating}</div>
-              <div className="movie-detail__rated-count">(my rating)</div>
+            {!!movieInfo.youtubeUrl && (
+              <div className="movie-detail__trailer">
+                <div>There's an official trailer for it!</div>
+                <a
+                  href={movieInfo.youtubeUrl}
+                  className="movie-detail__trailer-button"
+                >
+                  <i className="fas fa-play"></i>Youtube
+                </a>
+              </div>
+            )}
+
+            <div className="movie-detail__main-information">
+              {!!movieInfo.award && (
+                <div className="movie-detail__award">
+                  <div className="movie-detail__award-icon">
+                    <i className="fas fa-trophy"></i>
+                  </div>
+                  {movieInfo.award}
+                </div>
+              )}
+              <div className="movie-detail__movie-title">
+                {movieInfo.movieTitle}
+              </div>
+              <div className="movie-detail__genre">
+                {movieInfo.year} ⋅ {movieInfo.genre}
+              </div>
             </div>
-          )}
-        </div>
-        <div className="movie-detail__content">
-          {!!movieInfo.summary && (
-            <div className="movie-detail__title">{movieInfo.summary}</div>
-          )}
-          <div>{movieInfo.plot}</div>
-        </div>
-        <div className="movie-detail__content">
-          {!!peopleList.length && (
-            <div className="movie-detail__title">People</div>
-          )}
-          <div>
-            {movieInfo.director && "Directed by " + movieInfo.director}{" "}
-            {movieInfo.writers && ", and written by " + movieInfo.writers}
+            <div className="movie-detail__rating-information">
+              <div className="movie-detail__rating">
+                <BorderRating
+                  name="avgRating"
+                  value={movieInfo.avgRating}
+                  readOnly
+                />
+                <div className="movie-detail__rated-value">
+                  {movieInfo.avgRating}
+                </div>
+                <div className="movie-detail__rated-count">
+                  ({movieInfo.ratingPeopleCount} rated)
+                </div>
+                {userRating <= 0 && (
+                  <>
+                    <div
+                      className="movie-detail__rating-button"
+                      onClick={handleOpenModal}
+                    >
+                      Rating
+                    </div>
+                    <RatingModal
+                      modalOpen={modalOpen}
+                      movieTitle={movieInfo.movieTitle}
+                      handleCloseModal={handleCloseModal}
+                      onClickConfirm={onClickConfirm}
+                    />
+                  </>
+                )}
+              </div>
+              {userRating > 0 && (
+                <div className="movie-detail__rating">
+                  <BorderRating
+                    name="personRating"
+                    value={userRating}
+                    readOnly
+                  />
+                  <div className="movie-detail__rated-value">{userRating}</div>
+                  <div className="movie-detail__rated-count">(my rating)</div>
+                </div>
+              )}
+            </div>
+            <div className="movie-detail__content">
+              {!!movieInfo.summary && (
+                <div className="movie-detail__title">{movieInfo.summary}</div>
+              )}
+              <div>{movieInfo.plot}</div>
+            </div>
+            <div className="movie-detail__content">
+              {!!peopleList.length && (
+                <div className="movie-detail__title">People</div>
+              )}
+              <div>
+                {movieInfo.director && "Directed by " + movieInfo.director}{" "}
+                {movieInfo.writers && ", and written by " + movieInfo.writers}
+              </div>
+            </div>
+            <ActorListView actors={movieInfo.actors} />
           </div>
-        </div>
-        <ActorListView actors={movieInfo.actors} />
-      </div>
-      <BottomMenu />
+          <BottomMenu />
+        </>
+      )}
     </>
   );
 }

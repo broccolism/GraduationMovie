@@ -42,7 +42,7 @@ function Search() {
         `http://${localhost}:5000/movie/search?keyword=${searchText}`
       );
       setKeywords(response.data.keywords);
-      setMovieIds(response.data.movieIds);
+      setMovieIds(response.data.movieIds || []);
       await getPosterAndIdList(response.data.movieIds);
     } catch (err) {
       console.log("@@@@@@ fetch data ERR", err);
@@ -99,11 +99,14 @@ function Search() {
             ))}
           </div>
         )}
-        {isLoading && <CenterLoading />}
-        {!isLoading && movieIds && (
+        {isLoading ? (
+          <CenterLoading />
+        ) : movieIds ? (
           <div className="search__movie-list">
             <VerticalListView movieList={movieList} isRating={false} />
           </div>
+        ) : (
+          <div className="search__nothing">No results</div>
         )}
       </div>
 

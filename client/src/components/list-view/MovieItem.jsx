@@ -1,5 +1,6 @@
 import { useState, useRef } from "react";
 import Rating from "@material-ui/lab/Rating";
+import { useHistory } from "react-router-dom";
 
 import "../../styles/MovieItem.scss";
 import { withStyles } from "@material-ui/core/styles";
@@ -21,9 +22,11 @@ function MovieItem(props) {
   const [star, setStar] = useState(0);
   const [isSelected, setIsSelected] = useState(false);
   const starRef = useRef(null);
+  const history = useHistory();
 
   function onClickPoster() {
-    setIsSelected((prev) => !prev);
+    if (isRating) setIsSelected((prev) => !prev);
+    else history.push(`/movie-detail/${movieId}`);
   }
 
   return (

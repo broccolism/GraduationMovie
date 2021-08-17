@@ -13,6 +13,7 @@ import CenterLoading from "../components/util/CenterLoading";
 
 function MyPageSearch() {
   const [watchedMovieList, setWatchedMovieList] = useState([]);
+  const [searchText, setSearchText] = useState("");
 
   const [isLoading, setIsLoading] = useState(true);
   const [userId, setUserId] = useState("");
@@ -61,6 +62,18 @@ function MyPageSearch() {
     setWatchedMovieList(idAndPosters);
   };
 
+  function onChangeSearch(e) {
+    setSearchText(e.target.value);
+  }
+
+  async function handleKeyPressSearch(e) {
+    if (e.key === "Enter") {
+      setIsLoading(true);
+      await searchMovie(searchText);
+      setIsLoading(false);
+    }
+  }
+
   return (
     <>
       <div className="header-back">
@@ -70,10 +83,21 @@ function MyPageSearch() {
         <div className="header-back__title">Movie watched</div>
       </div>
       <div className="mypage-search">
-        <input className="main-input"></input>
-        <div className="search__movie-list">
-          <VerticalListView movieList={watchedMovieList} isRating={false} />
-        </div>
+        <input
+          className="main-input"
+          value={searchText}
+          onChange={onChangeSearch}
+          onKeyPress={handleKeyPressSearch}
+        ></input>
+        {isLoading ? (
+          <CenterLoading />
+        ) : !!watchedMovieList ? (
+          <div className="search__movie-list">
+            <VerticalListView movieList={watchedMovieList} isRating={false} />
+          </div>
+        ) : (
+          <div className="search__nothing">No results</div>
+        )}
       </div>
       <BottomMenu />
     </>
