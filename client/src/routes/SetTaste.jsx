@@ -79,7 +79,6 @@ function SetTaste() {
     try {
       setIsLoading(true);
       const userId = UserCookie.getUserId();
-      console.log("@@@@@@@@@@ user id::", userId);
       const promises = selectedRatings.map(async ({ id, rating }) => {
         if (rating !== null) {
           return await axios.get(

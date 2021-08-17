@@ -5,13 +5,15 @@ import { localhost } from "../consts";
 
 import "../styles/App.scss";
 import "../styles/MyPage.scss";
+import styled from "styled-components";
 import StyledEmptyDiv from "../components/util/StyledEmptyDiv";
 
 import VerticalListView from "../components/list-view/VerticalListView";
 import BottomMenu from "../components/util/BottomMenu";
 import UserCookie from "../utils/cookie";
 import CenterLoading from "../components/util/CenterLoading";
-import styled from "styled-components";
+import Dialog from "@material-ui/core/Dialog";
+import RatingModal from "../components/util/RatingModal";
 
 function MyPage() {
   const [movieList, setMovieList] = useState([]);
@@ -23,6 +25,7 @@ function MyPage() {
     ratedMovies: [],
   });
   const [unratedMovie, setUnratedMovie] = useState();
+  const [isOpenDialog, setIsOpenDialog] = useState(false);
 
   useEffect(() => {
     async function fetchData() {
@@ -98,6 +101,26 @@ function MyPage() {
     }
   };
 
+  const handleOpenDialog = () => {
+    setIsOpenDialog(true);
+  };
+
+  const handleCloseDialog = () => {
+    setIsOpenDialog(false);
+  };
+
+  const handleRating = async (rate) => {
+    const movieId = userInfo.unratedMovies[0].movieId;
+    const userId = UserCookie.getUserId();
+    const rating = rate;
+    console.log("@@@@@@@@@@@", movieId, userId, rating);
+    await axios.get(
+      `http://${localhost}:5000/movie/rate?movieId=${movieId}&userId=${userId}&rating=${rating}`
+    );
+    handleCloseDialog();
+    window.location.reload();
+  };
+
   const ratedMoviePercent =
     (userInfo.ratedMovies.length /
       (userInfo.ratedMovies.length + userInfo.unratedMovies.length)) *
@@ -111,6 +134,12 @@ function MyPage() {
           <CenterLoading />
         ) : (
           <>
+            <RatingModal
+              modalOpen={isOpenDialog}
+              handleCloseModal={handleCloseDialog}
+              onClickConfirm={async (rating) => await handleRating(rating)}
+              movieTitle={unratedMovie?.title ?? ""}
+            />
             <div className="my-page__user-info">
               <div className="my-page__profile">
                 <div className="my-page__profile-image">
@@ -154,7 +183,7 @@ function MyPage() {
               {doneRating ? (
                 <BarText>🎉All rated. Well done!</BarText>
               ) : (
-                <BarText>
+                <BarText onClick={handleOpenDialog}>
                   How was '{unratedMovie.title.substring(0, 12) + "..."}'?
                   <BarButtonIcon className="fas fa-chevron-right" />
                 </BarText>
