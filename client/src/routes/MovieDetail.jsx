@@ -119,9 +119,8 @@ function MovieDetail(props) {
 
   const handleWatchMovie = async () => {
     const userId = UserCookie.getUserId();
-    const movieId = props.match.params.id;
     try {
-      await axios.get(
+      const res = await axios.get(
         `http://${localhost}:5000/user/watch?userId=${userId}&movieId=${movieId}`
       );
       window.location.assign(movieInfo.youtubeUrl);
