@@ -109,8 +109,8 @@ function MovieDetail(props) {
     const res = await axios.get(
       `http://${localhost}:5000/movie/rate?movieId=${movieId}&userId=${userId}&rating=${rating}`
     );
-    console.log("@@@@@@@@@@@@@@@res:", res);
     setUserRating(rating);
+    handleCloseModal();
   };
 
   function onClickBack() {
@@ -197,7 +197,7 @@ function MovieDetail(props) {
                     &nbsp;&nbsp;({movieInfo.ratingPeopleCount} rated)
                   </div>
                 )}
-                {userRating <= 0 && (
+                {userRating >= -1 && (
                   <>
                     <div
                       className="movie-detail__rating-button"
