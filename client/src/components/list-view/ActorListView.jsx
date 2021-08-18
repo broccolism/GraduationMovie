@@ -44,7 +44,7 @@ function ActorListView(props) {
             <Column>
               <EmptyProfileImage>
                 <i
-                  class="fas fa-user-lock"
+                  className="fas fa-user-lock"
                   style={{ opacity: "0.3", fontSize: "24px" }}
                 ></i>
               </EmptyProfileImage>

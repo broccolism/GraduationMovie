@@ -229,7 +229,6 @@ function Main() {
       ) : (
         <div className="main">
           <LogoWrapper>
-            {/* <i class="fas fa-star" style={{ fontSize: "30px" }} /> */}
             movie
             <br />
             .com

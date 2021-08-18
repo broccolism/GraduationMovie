@@ -60,10 +60,10 @@ function MovieDetail(props) {
       const response = await axios.get(
         `http://${localhost}:5000/movie/detail?movieId=${movieId}&userId=${user_id}`
       );
+      setUserRating(response.data.userRating);
       setMovieInfo({
         youtubeUrl: response.data.youtubeUrl,
         award: response.data.award,
-        // movieTitle: response.data.title,
         movieTitle: movieTitle,
         year: response.data.year,
         genre: response.data.genre,
@@ -104,9 +104,14 @@ function MovieDetail(props) {
     setModalOpen(false);
   }
 
-  function onClickConfirm(rating) {
+  const onClickConfirm = async (rating) => {
+    const userId = UserCookie.getUserId();
+    const res = await axios.get(
+      `http://${localhost}:5000/movie/rate?movieId=${movieId}&userId=${userId}&rating=${rating}`
+    );
+    console.log("@@@@@@@@@@@@@@@res:", res);
     setUserRating(rating);
-  }
+  };
 
   function onClickBack() {
     history.goBack();
@@ -125,7 +130,6 @@ function MovieDetail(props) {
       window.location.assign(movieInfo.youtubeUrl);
     }
   };
-  console.log("@@@@@@@@@INFO", movieInfo);
   return (
     <>
       {isLoading ? (
