@@ -136,7 +136,7 @@ function MyPage() {
               modalOpen={isOpenDialog}
               handleCloseModal={handleCloseDialog}
               onClickConfirm={async (rating) => await handleRating(rating)}
-              movieTitle={unratedMovie?.title ?? ""}
+              movieTitle={unratedMovie?.title.split(", The")[0] ?? ""}
             />
             <div className="my-page__user-info">
               <div className="my-page__profile">
@@ -184,7 +184,10 @@ function MyPage() {
                 <BarText>🎉All rated. Well done!</BarText>
               ) : (
                 <BarText onClick={handleOpenDialog}>
-                  How was '{unratedMovie.title.substring(0, 12) + "..."}'?
+                  How was '
+                  {unratedMovie.title.split(", The")[0].substring(0, 12) +
+                    "..."}
+                  '?
                   <BarButtonIcon className="fas fa-chevron-right" />
                 </BarText>
               )}
