@@ -159,16 +159,20 @@ export const searchMovie = async (
 
   const ids: number[] = idsWithNull.filter((id: number) => id != null);
 
-  const keywords = keywords2D
-    .filter((words: string[]) => words != null)
-    .reduce((prev, next) => {
-      return prev != null ? prev.concat(next) : prev;
-    })
-    .filter((other, index, self) => {
-      return index === self.indexOf(other);
-    });
+  try {
+    const keywords = keywords2D
+      .filter((words: string[]) => words != null)
+      .reduce((prev, next) => {
+        return prev != null ? prev.concat(next) : prev;
+      })
+      .filter((other, index, self) => {
+        return index === self.indexOf(other);
+      });
 
-  return { movieIds: ids, keywords: keywords };
+    return { movieIds: ids, keywords: keywords };
+  } catch (err) {
+    return { movieIds: [], keywords: [] };
+  }
 };
 
 export const searchMovieByKeyword = async (

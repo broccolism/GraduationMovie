@@ -17,8 +17,7 @@ function Search() {
   const [movieList, setMovieList] = useState([]);
   const [page, setPage] = useState(1);
 
-  const saveCurState = () => {
-    console.log("@@@@@@@@@@@@@@@@@@@ save ");
+  const saveCurState = (keywords, movieList, movieIds) => {
     window.localStorage.setItem(
       "search",
       JSON.stringify({
@@ -50,9 +49,15 @@ function Search() {
 
   async function handleKeyPressSearch(e) {
     if (e.key === "Enter") {
-      setIsLoading(true);
-      await searchMovie(searchText);
-      setIsLoading(false);
+      if (searchText.length > 0) {
+        setIsLoading(true);
+        await searchMovie(searchText);
+        setIsLoading(false);
+      } else {
+        setIsLoading(false);
+        setMovieIds([]);
+        setKeywords([]);
+      }
     }
   }
 
@@ -73,17 +78,26 @@ function Search() {
           `http://${localhost}:5000/movie/search?keyword=${searchText}&page=${curPage}`
         );
         const data = res.data;
+        if (data.movieIds.length == 0) {
+          throw "fetch data err";
+        }
         keywords = keywords.concat(data.keywords);
         movieIds = movieIds.concat(data.movieIds);
         curPage += 1;
       }
+      const movieList = await getPosterAndIdList(movieIds);
 
       setPage(curPage);
       setKeywords(keywords);
       setMovieIds(movieIds);
-      await getPosterAndIdList(movieIds);
+      setMovieList(movieList);
+      saveCurState(keywords, movieList, movieIds);
     } catch (err) {
       console.log("@@@@@@ fetch data ERR", err);
+      setKeywords([]);
+      setMovieIds([-1]);
+      console.log("@@@@@@@@@@@@@", movieIds);
+      saveCurState([], [], [-1]);
     }
   }
 
@@ -93,7 +107,8 @@ function Search() {
         `http://${localhost}:5000/movie/search?keyword=${searchText}&page=${page}`
       );
       setMovieIds(movieIds.concat(response.data.movieIds));
-      await getPosterAndIdList(response.data.movieIds);
+      const movieList = await getPosterAndIdList(response.data.movieIds);
+      setMovieList(movieList);
     } catch (err) {
       console.log("@@@@@@ fetch data ERR", err);
     }
@@ -104,8 +119,17 @@ function Search() {
       const response = await axios.get(
         `http://${localhost}:5000/movie/search/keyword?keyword=${keyword}&page=${page}`
       );
-      setMovieIds(response.data.movieIds);
-      await getPosterAndIdList(response.data.movieIds);
+
+      if (response.data.movieIds.length > 0) {
+        const movieList = await getPosterAndIdList(response.data.movieIds);
+        setMovieIds(response.data.movieIds);
+        setMovieList(movieList);
+        saveCurState(keywords, movieList, movieIds);
+      } else {
+        setMovieIds([-1]);
+        setKeywords([]);
+        saveCurState(keywords, [], [-1]);
+      }
     } catch (err) {
       console.log("@@@@@@ fetch data ERR", err);
     }
@@ -126,7 +150,7 @@ function Search() {
     const idAndPosters = (await Promise.all(promises)).filter(
       (movie) => movie.url !== ""
     );
-    setMovieList(isConcat ? idAndPosters.concat(movieList) : idAndPosters);
+    return isConcat ? idAndPosters.concat(movieList) : idAndPosters;
   };
 
   useEffect(() => {
@@ -161,20 +185,19 @@ function Search() {
           </div>
         )}
         {isLoading && <ShimmerGird />}
-        {!isLoading && movieIds.length === 0 && (
+        {!isLoading && movieIds[0] === -1 && (
           <EmptyText>
-            Oops, no results yet. <br />
+            <BigText>🥲</BigText>
             <br />
-            Search by title, keyword, actors... etc.
+            Ooops, no result yet.
           </EmptyText>
         )}
-        {!isLoading && movieIds && (
+        {!isLoading && movieIds.length === 0 && (
+          <EmptyText>Search by title, keyword, actors... etc.</EmptyText>
+        )}
+        {!isLoading && movieIds[0] !== -1 && movieIds.length > 0 && (
           <div className="search__movie-list">
-            <VerticalListView
-              movieList={movieList}
-              isRating={false}
-              onClickItem={saveCurState}
-            />
+            <VerticalListView movieList={movieList} isRating={false} />
           </div>
         )}
       </div>
@@ -183,6 +206,10 @@ function Search() {
 }
 
 export default Search;
+
+const BigText = styled.div`
+  font-size: 30px;
+`;
 
 const EmptyText = styled.div`
   width: 100%;
