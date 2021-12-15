@@ -1,6 +1,39 @@
 # GraduationMovie
 
-졸업을 해 보자.
+2021.07 - 2021.08
+반응형 영화 추천 플랫폼
+
+![architecture](https://user-images.githubusercontent.com/45515332/146115148-b627ef42-f031-4d9f-a060-87fbc52e6ba2.jpg)
+
+![recommender system](https://user-images.githubusercontent.com/45515332/146115155-30528399-1f2a-4b0a-b21f-31f7374e8fdd.jpg)
+
+
+---
+
+## User Flow Chart
+![user flow chart](https://user-images.githubusercontent.com/45515332/146115160-3e310ec7-8546-4fff-92be-17298e4a7d6c.jpg)
+
+## Web
+
+<div style="display:flex;flex-direction:row">
+  <div style="display:flex;flex-direction:column">
+    <img width="480px" src="https://user-images.githubusercontent.com/45515332/146114405-069d5fec-bf6a-4089-b92b-6fefc5c07e58.jpg"/>
+    <img width="480px" src="https://user-images.githubusercontent.com/45515332/146114447-5d071f0f-2e1c-407a-a2c0-3235730d0b22.jpg"/>
+  </div>
+  <div style="display:flex;flex-direction:column">
+    <img width="480px" src="https://user-images.githubusercontent.com/45515332/146114422-c98275c6-fa9c-4da6-90fc-bc03f131bdd1.jpg"/>
+    <img width="480px" src="https://user-images.githubusercontent.com/45515332/146114417-d485a433-2882-4481-8a9a-7e9316794e3e.jpg"/>
+  </div>
+  <div style="display:flex;flex-direction:column">
+    <img width="480px" src="https://user-images.githubusercontent.com/45515332/146114435-5f0334fc-460a-40c1-8a6c-564cb2b78e6c.jpg"/>
+    <img width="480px" src="https://user-images.githubusercontent.com/45515332/146114432-7c62c397-652a-4429-9e9f-9d55be3e5f9b.jpg"/>
+  </div>
+  <div style="display:flex;flex-direction:column">
+    <img width="480px" src="https://user-images.githubusercontent.com/45515332/146114442-975edb1f-4833-4b5b-8810-20132ad72c7e.jpg"/>
+    <img width="480px" src="https://user-images.githubusercontent.com/45515332/146114440-f61cc8ca-cc64-48c6-a4bd-acf0dabe7e43.jpg"/>
+  </div>
+</div>
+
 
 ## Server
 
