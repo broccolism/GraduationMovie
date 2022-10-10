@@ -35,7 +35,7 @@ jobs:
           script: |
             const core = require('@actions/core');
             const axios = require('axios');
-            console.log("haha");
+
             
             const text = "this is a test text."
             const printText = () => console.log("@@@@@@@@@@@@@@@@", text);
