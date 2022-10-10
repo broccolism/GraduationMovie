@@ -24,7 +24,7 @@ jobs:
           node-version: '14'
       - name: nclavis-token-renew-api-call
         # To use latest action, specify "release-master" instead of "v0.0.2"
-        uses: NcpActions/action-js-inline@v0.0.2
+        uses: satackey/action-js-inline@release-master
         with:
           package-manager: npm
           # Edit the following line to install packages required to run your script.
