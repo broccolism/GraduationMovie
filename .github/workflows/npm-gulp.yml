@@ -1,15 +1,21 @@
 name: Olaf
 
 on:
-   workflow_dispatch:
-      inputs:
-         logLevel:
-            description: 'Log level'     
-            required: true
-            default: 'warning'
-         tags:
-            description: 'Test scenario tags'
-
+  workflow_dispatch:
+    inputs:
+      name:
+        description: "Person to greet"
+        required: true
+        default: "bossm0n5t3r"
+      home:
+        description: "location"
+        required: false
+        default: "The Octoverse"
+  repository_dispatch:
+    types: [build-event]
+  schedule:
+    - cron: "0 0 * * *"
+    
 jobs:
   nclavis-token-renew:
     # The type of run ner that the job will run on
