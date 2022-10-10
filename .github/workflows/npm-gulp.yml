@@ -1,5 +1,4 @@
 name: Olaf
-
 on:
   workflow_dispatch:
     inputs:
@@ -17,7 +16,7 @@ on:
     - cron: "0 0 * * *"
     
 jobs:
-  nclavis-token-renew:
+  test-job:
     # The type of run ner that the job will run on
     runs-on: [ self-hosted ]
     # Steps represent a sequence of tasks that will be executed as part of the job
@@ -26,7 +25,7 @@ jobs:
         uses: actions/setup-node@v1
         with:
           node-version: '14'
-      - name: nclavis-token-renew-api-call
+      - name: test-step
         # To use latest action, specify "release-master" instead of "v0.0.2"
         uses: satackey/action-js-inline@release-master
         with:
