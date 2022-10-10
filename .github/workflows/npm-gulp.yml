@@ -1,7 +1,6 @@
 name: Olaf
 on:
   workflow_dispatch:
-    inputs:
       name:
         description: "Person to greet"
         required: true
