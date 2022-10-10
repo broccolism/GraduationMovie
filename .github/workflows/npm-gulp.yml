@@ -1,0 +1,35 @@
+name: Olaf
+
+on:
+   schedule:
+     - cron: '55 22 * * *' # AM 07:55, South Korea!
+   workflow_dispatch:
+      inputs:
+         logLevel:
+            description: 'Log level'     
+            required: true
+            default: 'warning'
+         tags:
+            description: 'Test scenario tags'
+
+jobs:
+  nclavis-token-renew:
+    # The type of run ner that the job will run on
+    runs-on: [ self-hosted ]
+    # Steps represent a sequence of tasks that will be executed as part of the job
+    steps:
+      - name: Set up node
+        uses: actions/setup-node@v1
+        with:
+          node-version: '14'
+      - name: nclavis-token-renew-api-call
+        # To use latest action, specify "release-master" instead of "v0.0.2"
+        uses: NcpActions/action-js-inline@v0.0.2
+        with:
+          package-manager: npm
+          # Edit the following line to install packages required to run your script.
+          required-packages: axios
+          script: |
+            const core = require('@actions/core');
+            const axios = require('axios');
+            console.log("haha");
